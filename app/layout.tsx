@@ -6,6 +6,15 @@ export const metadata: Metadata = {
   title: 'چقدر گذشته؟ - محاسبه زمان گذشته از یک تاریخ شمسی',
   description:
     'با اپلیکیشن «چقدر گذشته؟» می‌توانید به سادگی تاریخ شمسی مورد نظر خود را انتخاب کرده و ببینید دقیقاً چند سال، ماه و روز از آن زمان گذشته است. ابزاری کاربردی برای مرور خاطرات، مناسبت‌ها، و لحظات مهم زندگی.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'چقدر گذشته؟',
+  },
+  icons: {
+    apple: '/icon-192x192.png',
+  },
 };
 
 export default function RootLayout({
