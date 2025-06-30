@@ -1,7 +1,18 @@
-import { getAgoFromShamsiDate } from '@/app/lib/utils';
+'use client';
+
+import { getAgoFromDate } from '@/app/lib/utils';
+import { useState } from 'react';
+import DatePicker, { DateObject } from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+import Icon from 'react-multi-date-picker/components/icon';
 
 export default function Home() {
-  const ago = getAgoFromShamsiDate(1403, 12, 1, {
+  const [startDate, setStartDate] = useState<DateObject | null>(
+    new DateObject('2025-02-19')
+  );
+
+  const ago = getAgoFromDate(startDate?.toDate() ?? new Date(), {
     live: true,
   });
 
@@ -12,7 +23,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 p-8">
+    <div className="relative flex min-h-screen items-center justify-center bg-gray-900">
       <div className="space-y-8 text-center">
         {timeUnits.map(
           (unit, index) =>
@@ -31,6 +42,25 @@ export default function Home() {
         {timeUnits.every((unit) => !unit.show) && (
           <div className="text-4xl text-gray-400">هنوز زمانی نگذشته</div>
         )}
+      </div>
+      <div className="fixed bottom-4 left-4 z-50">
+        <div className="flex cursor-pointer items-center justify-center rounded-full bg-gray-800 p-4 shadow-lg transition-colors hover:bg-gray-700 focus:bg-gray-700">
+          <DatePicker
+            value={startDate}
+            onChange={(newVal: DateObject | null) => {
+              setStartDate(newVal);
+            }}
+            calendar={persian}
+            locale={persian_fa}
+            maxDate={new Date()}
+            render={<Icon width={32} height={32} color="white" />}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+            }}
+          />
+        </div>
       </div>
     </div>
   );

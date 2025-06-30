@@ -1,4 +1,8 @@
 function gregorianToShamsi(gregorianDate: Date) {
+  if (isNaN(gregorianDate.getTime())) {
+    throw new Error('Invalid date provided to gregorianToShamsi');
+  }
+
   const gy = gregorianDate.getFullYear();
   const gm = gregorianDate.getMonth() + 1;
   const gd = gregorianDate.getDate();
@@ -54,51 +58,55 @@ function gregorianToShamsi(gregorianDate: Date) {
   return { year: jy, month: jm, day: jd };
 }
 
-export function getAgoFromShamsiDate(
-    shamsiYear: number,
-    shamsiMonth: number,
-    shamsiDay: number,
-    options?: { live?: boolean; onUpdate?: (result: { years: number; months: number; days: number }) => void }
+function createLiveUpdater(
+  calculate: () => { years: number; months: number; days: number },
+  onUpdate: (result: { years: number; months: number; days: number }) => void
+): () => void {
+  const interval = setInterval(() => {
+    onUpdate(calculate());
+  }, 1000);
+
+  return () => clearInterval(interval);
+}
+
+export function getDateDifference(
+  startDate: Date | string,
+  endDate: Date | string,
+  options?: {
+    live?: boolean;
+    onUpdate?: (result: {
+      years: number;
+      months: number;
+      days: number;
+    }) => void;
+  }
 ): { years: number; months: number; days: number; stop?: () => void } {
-  const jy = parseInt(shamsiYear.toString());
-  const jm = parseInt(shamsiMonth.toString());
-  const jd = parseInt(shamsiDay.toString());
+  const start = startDate instanceof Date ? startDate : new Date(startDate);
+  const end = endDate instanceof Date ? endDate : new Date(endDate);
 
-  if (isNaN(jy) || isNaN(jm) || isNaN(jd)) {
-    throw new Error('Invalid date parameters. Please provide valid numbers.');
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    throw new Error(
+      'Invalid date provided. Please provide valid Date objects or date strings.'
+    );
   }
 
-  if (jm < 1 || jm > 12) {
-    throw new Error('Month must be between 1 and 12');
-  }
+  const calculate = () => {
+    const startShamsi = gregorianToShamsi(start);
+    const endShamsi = gregorianToShamsi(end);
 
-  if (jd < 1 || jd > 31) {
-    throw new Error('Day must be between 1 and 31');
-  }
-
-  const calculateDiff = () => {
-    const today = new Date();
-    const todayShamsi = gregorianToShamsi(today);
-
-    let years = todayShamsi.year - jy;
-    let months = todayShamsi.month - jm;
-    let days = todayShamsi.day - jd;
+    let years = endShamsi.year - startShamsi.year;
+    let months = endShamsi.month - startShamsi.month;
+    let days = endShamsi.day - startShamsi.day;
 
     if (days < 0) {
       months--;
-      const prevMonth = todayShamsi.month === 1 ? 12 : todayShamsi.month - 1;
+      const prevMonth = endShamsi.month === 1 ? 12 : endShamsi.month - 1;
       const prevYear =
-          todayShamsi.month === 1 ? todayShamsi.year - 1 : todayShamsi.year;
+        endShamsi.month === 1 ? endShamsi.year - 1 : endShamsi.year;
 
-      let daysInPrevMonth;
-      if (prevMonth <= 6) {
-        daysInPrevMonth = 31;
-      } else if (prevMonth <= 11) {
-        daysInPrevMonth = 30;
-      } else {
-        const isLeapYear = ((prevYear - 979) % 33) % 4 === 1;
-        daysInPrevMonth = isLeapYear ? 30 : 29;
-      }
+      const isLeapYear = ((prevYear - 979) % 33) % 4 === 1;
+      const daysInPrevMonth =
+        prevMonth <= 6 ? 31 : prevMonth <= 11 ? 30 : isLeapYear ? 30 : 29;
 
       days += daysInPrevMonth;
     }
@@ -111,19 +119,25 @@ export function getAgoFromShamsiDate(
     return { years, months, days };
   };
 
-  const initial = calculateDiff();
+  const result = calculate();
+  const stop =
+    options?.live && options.onUpdate
+      ? createLiveUpdater(calculate, options.onUpdate)
+      : undefined;
 
-  let stop: (() => void) | undefined = undefined;
-
-  if (options?.live && typeof options.onUpdate === 'function') {
-    const interval = setInterval(() => {
-      const updated = calculateDiff();
-      options.onUpdate!(updated);
-    }, 1000);
-
-    stop = () => clearInterval(interval);
-  }
-
-  return { ...initial, stop };
+  return { ...result, stop };
 }
 
+export function getAgoFromDate(
+  startDate: Date | string,
+  options?: {
+    live?: boolean;
+    onUpdate?: (result: {
+      years: number;
+      months: number;
+      days: number;
+    }) => void;
+  }
+): { years: number; months: number; days: number; stop?: () => void } {
+  return getDateDifference(startDate, new Date(), options);
+}
