@@ -1,7 +1,9 @@
 import { getAgoFromShamsiDate } from '@/app/lib/utils';
 
 export default function Home() {
-  const ago = getAgoFromShamsiDate(1403, 12, 1);
+  const ago = getAgoFromShamsiDate(1403, 12, 1, {
+    live: true,
+  });
 
   const timeUnits = [
     { value: ago.years, label: 'سال', show: ago.years > 0 },

@@ -55,10 +55,11 @@ function gregorianToShamsi(gregorianDate: Date) {
 }
 
 export function getAgoFromShamsiDate(
-  shamsiYear: number,
-  shamsiMonth: number,
-  shamsiDay: number
-) {
+    shamsiYear: number,
+    shamsiMonth: number,
+    shamsiDay: number,
+    options?: { live?: boolean; onUpdate?: (result: { years: number; months: number; days: number }) => void }
+): { years: number; months: number; days: number; stop?: () => void } {
   const jy = parseInt(shamsiYear.toString());
   const jm = parseInt(shamsiMonth.toString());
   const jd = parseInt(shamsiDay.toString());
@@ -75,40 +76,54 @@ export function getAgoFromShamsiDate(
     throw new Error('Day must be between 1 and 31');
   }
 
-  const today = new Date();
-  const todayShamsi = gregorianToShamsi(today);
+  const calculateDiff = () => {
+    const today = new Date();
+    const todayShamsi = gregorianToShamsi(today);
 
-  let years = todayShamsi.year - jy;
-  let months = todayShamsi.month - jm;
-  let days = todayShamsi.day - jd;
+    let years = todayShamsi.year - jy;
+    let months = todayShamsi.month - jm;
+    let days = todayShamsi.day - jd;
 
-  if (days < 0) {
-    months--;
-    const prevMonth = todayShamsi.month === 1 ? 12 : todayShamsi.month - 1;
-    const prevYear =
-      todayShamsi.month === 1 ? todayShamsi.year - 1 : todayShamsi.year;
+    if (days < 0) {
+      months--;
+      const prevMonth = todayShamsi.month === 1 ? 12 : todayShamsi.month - 1;
+      const prevYear =
+          todayShamsi.month === 1 ? todayShamsi.year - 1 : todayShamsi.year;
 
-    let daysInPrevMonth;
-    if (prevMonth <= 6) {
-      daysInPrevMonth = 31;
-    } else if (prevMonth <= 11) {
-      daysInPrevMonth = 30;
-    } else {
-      const isLeapYear = ((prevYear - 979) % 33) % 4 === 1;
-      daysInPrevMonth = isLeapYear ? 30 : 29;
+      let daysInPrevMonth;
+      if (prevMonth <= 6) {
+        daysInPrevMonth = 31;
+      } else if (prevMonth <= 11) {
+        daysInPrevMonth = 30;
+      } else {
+        const isLeapYear = ((prevYear - 979) % 33) % 4 === 1;
+        daysInPrevMonth = isLeapYear ? 30 : 29;
+      }
+
+      days += daysInPrevMonth;
     }
 
-    days += daysInPrevMonth;
-  }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
 
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  return {
-    years: years,
-    months: months,
-    days: days,
+    return { years, months, days };
   };
+
+  const initial = calculateDiff();
+
+  let stop: (() => void) | undefined = undefined;
+
+  if (options?.live && typeof options.onUpdate === 'function') {
+    const interval = setInterval(() => {
+      const updated = calculateDiff();
+      options.onUpdate!(updated);
+    }, 1000);
+
+    stop = () => clearInterval(interval);
+  }
+
+  return { ...initial, stop };
 }
+
