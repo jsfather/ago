@@ -71,23 +71,25 @@ export default function Home() {
           <div className="text-4xl text-gray-400">هنوز زمانی نگذشته</div>
         )}
       </div>
-      <div className="fixed bottom-4 left-4 z-50">
-        <div className="flex cursor-pointer items-center justify-center rounded-full bg-gray-800 p-4 shadow-lg transition-colors hover:bg-gray-700 focus:bg-gray-700">
-          <DatePicker
-            value={currentDate}
-            onChange={handleDatePickerChange}
-            calendar={persian}
-            locale={persian_fa}
-            maxDate={new Date()}
-            render={<Icon width={32} height={32} color="white" />}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              boxShadow: 'none',
-            }}
-          />
+      {!isFirstVisit && (
+        <div className="fixed bottom-4 left-4 z-50">
+          <div className="flex cursor-pointer items-center justify-center rounded-full bg-gray-800 p-4 shadow-lg transition-colors hover:bg-gray-700 focus:bg-gray-700">
+            <DatePicker
+              value={currentDate}
+              onChange={handleDatePickerChange}
+              calendar={persian}
+              locale={persian_fa}
+              maxDate={new Date()}
+              render={<Icon width={32} height={32} color="white" />}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                boxShadow: 'none',
+              }}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

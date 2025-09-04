@@ -35,8 +35,8 @@ export default function DateSelectionModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl bg-gray-800 p-8 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl bg-gray-800 p-8 shadow-xl">
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-white">
             تاریخ شروع رو انتخاب کن
@@ -44,22 +44,20 @@ export default function DateSelectionModal({
         </div>
 
         <div className="mb-8 flex justify-center">
-          <div className="rounded-xl bg-gray-700 p-4">
-            <DatePicker
-              value={selectedDate}
-              onChange={(newVal: DateObject | null) => {
-                setSelectedDate(newVal);
-              }}
-              calendar={persian}
-              locale={persian_fa}
-              maxDate={new Date()}
-              className="custom-date-picker"
-              style={{
-                width: '100%',
-              }}
-              inputClass="w-full rounded-lg bg-gray-600 border border-gray-500 text-white text-center py-3 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+          <DatePicker
+            value={selectedDate}
+            onChange={(newVal: DateObject | null) => {
+              setSelectedDate(newVal);
+            }}
+            calendar={persian}
+            locale={persian_fa}
+            maxDate={new Date()}
+            className="custom-date-picker"
+            style={{
+              width: '100%',
+            }}
+            inputClass="w-full rounded-lg bg-gray-600 border border-gray-500 text-white text-center py-3 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
 
         <div className="flex justify-center">
