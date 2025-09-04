@@ -3,14 +3,14 @@ import { iranSansXFaNum } from '@/app/fonts';
 import '@/app/globals.css';
 
 export const metadata: Metadata = {
-  title: 'چقدر گذشته؟ - محاسبه زمان گذشته از یک تاریخ شمسی',
+  title: 'ago - Calculate elapsed time from a Jalali (Persian) date',
   description:
-    'با اپلیکیشن «چقدر گذشته؟» می‌توانید به سادگی تاریخ شمسی مورد نظر خود را انتخاب کرده و ببینید دقیقاً چند سال، ماه و روز از آن زمان گذشته است. ابزاری کاربردی برای مرور خاطرات، مناسبت‌ها، و لحظات مهم زندگی.',
+    'With the "ago" app, you can easily select a Jalali (Persian) date and see exactly how many years, months, and days have passed since then. A practical tool for revisiting memories, occasions, and important life moments.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'چقدر گذشته؟',
+    title: 'ago',
   },
   icons: {
     apple: '/icon-192x192.png',
