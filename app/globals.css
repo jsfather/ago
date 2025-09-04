@@ -1,5 +1,31 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-iran-sans-x-fanum: var(--font-iran-sans-x-fanum);
+}
+
+/* Custom styles for the date picker modal */
+.custom-date-picker .rmdp-wrapper {
+  width: 100% !important;
+}
+
+.custom-date-picker .rmdp-container {
+  width: 100% !important;
+}
+
+.custom-date-picker input {
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 1.125rem !important;
+  padding: 12px 16px !important;
+  background-color: rgb(75 85 99) !important;
+  border: 1px solid rgb(107 114 128) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+.custom-date-picker input:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgb(59 130 246) !important;
+  border-color: transparent !important;
 }
