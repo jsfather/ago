@@ -15,6 +15,7 @@ const isValidDateObject = (dateObj: DateObject): boolean => {
     const jsDate = dateObj.toDate();
     return jsDate instanceof Date && !isNaN(jsDate.getTime());
   } catch (error) {
+    console.log('Error validating DateObject:', error);
     return false;
   }
 };
@@ -40,6 +41,7 @@ const parseLegacyPersianDate = (dateString: string): DateObject | null => {
     }
     return null;
   } catch (error) {
+    console.log('Error parsing legacy Persian date:', error);
     return null;
   }
 };
