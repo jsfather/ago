@@ -84,8 +84,10 @@ export default function Home() {
         initialDate={startDate}
       />
 
-      {/* Liquid glass main content container with proper spacing */}
-      <div className="relative z-10 space-y-12 text-center px-8 pt-32">
+      {/* Liquid glass main content container with conditional spacing */}
+      <div className={`relative z-10 space-y-12 text-center px-8 ${
+        !dateRange || dateRange.length < 2 ? '' : 'pt-32'
+      }`}>
         {/* Revolutionary liquid glass container */}
         <div className="relative group">
           {/* Outer glow effect */}
