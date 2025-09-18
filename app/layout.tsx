@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { iranSansXFaNum } from '@/app/fonts';
 import '@/app/globals.css';
+import ServiceWorkerRegister from '@/app/components/ServiceWorkerRegister';
 
 export const metadata: Metadata = {
   title: 'ago - Calculate elapsed time from a Jalali (Persian) date',
@@ -28,6 +29,7 @@ export default function RootLayout({
         className={`${iranSansXFaNum.variable} font-iran-sans-x-fanum antialiased`}
       >
         {children}
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
