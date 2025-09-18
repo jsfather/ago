@@ -73,7 +73,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
 
   const getStatusText = () => {
     if (isComplete) {
-      return 'مکمل شده';
+      return 'کامل شده';
     } else if (hasStarted) {
       return `${remainingDays} روز باقی مانده`;
     } else {
@@ -88,7 +88,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
         {/* Header */}
         <div className="mb-4 flex items-center justify-center">
           <span className="text-lg font-bold text-white">
-            {Math.round(progress)}%
+            %{Math.round(progress)}
           </span>
         </div>
 
@@ -104,19 +104,6 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
               <div className="animate-shimmer absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
             </div>
           </div>
-
-          {/* Progress indicator dot */}
-          <div
-            className="absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-current bg-white shadow-lg transition-all duration-1000 ease-out"
-            style={{
-              left: `calc(${progress}% - 8px)`,
-              color: isComplete
-                ? '#10b981'
-                : hasStarted
-                  ? '#3b82f6'
-                  : '#6b7280',
-            }}
-          ></div>
         </div>
 
         {/* Status and info */}

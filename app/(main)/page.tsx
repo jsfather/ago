@@ -8,41 +8,46 @@ import persian_fa from 'react-date-object/locales/persian_fa';
 import Icon from 'react-multi-date-picker/components/icon';
 import DateSelectionModal from '@/app/components/DateSelectionModal';
 import ProgressBar from '@/app/components/ProgressBar';
-import { useStoredStartDate } from '@/app/hooks/useStoredStartDate';
+import { useStoredDateRange } from '@/app/hooks/useStoredDateRange';
 
 export default function Home() {
-  const { startDate, isFirstVisit, saveStartDate } = useStoredStartDate();
+  const { 
+    dateRange, 
+    startDate, 
+    isFirstVisit, 
+    saveDateRange, 
+    updateStartDate 
+  } = useStoredDateRange();
   const [currentDate, setCurrentDate] = useState<DateObject | null>(null);
-  const [dateRange, setDateRange] = useState<DateObject[] | null>(null);
 
   // Update currentDate when startDate changes
   useEffect(() => {
     if (startDate) {
       setCurrentDate(startDate);
-      // Initialize date range with start date only
-      setDateRange([startDate]);
     }
   }, [startDate]);
 
   const handleModalDateSelect = (date: DateObject) => {
-    saveStartDate(date);
+    updateStartDate(date);
     setCurrentDate(date);
   };
 
   const handleDatePickerChange = (newVal: DateObject | DateObject[] | null) => {
     if (newVal) {
       if (Array.isArray(newVal)) {
-        setDateRange(newVal);
-        // Always use the first date (start date) for ago calculations
-        if (newVal.length > 0) {
-          setCurrentDate(newVal[0]);
-          saveStartDate(newVal[0]);
+        const success = saveDateRange(newVal);
+        if (success) {
+          // Always use the first date (start date) for ago calculations
+          if (newVal.length > 0) {
+            setCurrentDate(newVal[0]);
+          }
         }
       } else {
         // Single date selected, convert to range
-        setDateRange([newVal]);
-        setCurrentDate(newVal);
-        saveStartDate(newVal);
+        const success = saveDateRange([newVal]);
+        if (success) {
+          setCurrentDate(newVal);
+        }
       }
     }
   };
@@ -97,6 +102,35 @@ export default function Home() {
               calendar={persian}
               locale={persian_fa}
               range
+              mapDays={({ date, today, selectedDate }) => {
+                const isToday = date.day === today.day && 
+                              date.month === today.month && 
+                              date.year === today.year;
+                const isPast = date.toDate() < today.toDate();
+                const isFuture = date.toDate() > today.toDate();
+                
+                // If selecting first date (start date) and it's in the future, disable it
+                if (!Array.isArray(selectedDate) || selectedDate.length === 0) {
+                  if (isFuture) {
+                    return {
+                      disabled: true,
+                      style: { color: '#ccc' }
+                    };
+                  }
+                }
+                
+                // If selecting second date (end date) and it's today or past, disable it
+                if (Array.isArray(selectedDate) && selectedDate.length === 1) {
+                  if (isToday || isPast) {
+                    return {
+                      disabled: true,
+                      style: { color: '#ccc' }
+                    };
+                  }
+                }
+                
+                return {};
+              }}
               render={<Icon width={32} height={32} color="white" />}
               style={{
                 background: 'transparent',
