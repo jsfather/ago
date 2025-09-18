@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { DateObject } from 'react-multi-date-picker';
-import persian from 'react-date-object/calendars/persian';
-import persian_fa from 'react-date-object/locales/persian_fa';
 
 const STORAGE_KEY = 'ago_date_range';
 const DEFAULT_START_DATE = '2025-02-19';
