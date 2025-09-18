@@ -82,45 +82,83 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   };
 
   return (
-    <div className="fixed top-6 left-1/2 z-50 w-[28rem] -translate-x-1/2 transform">
-      {/* Enhanced main container with improved glassmorphism effect */}
-      <div className="relative rounded-3xl bg-gray-800/40 backdrop-blur-2xl border border-gray-700/30 shadow-2xl p-4">
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-600/10 via-transparent to-gray-800/10 rounded-3xl pointer-events-none"></div>
+    <div className="fixed top-6 left-1/2 z-50 w-[24rem] -translate-x-1/2 transform">
+      {/* Liquid glass progress container */}
+      <div className="relative group">
+        {/* Outer glow with liquid effect */}
+        <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-[2rem] blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-700"></div>
         
-        {/* Inner content with relative positioning */}
-        <div className="relative">
-          {/* Enhanced header with glow effect */}
-          <div className="mb-6 flex items-center justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 blur-lg bg-gradient-to-r from-gray-400/30 to-gray-300/30 rounded-xl"></div>
-              <span className="relative text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
-                %{Math.round(progress)}
-              </span>
-            </div>
-          </div>
-
-          {/* Enhanced progress track container */}
-          <div className="relative mb-6">
-            {/* Track background with inner shadow */}
-            <div className="h-3 w-full rounded-full bg-gray-700/50 shadow-inner border border-gray-600/30">
-              {/* Progress fill with enhanced gradients and animations */}
-              <div
-                className={`h-full rounded-full ${getProgressGradient()} relative overflow-hidden shadow-lg transition-all duration-1000 ease-out`}
-                style={{ width: `${progress}%` }}
-              >
-                {/* Enhanced animated shimmer effect */}
-                <div className="animate-shimmer absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-                {/* Additional glow effect */}
-                <div className="absolute inset-0 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)]"></div>
+        {/* Main liquid glass container */}
+        <div className="relative rounded-[2rem] bg-gradient-to-br from-white/[0.12] via-white/[0.06] to-white/[0.03] backdrop-blur-3xl border border-white/[0.18] shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden">
+          {/* Animated liquid background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] via-transparent to-purple-500/[0.04] animate-pulse"></div>
+          
+          {/* Inner border glow */}
+          <div className="absolute inset-[1px] rounded-[calc(2rem-1px)] bg-gradient-to-br from-white/[0.08] to-transparent"></div>
+          
+          {/* Content container with liquid padding */}
+          <div className="relative p-6 space-y-4">
+            {/* Liquid glass percentage display */}
+            <div className="flex items-center justify-center">
+              <div className="relative group/percentage">
+                {/* Percentage glow background */}
+                <div className="absolute inset-0 scale-110 bg-gradient-to-r from-blue-400/30 via-purple-400/30 to-cyan-400/30 rounded-xl blur-lg opacity-50 group-hover/percentage:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Liquid glass percentage container */}
+                <div className="relative bg-gradient-to-br from-white/[0.15] via-white/[0.08] to-transparent rounded-xl backdrop-blur-xl border border-white/[0.25] px-4 py-2">
+                  <div className="absolute inset-[1px] rounded-[calc(0.75rem-1px)] bg-gradient-to-br from-white/[0.1] to-transparent"></div>
+                  <span className="relative text-lg font-black tracking-wider bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent drop-shadow-lg">
+                    %{Math.round(progress)}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Enhanced status and info section */}
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-semibold text-gray-200 tracking-wide">{getStatusText()}</span>
-            <span className="text-gray-400 font-medium">{totalDays} روز کل</span>
+            {/* Liquid glass progress track */}
+            <div className="relative group/track">
+              {/* Track glow background */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-cyan-500/10 rounded-full blur-md"></div>
+              
+              {/* Main track container */}
+              <div className="relative h-3 rounded-full bg-gradient-to-r from-white/[0.08] via-white/[0.05] to-white/[0.08] backdrop-blur-xl border border-white/[0.15] shadow-inner overflow-hidden">
+                {/* Inner track glow */}
+                <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-white/[0.05] to-transparent"></div>
+                
+                {/* Liquid progress fill */}
+                <div
+                  className={`relative h-full rounded-full ${getProgressGradient()} overflow-hidden transition-all duration-1000 ease-out shadow-lg`}
+                  style={{ width: `${progress}%` }}
+                >
+                  {/* Liquid flow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/[0.3] via-white/[0.15] to-white/[0.3] rounded-full"></div>
+                  
+                  {/* Animated liquid shimmer */}
+                  <div className="animate-shimmer absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                  
+                  {/* Liquid glow overlay */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/[0.1] via-transparent to-white/[0.1] shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Liquid glass status section */}
+            <div className="flex items-center justify-between">
+              {/* Status text container */}
+              <div className="relative group/status">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/[0.08] to-white/[0.04] rounded-lg backdrop-blur-sm"></div>
+                <div className="relative px-3 py-1 text-xs font-semibold text-white/90 tracking-wide group-hover/status:text-white transition-colors duration-300">
+                  {getStatusText()}
+                </div>
+              </div>
+              
+              {/* Total days container */}
+              <div className="relative group/total">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/[0.06] to-white/[0.03] rounded-lg backdrop-blur-sm"></div>
+                <div className="relative px-3 py-1 text-xs font-medium text-white/70 group-hover/total:text-white/90 transition-colors duration-300">
+                  {totalDays} روز کل
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
