@@ -7,16 +7,20 @@ import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
 import Icon from 'react-multi-date-picker/components/icon';
 import DateSelectionModal from '@/app/components/DateSelectionModal';
+import ProgressBar from '@/app/components/ProgressBar';
 import { useStoredStartDate } from '@/app/hooks/useStoredStartDate';
 
 export default function Home() {
   const { startDate, isFirstVisit, saveStartDate } = useStoredStartDate();
   const [currentDate, setCurrentDate] = useState<DateObject | null>(null);
+  const [dateRange, setDateRange] = useState<DateObject[] | null>(null);
 
   // Update currentDate when startDate changes
   useEffect(() => {
     if (startDate) {
       setCurrentDate(startDate);
+      // Initialize date range with start date only
+      setDateRange([startDate]);
     }
   }, [startDate]);
 
@@ -25,10 +29,21 @@ export default function Home() {
     setCurrentDate(date);
   };
 
-  const handleDatePickerChange = (newVal: DateObject | null) => {
+  const handleDatePickerChange = (newVal: DateObject | DateObject[] | null) => {
     if (newVal) {
-      setCurrentDate(newVal);
-      saveStartDate(newVal);
+      if (Array.isArray(newVal)) {
+        setDateRange(newVal);
+        // Always use the first date (start date) for ago calculations
+        if (newVal.length > 0) {
+          setCurrentDate(newVal[0]);
+          saveStartDate(newVal[0]);
+        }
+      } else {
+        // Single date selected, convert to range
+        setDateRange([newVal]);
+        setCurrentDate(newVal);
+        saveStartDate(newVal);
+      }
     }
   };
 
@@ -45,6 +60,8 @@ export default function Home() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-gray-900">
+      <ProgressBar dateRange={dateRange} />
+
       <DateSelectionModal
         isOpen={isFirstVisit}
         onDateSelect={handleModalDateSelect}
@@ -75,11 +92,11 @@ export default function Home() {
         <div className="fixed bottom-4 left-4 z-50">
           <div className="flex cursor-pointer items-center justify-center rounded-full bg-gray-800 p-4 shadow-lg transition-colors hover:bg-gray-700 focus:bg-gray-700">
             <DatePicker
-              value={currentDate}
+              value={dateRange || undefined}
               onChange={handleDatePickerChange}
               calendar={persian}
               locale={persian_fa}
-              maxDate={new Date()}
+              range
               render={<Icon width={32} height={32} color="white" />}
               style={{
                 background: 'transparent',
