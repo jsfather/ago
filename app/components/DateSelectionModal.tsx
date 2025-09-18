@@ -38,7 +38,7 @@ export default function DateSelectionModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
       {/* Liquid glass backdrop with flowing effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950/95 via-indigo-950/90 to-blue-950/95 backdrop-blur-3xl"></div>
+      <div className="absolute inset-0 bg-[#101828] backdrop-blur-3xl"></div>
       
       {/* Animated background orbs */}
       <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -102,6 +102,7 @@ export default function DateSelectionModal({
                       calendar={persian}
                       locale={persian_fa}
                       maxDate={new Date()}
+                      portal
                       className="bg-dark"
                       style={{
                         width: '100%',

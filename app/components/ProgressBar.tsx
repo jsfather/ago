@@ -82,7 +82,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   };
 
   return (
-    <div className="fixed top-6 left-1/2 z-50 w-[24rem] -translate-x-1/2 transform">
+    <div className="fixed top-6 left-1/2 z-40 w-[24rem] -translate-x-1/2 transform">
       {/* Liquid glass progress container */}
       <div className="relative group">
         {/* Outer glow with liquid effect */}

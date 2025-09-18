@@ -65,12 +65,12 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-gray-900 to-indigo-950 overflow-hidden">
+    <div className="relative flex min-h-screen items-center justify-center bg-[#101828] overflow-hidden">
       {/* Enhanced liquid background with multiple layers */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-purple-950/10 to-cyan-950/20"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(14,165,233,0.1),transparent_50%)]"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_80%,rgba(99,102,241,0.08),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#101828]/95 via-[#1a202c]/90 to-[#0f172a]/95"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(59,130,246,0.08),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(14,165,233,0.08),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_80%,rgba(99,102,241,0.06),transparent_50%)]"></div>
       
       {/* Animated floating orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -84,8 +84,8 @@ export default function Home() {
         initialDate={startDate}
       />
 
-      {/* Liquid glass main content container */}
-      <div className="relative z-10 space-y-12 text-center px-8">
+      {/* Liquid glass main content container with proper spacing */}
+      <div className="relative z-10 space-y-12 text-center px-8 pt-32">
         {/* Revolutionary liquid glass container */}
         <div className="relative group">
           {/* Outer glow effect */}
