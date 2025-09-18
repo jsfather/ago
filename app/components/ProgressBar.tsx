@@ -73,7 +73,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
 
   const getStatusText = () => {
     if (isComplete) {
-      return 'کامل شده';
+      return 'مکمل شده';
     } else if (hasStarted) {
       return `${remainingDays} روز باقی مانده`;
     } else {
@@ -82,34 +82,46 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   };
 
   return (
-    <div className="fixed top-6 left-1/2 z-50 w-96 -translate-x-1/2 transform">
-      {/* Main container with glassmorphism effect */}
-      <div className="relative rounded-2xl bg-black/40 p-6 shadow-2xl backdrop-blur-xl">
-        {/* Header */}
-        <div className="mb-4 flex items-center justify-center">
-          <span className="text-lg font-bold text-white">
-            %{Math.round(progress)}
-          </span>
-        </div>
-
-        {/* Progress track */}
-        <div className="relative mb-4">
-          <div className="h-2 w-full rounded-full bg-white/20 shadow-inner">
-            {/* Progress fill with animation */}
-            <div
-              className={`h-full rounded-full ${getProgressGradient()} relative overflow-hidden shadow-lg transition-all duration-1000 ease-out`}
-              style={{ width: `${progress}%` }}
-            >
-              {/* Animated shimmer effect */}
-              <div className="animate-shimmer absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+    <div className="fixed top-6 left-1/2 z-50 w-[28rem] -translate-x-1/2 transform">
+      {/* Enhanced main container with improved glassmorphism effect */}
+      <div className="relative rounded-3xl bg-gray-800/40 backdrop-blur-2xl border border-gray-700/30 shadow-2xl p-4">
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-600/10 via-transparent to-gray-800/10 rounded-3xl pointer-events-none"></div>
+        
+        {/* Inner content with relative positioning */}
+        <div className="relative">
+          {/* Enhanced header with glow effect */}
+          <div className="mb-6 flex items-center justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 blur-lg bg-gradient-to-r from-gray-400/30 to-gray-300/30 rounded-xl"></div>
+              <span className="relative text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+                %{Math.round(progress)}
+              </span>
             </div>
           </div>
-        </div>
 
-        {/* Status and info */}
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-white/80">{getStatusText()}</span>
-          <span className="text-white/60">{totalDays} روز کل</span>
+          {/* Enhanced progress track container */}
+          <div className="relative mb-6">
+            {/* Track background with inner shadow */}
+            <div className="h-3 w-full rounded-full bg-gray-700/50 shadow-inner border border-gray-600/30">
+              {/* Progress fill with enhanced gradients and animations */}
+              <div
+                className={`h-full rounded-full ${getProgressGradient()} relative overflow-hidden shadow-lg transition-all duration-1000 ease-out`}
+                style={{ width: `${progress}%` }}
+              >
+                {/* Enhanced animated shimmer effect */}
+                <div className="animate-shimmer absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                {/* Additional glow effect */}
+                <div className="absolute inset-0 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)]"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Enhanced status and info section */}
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-semibold text-gray-200 tracking-wide">{getStatusText()}</span>
+            <span className="text-gray-400 font-medium">{totalDays} روز کل</span>
+          </div>
         </div>
       </div>
     </div>
