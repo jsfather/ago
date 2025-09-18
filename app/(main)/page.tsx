@@ -118,13 +118,13 @@ export default function Home() {
       </div>
       {!isFirstVisit && (
         <div className="fixed bottom-6 left-6 z-50">
-          {/* Enhanced floating action button with glassmorphism */}
+          {/* Enhanced floating action button with glassmorphism - removed problematic animations */}
           <div className="relative group">
             {/* Glow effect background */}
             <div className="absolute -inset-1 bg-gradient-to-r from-gray-600/50 to-gray-500/50 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Main button container */}
-            <div className="relative flex cursor-pointer items-center justify-center rounded-full bg-gray-800/80 backdrop-blur-xl border border-gray-700/50 p-5 shadow-2xl transition-all duration-300 hover:bg-gray-700/80 hover:scale-110 hover:shadow-gray-900/50 active:scale-95">
+            {/* Main button container - removed scale and transform animations */}
+            <div className="relative flex cursor-pointer items-center justify-center rounded-full bg-gray-800/80 backdrop-blur-xl border border-gray-700/50 p-5 shadow-2xl transition-colors duration-200 hover:bg-gray-700/80">
               <DatePicker
                 value={dateRange || undefined}
                 onChange={handleDatePickerChange}
