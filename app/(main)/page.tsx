@@ -88,18 +88,19 @@ export default function Home() {
       <div className={`relative z-10 space-y-12 text-center px-8 ${
         !dateRange || dateRange.length < 2 ? '' : 'pt-32'
       }`}>
-        {/* Revolutionary liquid glass container */}
-        <div className="relative group">
-          {/* Outer glow effect */}
-          <div className="absolute -inset-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-[3rem] blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-700"></div>
-          
-          {/* Main liquid glass container */}
-          <div className="relative rounded-[3rem] bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-3xl border border-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden">
-            {/* Animated liquid overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.03] via-transparent to-purple-500/[0.03] animate-pulse"></div>
+        {/* Revolutionary liquid glass container - only show when currentDate exists */}
+        {currentDate && (
+          <div className="relative group">
+            {/* Outer glow effect */}
+            <div className="absolute -inset-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-[3rem] blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-700"></div>
             
-            {/* Inner border glow */}
-            <div className="absolute inset-[1px] rounded-[calc(3rem-1px)] bg-gradient-to-br from-white/[0.08] to-transparent"></div>
+            {/* Main liquid glass container */}
+            <div className="relative rounded-[3rem] bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-3xl border border-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden">
+              {/* Animated liquid overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.03] via-transparent to-purple-500/[0.03] animate-pulse"></div>
+              
+              {/* Inner border glow */}
+              <div className="absolute inset-[1px] rounded-[calc(3rem-1px)] bg-gradient-to-br from-white/[0.08] to-transparent"></div>
             
             {/* Content container */}
             <div className="relative p-12 space-y-8">
@@ -150,6 +151,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        )}
       </div>
       {!isFirstVisit && (
         <div className="fixed bottom-8 left-8 z-50">
