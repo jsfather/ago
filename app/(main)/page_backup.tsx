@@ -77,23 +77,15 @@ export default function Home() {
       <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000 md:w-80 md:h-80"></div>
       
       {/* Progress bar section - exactly 1/4 of screen height */}
-      {dateRange && dateRange.length >= 2 && (
-        <div className="relative z-10 h-[25vh] flex-shrink-0">
-          <ProgressBar dateRange={dateRange} />
-        </div>
-      )}
+      <div className="relative z-10 h-[25vh] flex-shrink-0">
+        <ProgressBar dateRange={dateRange} />
+      </div>
 
-      {/* Gap between progress bar and content - only when progress bar is showing */}
-      {dateRange && dateRange.length >= 2 && (
-        <div className="flex-shrink-0 h-4"></div>
-      )}
+      {/* Gap between progress bar and content */}
+      <div className="flex-shrink-0 h-4"></div>
 
-      {/* Main content area - dynamically sized based on progress bar visibility */}
-      <div className={`relative z-10 flex items-center justify-center px-4 overflow-y-auto ${
-        dateRange && dateRange.length >= 2 
-          ? 'flex-1' // Takes remaining space when progress bar is shown
-          : 'min-h-screen' // Takes full screen when progress bar is hidden
-      }`}>
+      {/* Main content area - exactly 3/4 of remaining height with gap considered */}
+      <div className="relative z-10 flex-1 flex items-center justify-center px-4 overflow-y-auto">
         <DateSelectionModal
           isOpen={isFirstVisit}
           onDateSelect={handleModalDateSelect}
@@ -101,72 +93,71 @@ export default function Home() {
         />
 
         {/* Liquid glass main content container */}
-        <div className="w-full max-w-md mx-auto text-center py-8">
+        <div className="w-full max-w-md mx-auto text-center">
           {/* Revolutionary liquid glass container - only show when currentDate exists */}
           {currentDate && (
             <div className="relative group">
-              {/* Contained glow effects - no negative margins to prevent clipping */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-cyan-500/20 rounded-2xl blur-lg opacity-40 group-hover:opacity-65 transition-all duration-700 md:rounded-[3rem] md:blur-xl scale-105"></div>
+              {/* Outer glow effect */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-700 md:rounded-[3rem] md:-inset-8 md:blur-2xl"></div>
               
-              {/* Main liquid glass container with contained shadows */}
-              <div className="relative rounded-2xl bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-3xl border border-white/[0.15] shadow-[0_8px_25px_-4px_rgba(0,0,0,0.3),0_4px_15px_-2px_rgba(59,130,246,0.2)] overflow-hidden md:rounded-[3rem] md:shadow-[0_12px_35px_-6px_rgba(0,0,0,0.4),0_6px_20px_-3px_rgba(59,130,246,0.25)]">
+              {/* Main liquid glass container */}
+              <div className="relative rounded-2xl bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-3xl border border-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden md:rounded-[3rem]">
                 {/* Animated liquid overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.03] via-transparent to-purple-500/[0.03] animate-pulse"></div>
                 
                 {/* Inner border glow */}
                 <div className="absolute inset-[1px] rounded-[calc(1rem-1px)] bg-gradient-to-br from-white/[0.08] to-transparent md:rounded-[calc(3rem-1px)]"></div>
               
-                {/* Content container */}
-                <div className="relative p-6 space-y-6 md:p-12 md:space-y-8">
-                  {currentDate &&
-                    timeUnits.map(
-                      (unit, index) =>
-                        unit.show && (
-                          <div key={index} className="flex flex-col items-center group/item">
-                            {/* Liquid glass number container - optimized for mobile */}
-                            <div className="relative mb-3">
-                              {/* Number background glow */}
-                              <div className="absolute inset-0 scale-110 bg-gradient-to-br from-blue-400/20 via-purple-400/20 to-cyan-400/20 rounded-xl blur-lg opacity-60 group-hover/item:opacity-100 group-hover/item:scale-125 transition-all duration-500 md:rounded-2xl md:blur-xl"></div>
-                              
-                              {/* Liquid glass number background */}
-                              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-xl backdrop-blur-xl border border-white/20 md:rounded-2xl"></div>
-                              
-                              {/* Number text with liquid effect - responsive sizing */}
-                              <div className="relative px-4 py-2 font-mono text-4xl font-black tracking-tight md:px-6 md:py-3 md:text-6xl">
-                                <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent blur-sm opacity-50"></div>
-                                <div className="relative bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent drop-shadow-2xl">
-                                  {unit.value}
-                                </div>
-                              </div>
-                            </div>
+              {/* Content container */}
+              <div className="relative p-6 space-y-6 md:p-12 md:space-y-8">
+                {currentDate &&
+                  timeUnits.map(
+                    (unit, index) =>
+                      unit.show && (
+                        <div key={index} className="flex flex-col items-center group/item">
+                          {/* Liquid glass number container - optimized for mobile */}
+                          <div className="relative mb-3">
+                            {/* Number background glow */}
+                            <div className="absolute inset-0 scale-110 bg-gradient-to-br from-blue-400/20 via-purple-400/20 to-cyan-400/20 rounded-xl blur-lg opacity-60 group-hover/item:opacity-100 group-hover/item:scale-125 transition-all duration-500 md:rounded-2xl md:blur-xl"></div>
                             
-                            {/* Liquid glass label - responsive sizing */}
-                            <div className="relative">
-                              <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 rounded-lg backdrop-blur-sm md:rounded-xl"></div>
-                              <div className="relative px-3 py-1.5 text-lg font-bold text-white/90 tracking-wide group-hover/item:text-white transition-colors duration-300 md:px-4 md:py-2 md:text-xl">
-                                {unit.label}
+                            {/* Liquid glass number background */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-xl backdrop-blur-xl border border-white/20 md:rounded-2xl"></div>
+                            
+                            {/* Number text with liquid effect - responsive sizing */}
+                            <div className="relative px-4 py-2 font-mono text-4xl font-black tracking-tight md:px-6 md:py-3 md:text-6xl">
+                              <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent blur-sm opacity-50"></div>
+                              <div className="relative bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent drop-shadow-2xl">
+                                {unit.value}
                               </div>
                             </div>
                           </div>
-                        )
-                    )}
-
-                  {currentDate && timeUnits.every((unit) => !unit.show) && (
-                    <div className="relative group/empty">
-                      {/* Contained empty state glow - no negative margins */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-500/10 to-gray-400/10 rounded-xl blur-md group-hover/empty:from-blue-500/15 group-hover/empty:to-purple-500/15 opacity-40 group-hover/empty:opacity-60 transition-all duration-500 md:rounded-2xl md:blur-lg scale-105"></div>
-                      <div className="relative bg-gradient-to-br from-white/5 to-transparent rounded-xl backdrop-blur-xl border border-white/10 shadow-[0_6px_20px_-4px_rgba(0,0,0,0.25)] px-6 py-4 md:rounded-2xl md:px-8 md:py-6 md:shadow-[0_8px_25px_-5px_rgba(0,0,0,0.3)]">
-                        <div className="text-xl font-bold text-white/70 group-hover/empty:text-white/90 transition-colors duration-300 md:text-2xl">
-                          هنوز زمانی نگذشته
+                          
+                          {/* Liquid glass label - responsive sizing */}
+                          <div className="relative">
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 rounded-lg backdrop-blur-sm md:rounded-xl"></div>
+                            <div className="relative px-3 py-1.5 text-lg font-bold text-white/90 tracking-wide group-hover/item:text-white transition-colors duration-300 md:px-4 md:py-2 md:text-xl">
+                              {unit.label}
+                            </div>
+                          </div>
                         </div>
+                      )
+                  )}
+
+                {currentDate && timeUnits.every((unit) => !unit.show) && (
+                  <div className="relative group/empty">
+                    {/* Empty state liquid glass container */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-500/10 to-gray-400/10 rounded-xl blur-lg group-hover/empty:from-blue-500/10 group-hover/empty:to-purple-500/10 transition-all duration-500 md:rounded-2xl md:blur-xl"></div>
+                    <div className="relative bg-gradient-to-br from-white/5 to-transparent rounded-xl backdrop-blur-xl border border-white/10 px-6 py-4 md:rounded-2xl md:px-8 md:py-6">
+                      <div className="text-xl font-bold text-white/70 group-hover/empty:text-white/90 transition-colors duration-300 md:text-2xl">
+                        هنوز زمانی نگذشته
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Floating date picker button */}

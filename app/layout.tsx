@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description:
     'With the "ago" app, you can easily select a Jalali (Persian) date and see exactly how many years, months, and days have passed since then. A practical tool for revisiting memories, occasions, and important life moments.',
   manifest: '/manifest.json',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: 'cover',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
