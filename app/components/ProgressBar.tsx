@@ -75,14 +75,18 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     if (isComplete) {
       return 'مکمل شده';
     } else if (hasStarted) {
-      return `${remainingDays} روز باقی مانده`;
+      return (
+        <>
+          <span className="font-mono">{remainingDays}</span> روز باقی مانده
+        </>
+      );
     } else {
       return 'هنوز شروع نشده';
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-[25vh] px-4 py-2 w-full">
+    <div className="flex items-center justify-center h-[25vh] px-4 py-2 w-full ">
       {/* Liquid glass progress container */}
       <div className="relative group w-full max-w-sm">
         {/* Outer glow with liquid effect */}
@@ -107,7 +111,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                 {/* Liquid glass percentage container */}
                 <div className="relative bg-gradient-to-br from-white/[0.15] via-white/[0.08] to-transparent rounded-lg backdrop-blur-xl border border-white/[0.25] px-3 py-1.5">
                   <div className="absolute inset-[1px] rounded-[calc(0.5rem-1px)] bg-gradient-to-br from-white/[0.1] to-transparent"></div>
-                  <span className="relative text-sm font-black tracking-wider bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent drop-shadow-lg">
+                  <span className="relative text-sm font-black tracking-wider bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent drop-shadow-lg font-mono">
                     %{Math.round(progress)}
                   </span>
                 </div>
@@ -155,7 +159,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
               <div className="relative group/total">
                 <div className="absolute inset-0 bg-gradient-to-r from-white/[0.06] to-white/[0.03] rounded-md backdrop-blur-sm"></div>
                 <div className="relative px-2 py-0.5 text-xs font-medium text-white/70 group-hover/total:text-white/90 transition-colors duration-300">
-                  {totalDays} روز کل
+                  <span className="font-mono">{totalDays}</span> روز کل
                 </div>
               </div>
             </div>

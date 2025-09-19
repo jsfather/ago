@@ -65,7 +65,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-[#101828] overflow-hidden">
+    <div className="relative flex flex-col h-screen bg-[#101828] overflow-hidden">
       {/* Enhanced liquid background with multiple layers */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#101828]/95 via-[#1a202c]/90 to-[#0f172a]/95"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(59,130,246,0.08),transparent_50%)]"></div>
@@ -83,25 +83,20 @@ export default function Home() {
         </div>
       )}
 
-      {/* Gap between progress bar and content - only when progress bar is showing */}
-      {dateRange && dateRange.length >= 2 && (
-        <div className="flex-shrink-0 h-4"></div>
-      )}
-
-      {/* Main content area - dynamically sized based on progress bar visibility */}
-      <div className={`relative z-10 flex items-center justify-center px-4 overflow-y-auto ${
+      {/* Main content area - takes remaining space and centers content */}
+      <div className={`relative z-10 flex-1 flex items-center justify-center px-4 ${
         dateRange && dateRange.length >= 2 
-          ? 'flex-1' // Takes remaining space when progress bar is shown
-          : 'min-h-screen' // Takes full screen when progress bar is hidden
+          ? 'overflow-y-auto' // When progress bar is shown, this takes remaining 75vh
+          : 'min-h-full overflow-y-auto' // When progress bar is hidden, this takes full screen
       }`}>
         <DateSelectionModal
           isOpen={isFirstVisit}
           onDateSelect={handleModalDateSelect}
-          initialDate={startDate}
+          initialDate={startDate}   
         />
 
         {/* Liquid glass main content container */}
-        <div className="w-full max-w-md mx-auto text-center py-8">
+        <div className="w-full max-w-md mx-auto text-center">
           {/* Revolutionary liquid glass container - only show when currentDate exists */}
           {currentDate && (
             <div className="relative group">
