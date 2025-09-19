@@ -1,7 +1,10 @@
 @import 'tailwindcss';
 
-@theme {
-  --font-iran-sans-x-fanum: var(--font-iran-sans-x-fanum);
+/* Font family configuration */
+@layer base {
+  :root {
+    --font-iran-sans-x-fanum: var(--font-iran-sans-x-fanum);
+  }
 }
 
 /* Custom animations */
