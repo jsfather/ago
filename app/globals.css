@@ -111,6 +111,70 @@
   color: var(--text-tertiary);
 }
 
+/* Calendar Liquid Glass Styling */
+.liquid-calendar.rmdp-wrapper,
+.rmdp-container .liquid-calendar.ep-arrow::after {
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg-primary) 0%,
+    var(--glass-bg-secondary) 50%,
+    transparent 100%
+  ) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important;
+}
+
+.rmdp-container .liquid-calendar.ep-arrow[direction='bottom'] {
+  border-top: 1px solid var(--glass-border) !important;
+}
+
+.rmdp-container .liquid-calendar.ep-arrow[direction='top'] {
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+/* Calendar internal styling for liquid glass effect */
+.liquid-calendar .rmdp-day,
+.liquid-calendar .rmdp-month,
+.liquid-calendar .rmdp-year {
+  color: var(--text-secondary) !important;
+  transition: all 0.3s ease !important;
+}
+
+.liquid-calendar .rmdp-day:hover,
+.liquid-calendar .rmdp-month:hover,
+.liquid-calendar .rmdp-year:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+}
+
+.liquid-calendar .rmdp-selected {
+  background: rgba(59, 130, 246, 0.5) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+.liquid-calendar .rmdp-today {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+}
+
+.liquid-calendar .rmdp-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+.liquid-calendar .rmdp-header div {
+  color: var(--text-primary) !important;
+}
+
+.liquid-calendar .rmdp-week-day {
+  color: var(--text-tertiary) !important;
+}
+
 /* Custom animations */
 @keyframes shimmer {
   0% {

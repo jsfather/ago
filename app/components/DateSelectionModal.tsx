@@ -80,7 +80,7 @@ export default function DateSelectionModal({
                       locale={persian_fa}
                       maxDate={new Date()}
                       portal
-                      className="bg-dark"
+                      className="liquid-calendar"
                       style={{
                         width: '100%',
                         display: 'flex',

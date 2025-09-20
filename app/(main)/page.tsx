@@ -154,7 +154,7 @@ export default function Home() {
                 calendar={persian}
                 locale={persian_fa}
                 range
-                className="bg-dark"
+                className="liquid-calendar"
                 mapDays={({ date, today, selectedDate }) => {
                   const isToday =
                     date.day === today.day &&
