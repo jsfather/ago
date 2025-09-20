@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface JokeResponse {
   error: boolean;
@@ -27,6 +27,13 @@ export default function JokeComponent() {
   const [loading, setLoading] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [pendingJoke, setPendingJoke] = useState<JokeResponse | null>(null);
+
+  // Cleanup effect to restore scroll when component unmounts
+  useEffect(() => {
+    return () => {
+      // No longer needed since we're not managing body scroll
+    };
+  }, []);
 
   const fetchJoke = async () => {
     setLoading(true);
@@ -101,71 +108,60 @@ export default function JokeComponent() {
         </button>
       </div>
 
-      {/* Warning modal */}
+      {/* Warning section - inline */}
       {showWarning && pendingJoke && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 backdrop-blur-md"
-            style={{ backgroundColor: '#081827' }}
-          ></div>
-          <div className="relative w-full max-w-md">
-            <div
-              className="liquid-glass-strong border-2"
-              style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}
-            >
-              <div className="space-y-6 p-8">
-                <div className="text-center">
-                  <div className="liquid-glass-subtle mb-6">
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white/95">
-                        ⚠️ Warning
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-base leading-relaxed text-white/80">
-                    This joke may contain inappropriate content. Are you sure
-                    you want to see it?
-                  </p>
-
-                  {/* Show active flags */}
-                  {getActiveFlags(pendingJoke.flags).length > 0 && (
-                    <div className="mt-4">
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {getActiveFlags(pendingJoke.flags).map((flag) => (
-                          <span
-                            key={flag}
-                            className={`rounded-lg border px-2 py-1 text-xs font-medium ${getFlagColor(flag)}`}
-                          >
-                            {flag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={handleCancelUnsafeJoke}
-                    className="liquid-glass-subtle px-8 py-3 font-medium text-white/80 transition-all duration-300 hover:scale-105"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleShowUnsafeJoke}
-                    className="liquid-glass px-8 py-3 font-medium text-white/95 transition-all duration-300 hover:scale-105"
-                  >
-                    Show
-                  </button>
+        <div className="liquid-glass overflow-hidden">
+          <div className="space-y-6 p-6">
+            <div className="text-center">
+              <div className="liquid-glass-subtle mb-6">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white/95">
+                    ⚠️ Warning
+                  </h3>
                 </div>
               </div>
+              <p className="text-base leading-relaxed text-white/80">
+                This joke may contain inappropriate content. Are you sure you
+                want to see it?
+              </p>
+
+              {/* Show active flags */}
+              {getActiveFlags(pendingJoke.flags).length > 0 && (
+                <div className="mt-4">
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {getActiveFlags(pendingJoke.flags).map((flag) => (
+                      <span
+                        key={flag}
+                        className={`rounded-lg border px-2 py-1 text-xs font-medium ${getFlagColor(flag)}`}
+                      >
+                        {flag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleCancelUnsafeJoke}
+                className="liquid-glass-subtle px-8 py-3 font-medium text-white/80 transition-all duration-300 hover:scale-105"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleShowUnsafeJoke}
+                className="liquid-glass px-8 py-3 font-medium text-white/95 transition-all duration-300 hover:scale-105"
+              >
+                Show
+              </button>
             </div>
           </div>
         </div>
       )}
 
       {/* Joke display */}
-      {joke && (
+      {joke && !showWarning && (
         <div className="liquid-glass overflow-hidden">
           <div className="relative space-y-4 p-6">
             {/* Category badge */}

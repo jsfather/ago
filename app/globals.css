@@ -142,6 +142,12 @@
   transition: all 0.3s ease !important;
 }
 
+/* Year/Month picker background fix */
+.liquid-calendar .rmdp-month-picker,
+.liquid-calendar .rmdp-year-picker {
+  background: var(--primary-bg) !important;
+}
+
 .liquid-calendar .rmdp-day:hover,
 .liquid-calendar .rmdp-month:hover,
 .liquid-calendar .rmdp-year:hover {
@@ -235,7 +241,7 @@
 /* Prevent bounce effect on iOS */
 html {
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 body {
@@ -245,7 +251,7 @@ body {
 }
 
 /* Better scrolling performance */
-* {
+.performance-boost {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;

@@ -62,38 +62,22 @@ export default function Home() {
 
   return (
     <div
-      className="relative flex h-screen flex-col overflow-hidden"
+      className="min-h-screen overflow-y-auto"
       style={{ backgroundColor: '#081827' }}
     >
-      {/* Progress bar section - at the top */}
-      {dateRange && dateRange.length >= 2 && (
-        <div className="relative z-10 h-[200px] flex-shrink-0">
-          <ProgressBar dateRange={dateRange} />
-        </div>
-      )}
+      <div className="flex flex-col px-4 py-6">
+        {/* Progress bar section - at the top */}
+        {dateRange && dateRange.length >= 2 && (
+          <div className="mb-8 w-full">
+            <ProgressBar dateRange={dateRange} />
+          </div>
+        )}
 
-      {/* Main content area - positions content based on progress bar visibility */}
-      <div
-        className={`relative z-10 flex justify-center px-4 ${
-          dateRange && dateRange.length >= 2
-            ? 'h-[calc(100vh-200px)] items-start overflow-y-auto' // When progress bar is shown, align to start (top) of remaining space
-            : 'h-screen items-center overflow-y-auto' // When progress bar is hidden, center in full screen
-        }`}
-      >
-        <DateSelectionModal
-          isOpen={isFirstVisit}
-          onDateSelect={handleModalDateSelect}
-          initialDate={startDate}
-        />
-
-        {/* Liquid glass main content container */}
-        <div className="mx-auto w-full max-w-md text-center">
-          {/* Revolutionary liquid glass container - only show when currentDate exists */}
-          {currentDate && (
-            <div className="relative">
-              {/* Main liquid glass container */}
+        {/* Date display section */}
+        {currentDate && (
+          <div className="mb-8">
+            <div className="mx-auto w-full max-w-md">
               <div className="liquid-glass overflow-hidden">
-                {/* Content container */}
                 <div className="relative space-y-6 p-6 md:space-y-8 md:p-12">
                   {currentDate &&
                     timeUnits.map(
@@ -138,16 +122,25 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Joke Component - show when currentDate exists */}
-          {currentDate && (
-            <div className="mt-8">
+        {/* Joke Component section */}
+        {currentDate && (
+          <div className="mb-8">
+            <div className="mx-auto w-full max-w-md">
               <JokeComponent />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Date Selection Modal */}
+      <DateSelectionModal
+        isOpen={isFirstVisit}
+        onDateSelect={handleModalDateSelect}
+        initialDate={startDate}
+      />
 
       {/* Floating date picker button */}
       {!isFirstVisit && (
