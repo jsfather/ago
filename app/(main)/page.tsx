@@ -62,13 +62,13 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen overflow-y-auto"
+      className="min-h-screen overflow-y-auto px-4"
       style={{ backgroundColor: '#081827' }}
     >
       <div className="flex flex-col py-6">
         {/* Progress bar section - at the top */}
         {dateRange && dateRange.length >= 2 && (
-          <div className="mb-8">
+          <div className="animate-bloop-in mb-8">
             <div className="mx-auto w-full max-w-md">
               <ProgressBar dateRange={dateRange} />
             </div>
@@ -77,7 +77,7 @@ export default function Home() {
 
         {/* Date display section */}
         {currentDate && (
-          <div className="mb-8">
+          <div className="animate-bloop-bounce mb-8">
             <div className="mx-auto w-full max-w-md">
               <div className="liquid-glass overflow-hidden">
                 <div className="relative space-y-6 p-6 md:space-y-8 md:p-12">
@@ -129,7 +129,7 @@ export default function Home() {
 
         {/* Joke Component section */}
         {currentDate && (
-          <div className="mb-8">
+          <div className="animate-bloop-in mb-8">
             <div className="mx-auto w-full max-w-md">
               <JokeComponent />
             </div>
@@ -146,7 +146,7 @@ export default function Home() {
 
       {/* Floating date picker button */}
       {!isFirstVisit && (
-        <div className="fixed bottom-4 left-4 z-50 md:bottom-8 md:left-8">
+        <div className="animate-bloop-bounce fixed bottom-4 left-4 z-50 md:bottom-8 md:left-8">
           {/* Liquid glass floating action button */}
           <div className="relative">
             {/* Main button with liquid glass effect */}

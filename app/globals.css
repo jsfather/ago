@@ -191,8 +191,81 @@
   }
 }
 
+/* Liquid bloop animations */
+@keyframes bloop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    filter: blur(4px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05) translateY(-5px);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes bloop-out {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.95) translateY(5px);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.85) translateY(15px);
+    filter: blur(3px);
+  }
+}
+
+@keyframes bloop-bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(30px);
+    filter: blur(6px);
+  }
+  30% {
+    opacity: 0.7;
+    transform: scale(1.1) translateY(-10px);
+    filter: blur(2px);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scale(0.98) translateY(2px);
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Animation classes */
 .animate-shimmer {
   animation: shimmer 2s infinite;
+}
+
+.animate-bloop-in {
+  animation: bloop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-bloop-out {
+  animation: bloop-out 0.4s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+.animate-bloop-bounce {
+  animation: bloop-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
 /* Mobile optimizations */

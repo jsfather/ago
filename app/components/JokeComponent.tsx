@@ -117,7 +117,7 @@ export default function JokeComponent() {
         {(joke || showWarning) && (
           <button
             onClick={handleCloseJoke}
-            className="liquid-glass-subtle px-4 py-3 text-white/80 transition-all duration-300 hover:scale-105 hover:text-white/95"
+            className="liquid-glass-subtle animate-bloop-in px-4 py-3 text-white/80 transition-all duration-300 hover:scale-105 hover:text-white/95"
             title="Close joke"
           >
             <svg
@@ -139,7 +139,7 @@ export default function JokeComponent() {
 
       {/* Warning section - inline */}
       {showWarning && pendingJoke && (
-        <div className="liquid-glass overflow-hidden">
+        <div className="liquid-glass animate-bloop-bounce overflow-hidden">
           <div className="space-y-6 p-6">
             <div className="text-center">
               <div className="liquid-glass-subtle mb-6">
@@ -191,7 +191,7 @@ export default function JokeComponent() {
 
       {/* Joke display */}
       {joke && !showWarning && (
-        <div className="liquid-glass overflow-hidden">
+        <div className="liquid-glass animate-bloop-in overflow-hidden">
           <div className="relative space-y-4 p-6">
             {/* Category badge */}
             <div className="flex justify-center">
