@@ -156,6 +156,8 @@ export default function Home() {
               locale={persian_fa}
               range
               className="liquid-calendar"
+              arrowClassName="custom-arrow"
+              arrow={false}
               mapDays={({ date, today }) => {
                 const isToday =
                   date.day === today.day &&

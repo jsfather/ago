@@ -261,6 +261,12 @@
   overflow: hidden !important;
 }
 
+/* Style date picker arrow to match background */
+.rmdp-container .ep-arrow::after,
+.rmdp-container .ep-arrow.custom-arrow::after {
+  background-color: #142331 !important;
+}
+
 /* Custom animations */
 @keyframes shimmer {
   0% {

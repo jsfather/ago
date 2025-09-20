@@ -81,6 +81,8 @@ export default function DateSelectionModal({
                       maxDate={new Date()}
                       portal
                       className="liquid-calendar"
+                      arrowClassName="custom-arrow"
+                      arrow={false}
                       style={{
                         width: '100%',
                         display: 'flex',
