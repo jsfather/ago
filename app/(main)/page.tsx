@@ -78,12 +78,12 @@ export default function Home() {
         </div>
       )}
 
-      {/* Main content area - centers content in remaining space */}
+      {/* Main content area - positions content based on progress bar visibility */}
       <div
-        className={`relative z-10 flex items-center justify-center px-4 ${
+        className={`relative z-10 flex justify-center px-4 ${
           dateRange && dateRange.length >= 2
-            ? 'h-[calc(100vh-200px)] overflow-y-auto' // When progress bar is shown, this takes remaining height (800px on 1000px screen)
-            : 'h-screen overflow-y-auto' // When progress bar is hidden, this takes full screen (1000px)
+            ? 'h-[calc(100vh-200px)] items-start overflow-y-auto' // When progress bar is shown, align to start (top) of remaining space
+            : 'h-screen items-center overflow-y-auto' // When progress bar is hidden, center in full screen
         }`}
       >
         <DateSelectionModal
