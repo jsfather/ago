@@ -68,8 +68,10 @@ export default function Home() {
       <div className="flex flex-col px-4 py-6">
         {/* Progress bar section - at the top */}
         {dateRange && dateRange.length >= 2 && (
-          <div className="mb-8 w-full">
-            <ProgressBar dateRange={dateRange} />
+          <div className="mb-8">
+            <div className="mx-auto w-full max-w-md">
+              <ProgressBar dateRange={dateRange} />
+            </div>
           </div>
         )}
 

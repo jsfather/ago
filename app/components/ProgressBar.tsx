@@ -86,7 +86,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   };
 
   return (
-    <div className="flex h-[25vh] w-full items-center justify-center px-4 py-2">
+    <div className="flex w-full items-center justify-center px-4 py-2">
       {/* Liquid glass progress container */}
       <div className="relative w-full max-w-sm">
         {/* Main liquid glass container */}
