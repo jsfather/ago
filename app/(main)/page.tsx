@@ -60,9 +60,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-[#101828]">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-[#081827]">
       {/* Enhanced liquid background with multiple layers */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#101828]/95 via-[#1a202c]/90 to-[#0f172a]/95"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#081827]/95 via-[#081827]/90 to-[#081827]/95"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(59,130,246,0.08),transparent_50%)]"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(14,165,233,0.08),transparent_50%)]"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_80%,rgba(99,102,241,0.06),transparent_50%)]"></div>
