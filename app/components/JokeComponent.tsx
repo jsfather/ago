@@ -112,7 +112,7 @@ export default function JokeComponent() {
             'Tell me a joke'
           )}
         </button>
-        
+
         {/* Close button - only show when joke is displayed */}
         {(joke || showWarning) && (
           <button
@@ -120,17 +120,17 @@ export default function JokeComponent() {
             className="liquid-glass-subtle px-4 py-3 text-white/80 transition-all duration-300 hover:scale-105 hover:text-white/95"
             title="Close joke"
           >
-            <svg 
-              className="h-5 w-5" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M6 18L18 6M6 6l12 12" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
               />
             </svg>
           </button>
