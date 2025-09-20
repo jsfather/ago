@@ -91,7 +91,7 @@ export default function Home() {
           {currentDate && (
             <div className="relative">
               {/* Main liquid glass container */}
-              <div className="liquid-glass-strong overflow-hidden">
+              <div className="liquid-glass overflow-hidden">
                 {/* Content container */}
                 <div className="relative space-y-6 p-6 md:space-y-8 md:p-12">
                   {currentDate &&
@@ -105,7 +105,7 @@ export default function Home() {
                             {/* Liquid glass number container - optimized for mobile */}
                             <div className="relative mb-3">
                               {/* Liquid glass number background */}
-                              <div className="liquid-glass">
+                              <div className="liquid-glass-subtle">
                                 {/* Number text with liquid effect - responsive sizing */}
                                 <div className="relative px-4 py-2 font-mono text-4xl font-black tracking-tight md:px-6 md:py-3 md:text-6xl">
                                   <div className="relative text-white/95">
@@ -127,7 +127,7 @@ export default function Home() {
 
                   {currentDate && timeUnits.every((unit) => !unit.show) && (
                     <div className="relative">
-                      <div className="liquid-glass px-6 py-4 md:px-8 md:py-6">
+                      <div className="liquid-glass-subtle px-6 py-4 md:px-8 md:py-6">
                         <div className="text-xl font-bold text-white/70 md:text-2xl">
                           هنوز زمانی نگذشته
                         </div>
@@ -147,7 +147,7 @@ export default function Home() {
           {/* Liquid glass floating action button */}
           <div className="relative">
             {/* Main button with liquid glass effect */}
-            <div className="liquid-glass-interactive flex h-16 w-16 cursor-pointer items-center justify-center rounded-full md:h-20 md:w-20">
+            <div className="liquid-glass flex h-16 w-16 cursor-pointer items-center justify-center rounded-full transition-all duration-300 hover:scale-105 md:h-20 md:w-20">
               <DatePicker
                 value={dateRange || undefined}
                 onChange={handleDatePickerChange}

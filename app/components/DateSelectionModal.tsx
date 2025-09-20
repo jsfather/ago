@@ -45,7 +45,7 @@ export default function DateSelectionModal({
         {/* Main liquid glass modal */}
         <div className="relative">
           {/* Liquid glass container */}
-          <div className="liquid-glass-strong overflow-hidden">
+          <div className="liquid-glass overflow-hidden">
             {/* Content container */}
             <div className="relative space-y-10 p-12">
               {/* Header section */}
@@ -101,7 +101,7 @@ export default function DateSelectionModal({
               <div className="flex justify-center">
                 <button
                   onClick={handleConfirm}
-                  className="liquid-glass-interactive overflow-hidden px-12 py-4 text-xl font-bold text-white/95"
+                  className="liquid-glass overflow-hidden px-12 py-4 text-xl font-bold text-white/95 transition-all duration-300 hover:scale-105"
                 >
                   <span className="relative z-10 bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent">
                     تایید
