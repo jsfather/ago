@@ -245,7 +245,6 @@ export default function Home() {
                 <div
                   onClick={openCalendar}
                   className="liquid-glass flex h-16 w-16 cursor-pointer items-center justify-center rounded-full transition-all duration-300 hover:scale-105 md:h-20 md:w-20"
-                  
                 >
                   <Icon className="pointer-events-none text-white/90 transition-all duration-300 hover:text-white md:size-6" />
                 </div>
