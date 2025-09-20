@@ -8,6 +8,7 @@ import persian_fa from 'react-date-object/locales/persian_fa';
 import Icon from 'react-multi-date-picker/components/icon';
 import DateSelectionModal from '@/app/components/DateSelectionModal';
 import ProgressBar from '@/app/components/ProgressBar';
+import JokeComponent from '@/app/components/JokeComponent';
 import { useStoredDateRange } from '@/app/hooks/useStoredDateRange';
 import 'react-multi-date-picker/styles/backgrounds/bg-dark.css';
 
@@ -136,6 +137,13 @@ export default function Home() {
                   )}
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Joke Component - show when currentDate exists */}
+          {currentDate && (
+            <div className="mt-8">
+              <JokeComponent />
             </div>
           )}
         </div>
