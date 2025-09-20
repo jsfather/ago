@@ -114,15 +114,11 @@
 /* Calendar Liquid Glass Styling */
 .liquid-calendar.rmdp-wrapper,
 .rmdp-container .liquid-calendar.ep-arrow::after {
-  background: linear-gradient(
-    135deg,
-    var(--glass-bg-primary) 0%,
-    var(--glass-bg-secondary) 50%,
-    var(--primary-bg) 100%
-  ) !important;
+  background: #142331 !important;
+  background-color: #142331 !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border) !important;
+  border: none !important;
   border-radius: 24px !important;
 }
 
@@ -179,6 +175,90 @@
 
 .liquid-calendar .rmdp-week-day {
   color: var(--text-tertiary) !important;
+}
+
+/* Force solid backgrounds for all calendar elements */
+.liquid-calendar .rmdp-calendar,
+.liquid-calendar .rmdp-calendar *,
+.liquid-calendar .rmdp-container,
+.liquid-calendar .rmdp-shadow,
+.liquid-calendar,
+.rmdp-wrapper.liquid-calendar,
+.rmdp-container.liquid-calendar,
+.rmdp-shadow.liquid-calendar,
+.rmdp-calendar.liquid-calendar {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.liquid-calendar .rmdp-container {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+}
+
+.liquid-calendar .rmdp-shadow {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.liquid-calendar .ep-arrow::after {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+}
+
+/* Global override for any react-multi-date-picker elements */
+.rmdp-wrapper,
+.rmdp-container,
+.rmdp-shadow,
+.rmdp-calendar {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Override portal styles */
+.rmdp-portal .rmdp-wrapper,
+.rmdp-portal .rmdp-container,
+.rmdp-portal .rmdp-shadow,
+.rmdp-portal .rmdp-calendar {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix trigger button styling */
+.liquid-calendar input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+}
+
+/* Add rounded corners to calendar popup */
+.rmdp-container,
+.rmdp-shadow,
+.rmdp-calendar,
+.liquid-calendar .rmdp-container,
+.liquid-calendar .rmdp-shadow,
+.liquid-calendar .rmdp-calendar {
+  border-radius: 1.5rem !important;
+  overflow: hidden !important;
+}
+
+/* Ensure portal calendar also has rounded corners */
+.rmdp-portal .rmdp-container,
+.rmdp-portal .rmdp-shadow,
+.rmdp-portal .rmdp-calendar {
+  border-radius: 1.5rem !important;
+  overflow: hidden !important;
 }
 
 /* Custom animations */

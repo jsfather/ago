@@ -149,112 +149,120 @@ export default function Home() {
         <div className="animate-bloop-bounce fixed bottom-4 left-4 z-50 md:bottom-8 md:left-8">
           {/* Liquid glass floating action button */}
           <div className="relative">
-            {/* Main button with liquid glass effect */}
-            <div className="liquid-glass flex h-16 w-16 cursor-pointer items-center justify-center rounded-full transition-all duration-300 hover:scale-105 md:h-20 md:w-20">
-              <DatePicker
-                value={dateRange || undefined}
-                onChange={handleDatePickerChange}
-                calendar={persian}
-                locale={persian_fa}
-                range
-                className="liquid-calendar"
-                mapDays={({ date, today }) => {
-                  const isToday =
-                    date.day === today.day &&
-                    date.month === today.month &&
-                    date.year === today.year;
-                  const isPast = date.toDate() < today.toDate();
-                  const isFuture = date.toDate() > today.toDate();
+            <DatePicker
+              value={dateRange || undefined}
+              onChange={handleDatePickerChange}
+              calendar={persian}
+              locale={persian_fa}
+              range
+              className="liquid-calendar"
+              mapDays={({ date, today }) => {
+                const isToday =
+                  date.day === today.day &&
+                  date.month === today.month &&
+                  date.year === today.year;
+                const isPast = date.toDate() < today.toDate();
+                const isFuture = date.toDate() > today.toDate();
 
-                  // Determine if this is for start or end date selection
-                  const isSelectingEnd = dateRange && dateRange.length === 1;
+                // Determine if this is for start or end date selection
+                const isSelectingEnd = dateRange && dateRange.length === 1;
 
-                  if (isToday) {
+                if (isToday) {
+                  return {
+                    disabled: false,
+                    style: {
+                      color: 'white',
+                      backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                      borderRadius: '50%',
+                      border: '2px solid rgba(59, 130, 246, 0.8)',
+                      fontWeight: 'bold',
+                    },
+                  };
+                }
+
+                // Rules for start date selection (first date)
+                if (!isSelectingEnd) {
+                  if (isPast) {
+                    // Start date can be any past date
                     return {
                       disabled: false,
                       style: {
-                        color: 'white',
-                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                        borderRadius: '50%',
-                        border: '2px solid rgba(59, 130, 246, 0.8)',
-                        fontWeight: 'bold',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: '8px',
                       },
                     };
                   }
 
-                  // Rules for start date selection (first date)
-                  if (!isSelectingEnd) {
-                    if (isPast) {
-                      // Start date can be any past date
-                      return {
-                        disabled: false,
-                        style: {
-                          color: 'rgba(255, 255, 255, 0.9)',
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                          borderRadius: '8px',
-                        },
-                      };
-                    }
-
-                    if (isFuture) {
-                      // Start date cannot be in the future
-                      return {
-                        disabled: true,
-                        style: {
-                          color: 'rgba(255, 255, 255, 0.3)',
-                          backgroundColor: 'transparent',
-                        },
-                      };
-                    }
-                  } else {
-                    // Rules for end date selection (second date)
-                    if (isPast) {
-                      // End date cannot be before today
-                      return {
-                        disabled: true,
-                        style: {
-                          color: 'rgba(255, 255, 255, 0.3)',
-                          backgroundColor: 'transparent',
-                        },
-                      };
-                    }
-
-                    if (isFuture) {
-                      // End date can be any future date
-                      return {
-                        disabled: false,
-                        style: {
-                          color: 'rgba(255, 255, 255, 0.9)',
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                          borderRadius: '8px',
-                        },
-                      };
-                    }
+                  if (isFuture) {
+                    // Start date cannot be in the future
+                    return {
+                      disabled: true,
+                      style: {
+                        color: 'rgba(255, 255, 255, 0.3)',
+                        backgroundColor: 'transparent',
+                      },
+                    };
+                  }
+                } else {
+                  // Rules for end date selection (second date)
+                  if (isPast) {
+                    // End date cannot be before today
+                    return {
+                      disabled: true,
+                      style: {
+                        color: 'rgba(255, 255, 255, 0.3)',
+                        backgroundColor: 'transparent',
+                      },
+                    };
                   }
 
-                  return {
-                    disabled: false,
-                    style: {
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                      borderRadius: '8px',
-                    },
-                  };
-                }}
-                render={(value, openCalendar) => (
-                  <Icon
-                    onClick={openCalendar}
-                    className="cursor-pointer text-white/90 transition-all duration-300 hover:text-white md:size-6"
-                  />
-                )}
-                style={{
-                  background: '#081827',
-                  border: 'none',
-                  boxShadow: 'none',
-                }}
-                calendarPosition="bottom-left"
-              />
-            </div>
+                  if (isFuture) {
+                    // End date can be any future date
+                    return {
+                      disabled: false,
+                      style: {
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: '8px',
+                      },
+                    };
+                  }
+                }
+
+                return {
+                  disabled: false,
+                  style: {
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderRadius: '8px',
+                  },
+                };
+              }}
+              render={(value, openCalendar) => (
+                <div
+                  onClick={openCalendar}
+                  className="liquid-glass flex h-16 w-16 cursor-pointer items-center justify-center rounded-full transition-all duration-300 hover:scale-105 md:h-20 md:w-20"
+                  style={{
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Icon className="pointer-events-none text-white/90 transition-all duration-300 hover:text-white md:size-6" />
+                </div>
+              )}
+              style={{
+                background: '#142331',
+                backgroundColor: '#142331',
+                border: 'none',
+                boxShadow: 'none',
+              }}
+              containerStyle={{
+                background: '#142331',
+                backgroundColor: '#142331',
+              }}
+              calendarPosition="bottom-left"
+            />
           </div>
         </div>
       )}

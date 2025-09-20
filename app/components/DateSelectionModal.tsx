@@ -85,12 +85,14 @@ export default function DateSelectionModal({
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'center',
+                        background: '#081827',
                       }}
-                      inputClass="w-full bg-transparent text-white/95 text-center py-5 px-8 text-xl font-semibold tracking-wide focus:outline-none transition-all duration-300 placeholder-white/50"
+                      inputClass="w-full text-white/95 text-center py-5 px-8 text-xl font-semibold tracking-wide focus:outline-none transition-all duration-300 placeholder-white/50"
                       containerStyle={{
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'center',
+                        background: '#081827',
                       }}
                     />
                   </div>
