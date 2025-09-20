@@ -118,7 +118,7 @@
     135deg,
     var(--glass-bg-primary) 0%,
     var(--glass-bg-secondary) 50%,
-    transparent 100%
+    var(--primary-bg) 100%
   ) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);

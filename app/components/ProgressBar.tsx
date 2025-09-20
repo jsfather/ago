@@ -73,7 +73,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
 
   const getStatusText = () => {
     if (isComplete) {
-      return 'مکمل شده';
+      return 'کامل شده';
     } else if (hasStarted) {
       return (
         <>
@@ -86,9 +86,9 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   };
 
   return (
-    <div className="flex w-full items-center justify-center px-4 py-2">
+    <div className="flex w-full items-center justify-center py-2">
       {/* Liquid glass progress container */}
-      <div className="relative w-full max-w-sm">
+      <div className="relative w-full">
         {/* Main liquid glass container */}
         <div className="liquid-glass overflow-hidden">
           {/* Content container with liquid padding */}

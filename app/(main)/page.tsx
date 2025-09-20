@@ -65,7 +65,7 @@ export default function Home() {
       className="min-h-screen overflow-y-auto"
       style={{ backgroundColor: '#081827' }}
     >
-      <div className="flex flex-col px-4 py-6">
+      <div className="flex flex-col py-6">
         {/* Progress bar section - at the top */}
         {dateRange && dateRange.length >= 2 && (
           <div className="mb-8">
@@ -248,7 +248,7 @@ export default function Home() {
                   />
                 )}
                 style={{
-                  background: 'transparent',
+                  background: '#081827',
                   border: 'none',
                   boxShadow: 'none',
                 }}
