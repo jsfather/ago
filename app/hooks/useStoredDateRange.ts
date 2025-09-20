@@ -17,16 +17,34 @@ const isValidDateObject = (dateObj: DateObject): boolean => {
   }
 };
 
-// Helper function to validate that end date is not before today
-const validateEndDate = (endDate: DateObject): boolean => {
+// Helper function to validate date range according to ago calculator rules
+const validateDateRange = (
+  startDate: DateObject,
+  endDate: DateObject
+): boolean => {
   try {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to start of today
+    today.setHours(0, 0, 0, 0);
+
+    const startDateJs = startDate.toDate();
     const endDateJs = endDate.toDate();
-    endDateJs.setHours(0, 0, 0, 0); // Set to start of the end date
-    return endDateJs >= today;
+    startDateJs.setHours(0, 0, 0, 0);
+    endDateJs.setHours(0, 0, 0, 0);
+
+    // Start date cannot be greater than today (no future start dates)
+    if (startDateJs > today) {
+      return false;
+    }
+
+    // End date cannot be smaller than today (must be today or future)
+    if (endDateJs < today) {
+      return false;
+    }
+
+    // End date should be >= start date
+    return endDateJs >= startDateJs;
   } catch (error) {
-    console.log('Error validating end date:', error);
+    console.log('Error validating date range:', error);
     return false;
   }
 };
@@ -35,13 +53,13 @@ const validateEndDate = (endDate: DateObject): boolean => {
 const parseStoredDateRange = (storedRange: string): DateObject[] | null => {
   try {
     const parsed = JSON.parse(storedRange);
-    
+
     if (!Array.isArray(parsed) || parsed.length === 0) {
       return null;
     }
 
     const dateObjects: DateObject[] = [];
-    
+
     for (const dateStr of parsed) {
       const jsDate = new Date(dateStr);
       if (!isNaN(jsDate.getTime())) {
@@ -74,7 +92,7 @@ export function useStoredDateRange() {
       if (storedRange) {
         // User has visited before, load their stored date range
         const parsedRange = parseStoredDateRange(storedRange);
-        
+
         if (parsedRange && parsedRange.length > 0) {
           setDateRange(parsedRange);
           setIsFirstVisit(false);
@@ -117,17 +135,20 @@ export function useStoredDateRange() {
         }
       }
 
-      // If there's an end date (range has 2 dates), validate that it's not before today
+      // If there's an end date (range has 2 dates), validate the range
       if (range.length === 2) {
+        const startDate = range[0];
         const endDate = range[1];
-        if (!validateEndDate(endDate)) {
-          console.error('End date cannot be before today');
+        if (!validateDateRange(startDate, endDate)) {
+          console.error(
+            'Invalid date range: start date cannot be greater than today, end date cannot be smaller than today'
+          );
           return false;
         }
       }
 
       // Convert to JavaScript Dates and store as ISO strings
-      const isoDates = range.map(date => date.toDate().toISOString());
+      const isoDates = range.map((date) => date.toDate().toISOString());
       localStorage.setItem(STORAGE_KEY, JSON.stringify(isoDates));
       setDateRange(range);
       setIsFirstVisit(false);
@@ -145,10 +166,11 @@ export function useStoredDateRange() {
         return false;
       }
 
-      const newRange = dateRange && dateRange.length > 1 
-        ? [startDate, dateRange[1]] 
-        : [startDate];
-      
+      const newRange =
+        dateRange && dateRange.length > 1
+          ? [startDate, dateRange[1]]
+          : [startDate];
+
       return saveDateRange(newRange);
     } catch (error) {
       console.error('Error updating start date:', error);
@@ -178,6 +200,6 @@ export function useStoredDateRange() {
     saveDateRange,
     updateStartDate,
     clearStoredDateRange,
-    validateEndDate,
+    validateDateRange,
   };
 }

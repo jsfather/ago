@@ -156,12 +156,16 @@ export default function Home() {
                 locale={persian_fa}
                 range
                 className="liquid-calendar"
-                mapDays={({ date, today }) => {
+                mapDays={({ date, today, selectedDate }) => {
                   const isToday =
                     date.day === today.day &&
                     date.month === today.month &&
                     date.year === today.year;
                   const isPast = date.toDate() < today.toDate();
+                  const isFuture = date.toDate() > today.toDate();
+
+                  // Determine if this is for start or end date selection
+                  const isSelectingEnd = dateRange && dateRange.length === 1;
 
                   if (isToday) {
                     return {
@@ -176,22 +180,62 @@ export default function Home() {
                     };
                   }
 
-                  if (isPast) {
-                    return {
-                      disabled: false,
-                      style: {
-                        color: 'rgba(255, 255, 255, 0.9)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderRadius: '8px',
-                      },
-                    };
+                  // Rules for start date selection (first date)
+                  if (!isSelectingEnd) {
+                    if (isPast) {
+                      // Start date can be any past date
+                      return {
+                        disabled: false,
+                        style: {
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          borderRadius: '8px',
+                        },
+                      };
+                    }
+
+                    if (isFuture) {
+                      // Start date cannot be in the future
+                      return {
+                        disabled: true,
+                        style: {
+                          color: 'rgba(255, 255, 255, 0.3)',
+                          backgroundColor: 'transparent',
+                        },
+                      };
+                    }
+                  } else {
+                    // Rules for end date selection (second date)
+                    if (isPast) {
+                      // End date cannot be before today
+                      return {
+                        disabled: true,
+                        style: {
+                          color: 'rgba(255, 255, 255, 0.3)',
+                          backgroundColor: 'transparent',
+                        },
+                      };
+                    }
+
+                    if (isFuture) {
+                      // End date can be any future date
+                      return {
+                        disabled: false,
+                        style: {
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          borderRadius: '8px',
+                        },
+                      };
+                    }
                   }
 
                   return {
-                    disabled: true,
+                    disabled: false,
                     style: {
-                      color: 'rgba(255, 255, 255, 0.3)',
-                      backgroundColor: 'transparent',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      borderRadius: '8px',
                     },
                   };
                 }}
