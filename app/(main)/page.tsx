@@ -158,7 +158,7 @@ export default function Home() {
                 locale={persian_fa}
                 range
                 className="liquid-calendar"
-                mapDays={({ date, today, selectedDate }) => {
+                mapDays={({ date, today }) => {
                   const isToday =
                     date.day === today.day &&
                     date.month === today.month &&

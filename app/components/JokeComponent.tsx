@@ -72,8 +72,8 @@ export default function JokeComponent() {
 
   const getActiveFlags = (flags: JokeResponse['flags']) => {
     return Object.entries(flags)
-      .filter(([_, value]) => value)
-      .map(([key, _]) => key);
+      .filter(([, value]) => value)
+      .map(([key]) => key);
   };
 
   const getFlagColor = (flag: string) => {
