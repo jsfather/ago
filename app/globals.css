@@ -418,3 +418,53 @@ body {
   -moz-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
+
+/* Full screen calendar styles */
+.rmdp-calendar {
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.rmdp-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.rmdp-month-picker,
+.rmdp-year-picker,
+.rmdp-time-picker {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.rmdp-day {
+  width: auto !important;
+  height: 3rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 2px !important;
+}
+
+.rmdp-week {
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.rmdp-header {
+  width: 100% !important;
+  padding: 1rem !important;
+}
+
+.rmdp-header-values {
+  font-size: 1.25rem !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
