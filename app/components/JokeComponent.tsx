@@ -110,6 +110,14 @@ export default function JokeComponent() {
       .map(([key]) => key);
   };
 
+  const getAllActiveFlagsFromJokes = (jokes: JokeResponse[]) => {
+    const allFlags = new Set<string>();
+    jokes.forEach((joke) => {
+      getActiveFlags(joke.flags).forEach((flag) => allFlags.add(flag));
+    });
+    return Array.from(allFlags);
+  };
+
   const getFlagColor = (flag: string) => {
     const colors: { [key: string]: string } = {
       nsfw: 'bg-red-500/20 text-red-300 border-red-500/30',
@@ -183,12 +191,16 @@ export default function JokeComponent() {
                   : `${pendingJokes.length} jokes may contain inappropriate content. Are you sure you want to see them?`}
               </p>
 
-              {/* Show active flags for the first unsafe joke */}
+              {/* Show active flags from all unsafe jokes */}
               {pendingJokes.length > 0 &&
-                getActiveFlags(pendingJokes[0].flags).length > 0 && (
+                getAllActiveFlagsFromJokes(pendingJokes).length > 0 && (
                   <div className="mt-4">
+                    <p className="mb-3 text-xs text-white/60">
+                      Content warnings for{' '}
+                      {pendingJokes.length === 1 ? 'this joke' : 'these jokes'}:
+                    </p>
                     <div className="flex flex-wrap justify-center gap-2">
-                      {getActiveFlags(pendingJokes[0].flags).map((flag) => (
+                      {getAllActiveFlagsFromJokes(pendingJokes).map((flag) => (
                         <span
                           key={flag}
                           className={`rounded-lg border px-2 py-1 text-xs font-medium ${getFlagColor(flag)}`}
