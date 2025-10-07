@@ -91,7 +91,7 @@ export default function Home() {
                   {currentDate && timeUnits.every((unit) => !unit.show) && (
                     <div className="relative">
                       <div className="liquid-glass-subtle px-6 py-4 md:px-8 md:py-6">
-                        <div className="text-xl font-bold text-white/70 md:text-2xl">
+                        <div className="text-xl text-center font-bold text-white/70 md:text-2xl">
                           هنوز زمانی نگذشته
                         </div>
                       </div>
