@@ -111,162 +111,6 @@
   color: var(--text-tertiary);
 }
 
-/* Calendar Liquid Glass Styling */
-.liquid-calendar.rmdp-wrapper,
-.rmdp-container .liquid-calendar.ep-arrow::after {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: none !important;
-  border-radius: 24px !important;
-}
-
-.rmdp-container .liquid-calendar.ep-arrow[direction='bottom'] {
-  border-top: 1px solid var(--glass-border) !important;
-}
-
-.rmdp-container .liquid-calendar.ep-arrow[direction='top'] {
-  border-bottom: 1px solid var(--glass-border) !important;
-}
-
-/* Calendar internal styling for liquid glass effect */
-.liquid-calendar .rmdp-day,
-.liquid-calendar .rmdp-month,
-.liquid-calendar .rmdp-year {
-  color: var(--text-secondary) !important;
-  transition: all 0.3s ease !important;
-}
-
-/* Year/Month picker background fix */
-.liquid-calendar .rmdp-month-picker,
-.liquid-calendar .rmdp-year-picker {
-  background: var(--primary-bg) !important;
-}
-
-.liquid-calendar .rmdp-day:hover,
-.liquid-calendar .rmdp-month:hover,
-.liquid-calendar .rmdp-year:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: var(--text-primary) !important;
-  border-radius: 8px !important;
-}
-
-.liquid-calendar .rmdp-selected {
-  background: rgba(59, 130, 246, 0.5) !important;
-  color: white !important;
-  border-radius: 8px !important;
-}
-
-.liquid-calendar .rmdp-today {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: var(--text-primary) !important;
-  border-radius: 8px !important;
-}
-
-.liquid-calendar .rmdp-header {
-  background: transparent !important;
-  border-bottom: 1px solid var(--glass-border) !important;
-}
-
-.liquid-calendar .rmdp-header div {
-  color: var(--text-primary) !important;
-}
-
-.liquid-calendar .rmdp-week-day {
-  color: var(--text-tertiary) !important;
-}
-
-/* Force solid backgrounds for all calendar elements */
-.liquid-calendar .rmdp-calendar,
-.liquid-calendar .rmdp-calendar *,
-.liquid-calendar .rmdp-container,
-.liquid-calendar .rmdp-shadow,
-.liquid-calendar,
-.rmdp-wrapper.liquid-calendar,
-.rmdp-container.liquid-calendar,
-.rmdp-shadow.liquid-calendar,
-.rmdp-calendar.liquid-calendar {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.liquid-calendar .rmdp-container {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  border: none !important;
-}
-
-.liquid-calendar .rmdp-shadow {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.liquid-calendar .ep-arrow::after {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  border: none !important;
-}
-
-/* Global override for any react-multi-date-picker elements */
-.rmdp-wrapper,
-.rmdp-container,
-.rmdp-shadow,
-.rmdp-calendar {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Override portal styles */
-.rmdp-portal .rmdp-wrapper,
-.rmdp-portal .rmdp-container,
-.rmdp-portal .rmdp-shadow,
-.rmdp-portal .rmdp-calendar {
-  background: #142331 !important;
-  background-color: #142331 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Fix trigger button styling */
-.liquid-calendar input {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 50% !important;
-}
-
-/* Add rounded corners to calendar popup */
-.rmdp-container,
-.rmdp-shadow,
-.rmdp-calendar,
-.liquid-calendar .rmdp-container,
-.liquid-calendar .rmdp-shadow,
-.liquid-calendar .rmdp-calendar {
-  border-radius: 1.5rem !important;
-  overflow: hidden !important;
-}
-
-/* Ensure portal calendar also has rounded corners */
-.rmdp-portal .rmdp-container,
-.rmdp-portal .rmdp-shadow,
-.rmdp-portal .rmdp-calendar {
-  border-radius: 1.5rem !important;
-  overflow: hidden !important;
-}
-
-/* Style date picker arrow to match background */
-.rmdp-container .ep-arrow::after,
-.rmdp-container .ep-arrow.custom-arrow::after {
-  background-color: #142331 !important;
-}
-
 /* Custom animations */
 @keyframes shimmer {
   0% {
@@ -417,4 +261,27 @@ body {
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+}
+
+.bg-dark.rmdp-wrapper {
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg-primary) 0%,
+    var(--glass-bg-secondary) 50%,
+    transparent 100%
+  ) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.rmdp-top-class {
+  align-items: center !important;
+}
+
+.rmdp-shadow {
+  box-shadow: none !important;
 }

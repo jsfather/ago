@@ -17,31 +17,16 @@ const isValidDateObject = (dateObj: DateObject): boolean => {
   }
 };
 
-// Helper function to validate date range according to ago calculator rules
+// Helper function to validate date range - now accepts any valid date range
 const validateDateRange = (
   startDate: DateObject,
   endDate: DateObject
 ): boolean => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
     const startDateJs = startDate.toDate();
     const endDateJs = endDate.toDate();
-    startDateJs.setHours(0, 0, 0, 0);
-    endDateJs.setHours(0, 0, 0, 0);
 
-    // Start date cannot be greater than today (no future start dates)
-    if (startDateJs > today) {
-      return false;
-    }
-
-    // End date cannot be smaller than today (must be today or future)
-    if (endDateJs < today) {
-      return false;
-    }
-
-    // End date should be >= start date
+    // Only check that end date is >= start date
     return endDateJs >= startDateJs;
   } catch (error) {
     console.log('Error validating date range:', error);
@@ -141,7 +126,7 @@ export function useStoredDateRange() {
         const endDate = range[1];
         if (!validateDateRange(startDate, endDate)) {
           console.error(
-            'Invalid date range: start date cannot be greater than today, end date cannot be smaller than today'
+            'Invalid date range: end date must be greater than or equal to start date'
           );
           return false;
         }

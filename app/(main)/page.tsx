@@ -2,18 +2,14 @@
 
 import { getAgoFromDate } from '@/app/lib/utils';
 import { useState, useEffect } from 'react';
-import DatePicker, { DateObject } from 'react-multi-date-picker';
-import persian from 'react-date-object/calendars/persian';
-import persian_fa from 'react-date-object/locales/persian_fa';
-import Icon from 'react-multi-date-picker/components/icon';
+import { DateObject } from 'react-multi-date-picker';
 import DateSelectionModal from '@/app/components/DateSelectionModal';
 import ProgressBar from '@/app/components/ProgressBar';
 import JokeComponent from '@/app/components/JokeComponent';
 import { useStoredDateRange } from '@/app/hooks/useStoredDateRange';
-import 'react-multi-date-picker/styles/backgrounds/bg-dark.css';
 
 export default function Home() {
-  const { dateRange, startDate, isFirstVisit, saveDateRange, updateStartDate } =
+  const { dateRange, startDate, isFirstVisit, updateStartDate } =
     useStoredDateRange();
   const [currentDate, setCurrentDate] = useState<DateObject | null>(null);
 
@@ -29,26 +25,6 @@ export default function Home() {
     setCurrentDate(date);
   };
 
-  const handleDatePickerChange = (newVal: DateObject | DateObject[] | null) => {
-    if (newVal) {
-      if (Array.isArray(newVal)) {
-        const success = saveDateRange(newVal);
-        if (success) {
-          // Always use the first date (start date) for ago calculations
-          if (newVal.length > 0) {
-            setCurrentDate(newVal[0]);
-          }
-        }
-      } else {
-        // Single date selected, convert to range
-        const success = saveDateRange([newVal]);
-        if (success) {
-          setCurrentDate(newVal);
-        }
-      }
-    }
-  };
-
   // Only calculate ago if we have a valid currentDate
   const ago = currentDate
     ? getAgoFromDate(currentDate.toDate(), { live: true })
@@ -62,7 +38,7 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen overflow-y-auto px-4"
+      className="min-h-screen overflow-y-auto px-4 pb-20"
       style={{ backgroundColor: '#081827' }}
     >
       <div className="flex flex-col py-6">
@@ -115,7 +91,7 @@ export default function Home() {
                   {currentDate && timeUnits.every((unit) => !unit.show) && (
                     <div className="relative">
                       <div className="liquid-glass-subtle px-6 py-4 md:px-8 md:py-6">
-                        <div className="text-xl font-bold text-white/70 md:text-2xl">
+                        <div className="text-center text-xl font-bold text-white/70 md:text-2xl">
                           هنوز زمانی نگذشته
                         </div>
                       </div>
@@ -143,127 +119,6 @@ export default function Home() {
         onDateSelect={handleModalDateSelect}
         initialDate={startDate}
       />
-
-      {/* Floating date picker button */}
-      {!isFirstVisit && (
-        <div className="animate-bloop-bounce fixed bottom-4 left-4 z-50 md:bottom-8 md:left-8">
-          {/* Liquid glass floating action button */}
-          <div className="relative">
-            <DatePicker
-              value={dateRange || undefined}
-              onChange={handleDatePickerChange}
-              calendar={persian}
-              locale={persian_fa}
-              range
-              className="liquid-calendar"
-              arrowClassName="custom-arrow"
-              arrow={false}
-              mapDays={({ date, today }) => {
-                const isToday =
-                  date.day === today.day &&
-                  date.month === today.month &&
-                  date.year === today.year;
-                const isPast = date.toDate() < today.toDate();
-                const isFuture = date.toDate() > today.toDate();
-
-                // Determine if this is for start or end date selection
-                const isSelectingEnd = dateRange && dateRange.length === 1;
-
-                if (isToday) {
-                  return {
-                    disabled: false,
-                    style: {
-                      color: 'white',
-                      backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                      borderRadius: '50%',
-                      border: '2px solid rgba(59, 130, 246, 0.8)',
-                      fontWeight: 'bold',
-                    },
-                  };
-                }
-
-                // Rules for start date selection (first date)
-                if (!isSelectingEnd) {
-                  if (isPast) {
-                    // Start date can be any past date
-                    return {
-                      disabled: false,
-                      style: {
-                        color: 'rgba(255, 255, 255, 0.9)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderRadius: '8px',
-                      },
-                    };
-                  }
-
-                  if (isFuture) {
-                    // Start date cannot be in the future
-                    return {
-                      disabled: true,
-                      style: {
-                        color: 'rgba(255, 255, 255, 0.3)',
-                        backgroundColor: 'transparent',
-                      },
-                    };
-                  }
-                } else {
-                  // Rules for end date selection (second date)
-                  if (isPast) {
-                    // End date cannot be before today
-                    return {
-                      disabled: true,
-                      style: {
-                        color: 'rgba(255, 255, 255, 0.3)',
-                        backgroundColor: 'transparent',
-                      },
-                    };
-                  }
-
-                  if (isFuture) {
-                    // End date can be any future date
-                    return {
-                      disabled: false,
-                      style: {
-                        color: 'rgba(255, 255, 255, 0.9)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderRadius: '8px',
-                      },
-                    };
-                  }
-                }
-
-                return {
-                  disabled: false,
-                  style: {
-                    color: 'rgba(255, 255, 255, 0.9)',
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    borderRadius: '8px',
-                  },
-                };
-              }}
-              render={(value, openCalendar) => (
-                <div
-                  onClick={openCalendar}
-                  className="liquid-glass flex h-16 w-16 cursor-pointer items-center justify-center rounded-full transition-all duration-300 hover:scale-105 md:h-20 md:w-20"
-                >
-                  <Icon className="pointer-events-none text-white/90 transition-all duration-300 hover:text-white md:size-6" />
-                </div>
-              )}
-              style={{
-                background: '#142331',
-                backgroundColor: '#142331',
-                border: 'none',
-                boxShadow: 'none',
-              }}
-              containerStyle={{
-                background: '#142331',
-                backgroundColor: '#142331',
-              }}
-              calendarPosition="bottom-left"
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
