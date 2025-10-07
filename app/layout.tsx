@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { iranSansXFaNum } from '@/app/fonts';
 import '@/app/globals.css';
 import ServiceWorkerRegister from '@/app/components/ServiceWorkerRegister';
+import NavigationWrapper from './components/NavigationWrapper';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -36,7 +37,7 @@ export default function RootLayout({
       <body
         className={`${iranSansXFaNum.variable} font-iran-sans-x-fanum antialiased`}
       >
-        {children}
+        <NavigationWrapper>{children}</NavigationWrapper>
         <ServiceWorkerRegister />
       </body>
     </html>
