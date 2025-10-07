@@ -1,7 +1,7 @@
 {
-  "name": "چقدر گذشته؟",
-  "short_name": "چقدر گذشته؟",
-  "description": "محاسبه زمان گذشته از یک تاریخ شمسی",
+  "name": "ago",
+  "short_name": "ago",
+  "description": "Calculate elapsed time from a Jalali (Persian) date",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#030712",

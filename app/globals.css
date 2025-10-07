@@ -1,5 +1,420 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@theme {
-  --font-iran-sans-x-fanum: var(--font-iran-sans-x-fanum);
+/* Font family configuration for Tailwind */
+@layer base {
+  .font-iran-sans-x-fanum {
+    font-family: var(--font-iran-sans-x-fanum), sans-serif;
+  }
+}
+
+/* iOS 26 Liquid Glass Design System */
+:root {
+  --primary-bg: #081827;
+  --glass-bg-primary: rgba(255, 255, 255, 0.08);
+  --glass-bg-secondary: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+}
+
+/* Liquid Glass Base Components */
+.liquid-glass {
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg-primary) 0%,
+    var(--glass-bg-secondary) 50%,
+    transparent 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+}
+
+.liquid-glass-strong {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: 28px;
+}
+
+.liquid-glass-subtle {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+}
+
+/* Interactive States */
+.liquid-glass-interactive {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.liquid-glass-interactive:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.liquid-glass-interactive:active {
+  transform: translateY(0);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
+
+/* Surface Hierarchy */
+.surface-primary {
+  background: var(--primary-bg);
+}
+
+.surface-secondary {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
+
+/* Text Hierarchy */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
+
+/* Calendar Liquid Glass Styling */
+.liquid-calendar.rmdp-wrapper,
+.rmdp-container .liquid-calendar.ep-arrow::after {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: none !important;
+  border-radius: 24px !important;
+}
+
+.rmdp-container .liquid-calendar.ep-arrow[direction='bottom'] {
+  border-top: 1px solid var(--glass-border) !important;
+}
+
+.rmdp-container .liquid-calendar.ep-arrow[direction='top'] {
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+/* Calendar internal styling for liquid glass effect */
+.liquid-calendar .rmdp-day,
+.liquid-calendar .rmdp-month,
+.liquid-calendar .rmdp-year {
+  color: var(--text-secondary) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Year/Month picker background fix */
+.liquid-calendar .rmdp-month-picker,
+.liquid-calendar .rmdp-year-picker {
+  background: var(--primary-bg) !important;
+}
+
+.liquid-calendar .rmdp-day:hover,
+.liquid-calendar .rmdp-month:hover,
+.liquid-calendar .rmdp-year:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+}
+
+.liquid-calendar .rmdp-selected {
+  background: rgba(59, 130, 246, 0.5) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+.liquid-calendar .rmdp-today {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+}
+
+.liquid-calendar .rmdp-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+.liquid-calendar .rmdp-header div {
+  color: var(--text-primary) !important;
+}
+
+.liquid-calendar .rmdp-week-day {
+  color: var(--text-tertiary) !important;
+}
+
+/* Force solid backgrounds for all calendar elements */
+.liquid-calendar .rmdp-calendar,
+.liquid-calendar .rmdp-calendar *,
+.liquid-calendar .rmdp-container,
+.liquid-calendar .rmdp-shadow,
+.liquid-calendar,
+.rmdp-wrapper.liquid-calendar,
+.rmdp-container.liquid-calendar,
+.rmdp-shadow.liquid-calendar,
+.rmdp-calendar.liquid-calendar {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.liquid-calendar .rmdp-container {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+}
+
+.liquid-calendar .rmdp-shadow {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.liquid-calendar .ep-arrow::after {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+}
+
+/* Global override for any react-multi-date-picker elements */
+.rmdp-wrapper,
+.rmdp-container,
+.rmdp-shadow,
+.rmdp-calendar {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Override portal styles */
+.rmdp-portal .rmdp-wrapper,
+.rmdp-portal .rmdp-container,
+.rmdp-portal .rmdp-shadow,
+.rmdp-portal .rmdp-calendar {
+  background: #142331 !important;
+  background-color: #142331 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix trigger button styling */
+.liquid-calendar input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+}
+
+/* Add rounded corners to calendar popup */
+.rmdp-container,
+.rmdp-shadow,
+.rmdp-calendar,
+.liquid-calendar .rmdp-container,
+.liquid-calendar .rmdp-shadow,
+.liquid-calendar .rmdp-calendar {
+  border-radius: 1.5rem !important;
+  overflow: hidden !important;
+}
+
+/* Ensure portal calendar also has rounded corners */
+.rmdp-portal .rmdp-container,
+.rmdp-portal .rmdp-shadow,
+.rmdp-portal .rmdp-calendar {
+  border-radius: 1.5rem !important;
+  overflow: hidden !important;
+}
+
+/* Style date picker arrow to match background */
+.rmdp-container .ep-arrow::after,
+.rmdp-container .ep-arrow.custom-arrow::after {
+  background-color: #142331 !important;
+}
+
+/* Custom animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+}
+
+/* Liquid bloop animations */
+@keyframes bloop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    filter: blur(4px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05) translateY(-5px);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes bloop-out {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.95) translateY(5px);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.85) translateY(15px);
+    filter: blur(3px);
+  }
+}
+
+@keyframes bloop-bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(30px);
+    filter: blur(6px);
+  }
+  30% {
+    opacity: 0.7;
+    transform: scale(1.1) translateY(-10px);
+    filter: blur(2px);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scale(0.98) translateY(2px);
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Animation classes */
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-bloop-in {
+  animation: bloop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-bloop-out {
+  animation: bloop-out 0.4s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+.animate-bloop-bounce {
+  animation: bloop-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Mobile optimizations */
+@media screen and (max-width: 768px) {
+  /* Prevent horizontal scroll on mobile */
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Prevent zoom on input focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Better touch targets */
+  button,
+  [role='button'],
+  input[type='submit'],
+  input[type='button'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent text selection on UI elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+}
+
+/* Ensure proper mobile viewport behavior */
+@viewport {
+  width: device-width;
+  initial-scale: 1;
+  maximum-scale: 1;
+  user-scalable: no;
+}
+
+/* Prevent bounce effect on iOS */
+html {
+  height: 100%;
+  overflow: auto;
+}
+
+body {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better scrolling performance */
+.performance-boost {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
