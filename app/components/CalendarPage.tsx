@@ -41,7 +41,7 @@ export default function CalendarPage() {
       className="flex h-screen w-full items-center justify-center pb-16"
       style={{ backgroundColor: '#081827' }}
     >
-      <div className="flex h-full w-full items-center justify-center p-4">
+      <div className="flex h-full w-full max-w-md items-center justify-center p-4">
         <Calendar
           value={selectedDates || undefined}
           onChange={handleDateChange}
