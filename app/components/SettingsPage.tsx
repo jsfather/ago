@@ -180,7 +180,12 @@ export default function SettingsPage() {
                         value={type.value}
                         checked={settings.type === type.value}
                         onChange={(e) =>
-                          updateSettings({ type: e.target.value as any })
+                          updateSettings({
+                            type: e.target.value as
+                              | 'single'
+                              | 'twopart'
+                              | 'any',
+                          })
                         }
                         className="h-4 w-4 border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />

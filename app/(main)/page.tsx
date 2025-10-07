@@ -9,7 +9,7 @@ import JokeComponent from '@/app/components/JokeComponent';
 import { useStoredDateRange } from '@/app/hooks/useStoredDateRange';
 
 export default function Home() {
-  const { dateRange, startDate, isFirstVisit, saveDateRange, updateStartDate } =
+  const { dateRange, startDate, isFirstVisit, updateStartDate } =
     useStoredDateRange();
   const [currentDate, setCurrentDate] = useState<DateObject | null>(null);
 
@@ -91,7 +91,7 @@ export default function Home() {
                   {currentDate && timeUnits.every((unit) => !unit.show) && (
                     <div className="relative">
                       <div className="liquid-glass-subtle px-6 py-4 md:px-8 md:py-6">
-                        <div className="text-xl text-center font-bold text-white/70 md:text-2xl">
+                        <div className="text-center text-xl font-bold text-white/70 md:text-2xl">
                           هنوز زمانی نگذشته
                         </div>
                       </div>
