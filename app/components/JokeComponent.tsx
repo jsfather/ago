@@ -450,13 +450,14 @@ export default function JokeComponent() {
           const file = new File([blob], `joke-${joke.id || Date.now()}.png`, {
             type: 'image/png',
           });
-          
+
           const shareData = {
             files: [file],
             title: 'Funny Joke',
-            text: joke.type === 'single' 
-              ? joke.joke 
-              : `${joke.setup}\n\n${joke.delivery}`,
+            text:
+              joke.type === 'single'
+                ? joke.joke
+                : `${joke.setup}\n\n${joke.delivery}`,
           };
 
           // Check if the specific data can be shared
