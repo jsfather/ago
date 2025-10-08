@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Share2 } from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
 
