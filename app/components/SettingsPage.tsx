@@ -129,7 +129,7 @@ export default function SettingsPage() {
                       value="dark"
                       checked={theme === 'dark'}
                       onChange={(e) =>
-                        setTheme(e.target.value as 'dark' | 'light')
+                        setTheme(e.target.value as 'dark' | 'light' | 'system')
                       }
                       className="theme-checkbox h-4 w-4"
                     />
@@ -150,7 +150,7 @@ export default function SettingsPage() {
                       value="light"
                       checked={theme === 'light'}
                       onChange={(e) =>
-                        setTheme(e.target.value as 'dark' | 'light')
+                        setTheme(e.target.value as 'dark' | 'light' | 'system')
                       }
                       className="theme-checkbox h-4 w-4"
                     />
@@ -164,12 +164,33 @@ export default function SettingsPage() {
                       </span>
                     </div>
                   </label>
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="theme"
+                      value="system"
+                      checked={theme === 'system'}
+                      onChange={(e) =>
+                        setTheme(e.target.value as 'dark' | 'light' | 'system')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">💻</span>
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        System
+                      </span>
+                    </div>
+                  </label>
                 </div>
                 <p
                   className="mt-2 font-mono text-xs"
                   style={{ color: 'var(--text-tertiary)' }}
                 >
-                  Choose your preferred theme appearance
+                  Choose your preferred theme or use system setting
                 </p>
               </div>
             </div>
