@@ -38,7 +38,10 @@ export default function DateSelectionModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
       {/* Solid backdrop */}
-      <div className="absolute inset-0 bg-[#081827]"></div>
+      <div
+        className="absolute inset-0"
+        style={{ backgroundColor: 'var(--primary-bg)' }}
+      ></div>
 
       {/* Liquid glass modal container */}
       <div className="relative mx-auto max-w-2xl px-6">
@@ -53,14 +56,20 @@ export default function DateSelectionModal({
                 <div className="relative">
                   {/* Title container */}
                   <div className="liquid-glass px-8 py-4">
-                    <h2 className="bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-3xl font-black tracking-wide text-transparent">
+                    <h2
+                      className="text-3xl font-black tracking-wide"
+                      style={{ color: 'var(--text-primary)' }}
+                    >
                       تاریخ شروع رو انتخاب کن
                     </h2>
                   </div>
                 </div>
 
                 <div className="liquid-glass-subtle px-6 py-3">
-                  <p className="mx-auto max-w-md text-base leading-relaxed text-white/70">
+                  <p
+                    className="mx-auto max-w-md text-base leading-relaxed"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     بعداً می‌تونی بازه زمانی مورد نظرت رو انتخاب کنی
                   </p>
                 </div>
@@ -87,14 +96,14 @@ export default function DateSelectionModal({
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'center',
-                        background: '#081827',
+                        background: 'var(--primary-bg)',
                       }}
                       inputClass="w-full text-white/95 text-center py-5 px-8 text-xl font-semibold tracking-wide focus:outline-none transition-all duration-300 placeholder-white/50"
                       containerStyle={{
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'center',
-                        background: '#081827',
+                        background: 'var(--primary-bg)',
                       }}
                     />
                   </div>
@@ -105,11 +114,10 @@ export default function DateSelectionModal({
               <div className="flex justify-center">
                 <button
                   onClick={handleConfirm}
-                  className="liquid-glass overflow-hidden px-12 py-4 text-xl font-bold text-white/95 transition-all duration-300 hover:scale-105"
+                  className="liquid-glass overflow-hidden px-12 py-4 text-xl font-bold transition-all duration-300 hover:scale-105"
+                  style={{ color: 'var(--text-primary)' }}
                 >
-                  <span className="relative z-10 bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent">
-                    تایید
-                  </span>
+                  تایید
                 </button>
               </div>
             </div>

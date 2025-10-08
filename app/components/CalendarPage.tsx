@@ -39,7 +39,7 @@ export default function CalendarPage() {
   return (
     <div
       className="flex h-screen w-full items-center justify-center pb-16"
-      style={{ backgroundColor: '#081827' }}
+      style={{ backgroundColor: 'var(--primary-bg)' }}
     >
       <div className="flex h-full w-full max-w-md items-center justify-center p-4">
         <Calendar

@@ -7,8 +7,9 @@
   }
 }
 
-/* iOS 26 Liquid Glass Design System */
-:root {
+/* iOS 26 Liquid Glass Design System - Dark Theme (Default) */
+:root,
+[data-theme='dark'] {
   --primary-bg: #081827;
   --glass-bg-primary: rgba(255, 255, 255, 0.08);
   --glass-bg-secondary: rgba(255, 255, 255, 0.05);
@@ -17,6 +18,34 @@
   --text-primary: rgba(255, 255, 255, 0.95);
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-tertiary: rgba(255, 255, 255, 0.5);
+  --nav-bg: rgba(8, 24, 39, 0.95);
+  --nav-border: rgba(255, 255, 255, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --input-border: rgba(255, 255, 255, 0.3);
+  --button-danger-bg: rgba(239, 68, 68, 0.2);
+  --button-danger-border: rgba(239, 68, 68, 0.3);
+  --button-danger-text: rgba(248, 113, 113, 0.9);
+}
+
+/* Light Theme */
+[data-theme='light'] {
+  --primary-bg: #f8fafc;
+  --glass-bg-primary: rgba(59, 130, 246, 0.06);
+  --glass-bg-secondary: rgba(59, 130, 246, 0.03);
+  --glass-border: rgba(59, 130, 246, 0.15);
+  --glass-border-strong: rgba(59, 130, 246, 0.25);
+  --text-primary: rgba(15, 23, 42, 0.95);
+  --text-secondary: rgba(30, 41, 59, 0.85);
+  --text-tertiary: rgba(71, 85, 105, 0.75);
+  --nav-bg: rgba(248, 250, 252, 0.95);
+  --nav-border: rgba(59, 130, 246, 0.08);
+  --hover-bg: rgba(59, 130, 246, 0.08);
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --input-border: rgba(59, 130, 246, 0.2);
+  --button-danger-bg: rgba(239, 68, 68, 0.1);
+  --button-danger-border: rgba(239, 68, 68, 0.3);
+  --button-danger-text: rgba(185, 28, 28, 0.9);
 }
 
 /* Liquid Glass Base Components */
@@ -109,6 +138,85 @@
 
 .text-tertiary {
   color: var(--text-tertiary);
+}
+
+/* Theme-aware form elements */
+.theme-input {
+  background: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+}
+
+.theme-input:focus {
+  border-color: var(--glass-border-strong);
+  background: var(--input-bg);
+}
+
+.theme-checkbox {
+  background: var(--input-bg);
+  border-color: var(--input-border);
+  accent-color: #3b82f6;
+}
+
+.theme-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.theme-checkbox:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+.theme-range {
+  background: var(--input-bg);
+  border-radius: 8px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.theme-range::-webkit-slider-track {
+  background: var(--input-bg);
+  border-radius: 8px;
+  height: 8px;
+}
+
+.theme-range::-webkit-slider-thumb {
+  background: var(--text-primary);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border: 2px solid var(--glass-border);
+}
+
+.theme-range::-moz-range-track {
+  background: var(--input-bg);
+  border-radius: 8px;
+  height: 8px;
+  border: none;
+}
+
+.theme-range::-moz-range-thumb {
+  background: var(--text-primary);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 2px solid var(--glass-border);
+}
+
+.theme-button-danger {
+  background: var(--button-danger-bg);
+  border-color: var(--button-danger-border);
+  color: var(--button-danger-text);
+}
+
+.theme-button-danger:hover {
+  background: var(--button-danger-border);
 }
 
 /* Custom animations */
@@ -270,12 +378,60 @@ body {
     var(--glass-bg-secondary) 50%,
     transparent 100%
   ) !important;
+  backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border: 1px solid var(--glass-border) !important;
   border-radius: 24px !important;
   width: 100% !important;
   display: flex !important;
   justify-content: center !important;
+}
+
+/* NUCLEAR OPTION: Force all inputs inside date picker to use theme colors */
+[data-theme='light'] input[class*='rmdp'],
+[data-theme='light'] input[style*='text-center'],
+[data-theme='light'] input[style*='tracking-wide'],
+[data-theme='light'] .liquid-glass input {
+  color: var(--text-primary) !important;
+}
+
+/* Keep dark theme as original */
+[data-theme='dark'] input[class*='rmdp'],
+[data-theme='dark'] input[style*='text-center'],
+[data-theme='dark'] input[style*='tracking-wide'],
+[data-theme='dark'] .liquid-glass input {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Fix date picker input text color for themes while preserving design */
+[data-theme='light'] .rmdp-input,
+[data-theme='light'] input.rmdp-input,
+[data-theme='light'] .rmdp-container input,
+[data-theme='light'] .rmdp-wrapper input {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+[data-theme='light'] .rmdp-input::placeholder,
+[data-theme='light'] input.rmdp-input::placeholder,
+[data-theme='light'] .rmdp-container input::placeholder,
+[data-theme='light'] .rmdp-wrapper input::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* Keep dark theme as original */
+[data-theme='dark'] .rmdp-input,
+[data-theme='dark'] input.rmdp-input,
+[data-theme='dark'] .rmdp-container input,
+[data-theme='dark'] .rmdp-wrapper input {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme='dark'] .rmdp-input::placeholder,
+[data-theme='dark'] input.rmdp-input::placeholder,
+[data-theme='dark'] .rmdp-container input::placeholder,
+[data-theme='dark'] .rmdp-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .rmdp-top-class {

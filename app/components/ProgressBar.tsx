@@ -96,7 +96,10 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
             {/* Liquid glass percentage display */}
             <div className="flex items-center justify-center">
               <div className="liquid-glass-subtle px-3 py-1.5">
-                <span className="text-sm font-black tracking-wider text-white/95">
+                <span
+                  className="text-sm font-black tracking-wider"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   %{Math.round(progress)}
                 </span>
               </div>
@@ -124,14 +127,20 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
             <div className="flex items-center justify-between">
               {/* Status text container */}
               <div className="rounded-md bg-white/[0.04] px-2 py-0.5">
-                <div className="text-xs font-semibold tracking-wide text-white/90">
+                <div
+                  className="text-xs font-semibold tracking-wide"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   {getStatusText()}
                 </div>
               </div>
 
               {/* Total days container */}
               <div className="rounded-md bg-white/[0.04] px-2 py-0.5">
-                <div className="text-xs font-medium text-white/70">
+                <div
+                  className="text-xs font-medium"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   <span>{totalDays}</span> روز کل
                 </div>
               </div>
