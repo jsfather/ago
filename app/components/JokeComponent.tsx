@@ -442,9 +442,36 @@ export default function JokeComponent() {
       });
     }
 
-    // Convert to blob and trigger download
-    canvas.toBlob((blob) => {
+    // Convert to blob and trigger share or download
+    canvas.toBlob(async (blob) => {
       if (blob) {
+        // Check if Web Share API is supported and can share files
+        if (navigator.share && navigator.canShare) {
+          const file = new File([blob], `joke-${joke.id || Date.now()}.png`, {
+            type: 'image/png',
+          });
+          
+          const shareData = {
+            files: [file],
+            title: 'Funny Joke',
+            text: joke.type === 'single' 
+              ? joke.joke 
+              : `${joke.setup}\n\n${joke.delivery}`,
+          };
+
+          // Check if the specific data can be shared
+          if (navigator.canShare(shareData)) {
+            try {
+              await navigator.share(shareData);
+              return; // Exit if sharing was successful
+            } catch (error) {
+              console.log('Sharing was cancelled or failed:', error);
+              // Fall through to download as fallback
+            }
+          }
+        }
+
+        // Fallback: Download the image
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
