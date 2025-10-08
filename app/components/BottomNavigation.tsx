@@ -7,6 +7,41 @@ interface BottomNavigationProps {
   onTabChange: (tab: 'home' | 'calendar' | 'settings') => void;
 }
 
+interface NavButtonProps {
+  isActive: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  ariaLabel: string;
+}
+
+function NavButton({ isActive, onClick, icon, ariaLabel }: NavButtonProps) {
+  const handleClick = () => {
+    onClick();
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent focus on mousedown
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      aria-label={ariaLabel}
+      className={`nav-button flex cursor-pointer items-center justify-center rounded-xl px-4 py-3 transition-all duration-300 ${isActive ? 'liquid-glass-subtle scale-105' : ''} `}
+      style={{
+        color: isActive ? 'var(--text-primary)' : 'var(--text-tertiary)',
+        outline: 'none',
+        border: 'none',
+        backgroundColor: 'transparent',
+      }}
+      tabIndex={-1} // Remove from tab order
+    >
+      {icon}
+    </button>
+  );
+}
+
 export default function BottomNavigation({
   activeTab,
   onTabChange,
@@ -22,89 +57,38 @@ export default function BottomNavigation({
         }}
       >
         <div className="flex h-16 items-center justify-around px-4">
-          {/* Home Tab */}
-          <button
+          <NavButton
+            isActive={activeTab === 'home'}
             onClick={() => onTabChange('home')}
-            className={`flex items-center justify-center rounded-xl px-4 py-3 transition-all duration-300 ${
-              activeTab === 'home' ? 'liquid-glass-subtle scale-105' : ''
-            }`}
-            style={{
-              color:
-                activeTab === 'home'
-                  ? 'var(--text-primary)'
-                  : 'var(--text-tertiary)',
-            }}
-            onMouseEnter={(e) => {
-              if (activeTab !== 'home') {
-                e.currentTarget.style.backgroundColor = 'var(--hover-bg)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeTab !== 'home') {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }
-            }}
-          >
-            <Home
-              className={`h-6 w-6 ${activeTab === 'home' ? 'text-blue-400' : 'text-current'}`}
-            />
-          </button>
+            icon={
+              <Home
+                className={`h-6 w-6 ${activeTab === 'home' ? 'text-blue-400' : 'text-current'}`}
+              />
+            }
+            ariaLabel="Home"
+          />
 
-          {/* Calendar Tab */}
-          <button
+          <NavButton
+            isActive={activeTab === 'calendar'}
             onClick={() => onTabChange('calendar')}
-            className={`flex items-center justify-center rounded-xl px-4 py-3 transition-all duration-300 ${
-              activeTab === 'calendar' ? 'liquid-glass-subtle scale-105' : ''
-            }`}
-            style={{
-              color:
-                activeTab === 'calendar'
-                  ? 'var(--text-primary)'
-                  : 'var(--text-tertiary)',
-            }}
-            onMouseEnter={(e) => {
-              if (activeTab !== 'calendar') {
-                e.currentTarget.style.backgroundColor = 'var(--hover-bg)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeTab !== 'calendar') {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }
-            }}
-          >
-            <Calendar
-              className={`h-6 w-6 ${activeTab === 'calendar' ? 'text-blue-400' : 'text-current'}`}
-            />
-          </button>
+            icon={
+              <Calendar
+                className={`h-6 w-6 ${activeTab === 'calendar' ? 'text-blue-400' : 'text-current'}`}
+              />
+            }
+            ariaLabel="Calendar"
+          />
 
-          {/* Settings Tab */}
-          <button
+          <NavButton
+            isActive={activeTab === 'settings'}
             onClick={() => onTabChange('settings')}
-            className={`flex items-center justify-center rounded-xl px-4 py-3 transition-all duration-300 ${
-              activeTab === 'settings' ? 'liquid-glass-subtle scale-105' : ''
-            }`}
-            style={{
-              color:
-                activeTab === 'settings'
-                  ? 'var(--text-primary)'
-                  : 'var(--text-tertiary)',
-            }}
-            onMouseEnter={(e) => {
-              if (activeTab !== 'settings') {
-                e.currentTarget.style.backgroundColor = 'var(--hover-bg)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeTab !== 'settings') {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }
-            }}
-          >
-            <Settings
-              className={`h-6 w-6 ${activeTab === 'settings' ? 'text-blue-400' : 'text-current'}`}
-            />
-          </button>
+            icon={
+              <Settings
+                className={`h-6 w-6 ${activeTab === 'settings' ? 'text-blue-400' : 'text-current'}`}
+              />
+            }
+            ariaLabel="Settings"
+          />
         </div>
       </div>
     </div>

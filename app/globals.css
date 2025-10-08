@@ -387,6 +387,28 @@ body {
   justify-content: center !important;
 }
 
+/* Clean navigation button styles - no focus issues */
+.nav-button {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.nav-button:focus,
+.nav-button:active,
+.nav-button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Hover effect for non-active buttons */
+.nav-button:not(.liquid-glass-subtle):hover {
+  background-color: var(--hover-bg) !important;
+}
+
 /* NUCLEAR OPTION: Force all inputs inside date picker to use theme colors */
 [data-theme='light'] input[class*='rmdp'],
 [data-theme='light'] input[style*='text-center'],
