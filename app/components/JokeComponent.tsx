@@ -621,7 +621,7 @@ export default function JokeComponent() {
                 {/* Share button - positioned absolutely in top right */}
                 <button
                   onClick={() => createJokeImage(joke)}
-                  className="liquid-glass-subtle absolute top-3 right-3 p-2 text-white/70 transition-all duration-300 hover:scale-110 hover:text-white/90"
+                  className="liquid-glass-subtle absolute top-3 right-3 flex items-center justify-center p-2 text-white/70 transition-all duration-300 hover:scale-110 hover:text-white/90"
                   title="Share joke as image"
                 >
                   <Share2 className="h-4 w-4" />
