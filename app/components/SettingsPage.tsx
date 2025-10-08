@@ -131,7 +131,7 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setTheme(e.target.value as 'dark' | 'light')
                       }
-                      className="theme-checkbox h-4 w-4 text-blue-500 focus:ring-blue-500/50"
+                      className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
                       <span className="text-lg">🌙</span>
@@ -152,7 +152,7 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setTheme(e.target.value as 'dark' | 'light')
                       }
-                      className="theme-checkbox h-4 w-4 text-blue-500 focus:ring-blue-500/50"
+                      className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
                       <span className="text-lg">☀️</span>
@@ -219,7 +219,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleCategoryChange(category, e.target.checked)
                         }
-                        className="theme-checkbox h-4 w-4 rounded text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        className="theme-checkbox h-4 w-4 rounded"
                       />
                       <span
                         className="text-sm"
@@ -307,7 +307,7 @@ export default function SettingsPage() {
                               | 'any',
                           })
                         }
-                        className="theme-checkbox h-4 w-4 border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        className="theme-checkbox h-4 w-4"
                       />
                       <span
                         className="text-sm"
@@ -335,7 +335,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       updateSettings({ safeMode: e.target.checked })
                     }
-                    className="theme-checkbox h-4 w-4 rounded text-blue-600 focus:ring-2 focus:ring-blue-500"
+                    className="theme-checkbox h-4 w-4 rounded"
                   />
                   <div>
                     <span
@@ -380,7 +380,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleFlagChange(flag, e.target.checked)
                         }
-                        className="theme-checkbox h-4 w-4 rounded text-red-600 focus:ring-2 focus:ring-red-500"
+                        className="theme-checkbox h-4 w-4 rounded"
                       />
                       <span
                         className="text-sm capitalize"

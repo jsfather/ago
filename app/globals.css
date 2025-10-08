@@ -155,6 +155,17 @@
 .theme-checkbox {
   background: var(--input-bg);
   border-color: var(--input-border);
+  accent-color: #3b82f6;
+}
+
+.theme-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.theme-checkbox:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
 }
 
 .theme-range {
@@ -374,6 +385,53 @@ body {
   width: 100% !important;
   display: flex !important;
   justify-content: center !important;
+}
+
+/* NUCLEAR OPTION: Force all inputs inside date picker to use theme colors */
+[data-theme='light'] input[class*='rmdp'],
+[data-theme='light'] input[style*='text-center'],
+[data-theme='light'] input[style*='tracking-wide'],
+[data-theme='light'] .liquid-glass input {
+  color: var(--text-primary) !important;
+}
+
+/* Keep dark theme as original */
+[data-theme='dark'] input[class*='rmdp'],
+[data-theme='dark'] input[style*='text-center'],
+[data-theme='dark'] input[style*='tracking-wide'],
+[data-theme='dark'] .liquid-glass input {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Fix date picker input text color for themes while preserving design */
+[data-theme='light'] .rmdp-input,
+[data-theme='light'] input.rmdp-input,
+[data-theme='light'] .rmdp-container input,
+[data-theme='light'] .rmdp-wrapper input {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+[data-theme='light'] .rmdp-input::placeholder,
+[data-theme='light'] input.rmdp-input::placeholder,
+[data-theme='light'] .rmdp-container input::placeholder,
+[data-theme='light'] .rmdp-wrapper input::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* Keep dark theme as original */
+[data-theme='dark'] .rmdp-input,
+[data-theme='dark'] input.rmdp-input,
+[data-theme='dark'] .rmdp-container input,
+[data-theme='dark'] .rmdp-wrapper input {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme='dark'] .rmdp-input::placeholder,
+[data-theme='dark'] input.rmdp-input::placeholder,
+[data-theme='dark'] .rmdp-container input::placeholder,
+[data-theme='dark'] .rmdp-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .rmdp-top-class {

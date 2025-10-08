@@ -56,7 +56,10 @@ export default function DateSelectionModal({
                 <div className="relative">
                   {/* Title container */}
                   <div className="liquid-glass px-8 py-4">
-                    <h2 className="bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-3xl font-black tracking-wide text-transparent">
+                    <h2
+                      className="text-3xl font-black tracking-wide"
+                      style={{ color: 'var(--text-primary)' }}
+                    >
                       تاریخ شروع رو انتخاب کن
                     </h2>
                   </div>
@@ -114,9 +117,7 @@ export default function DateSelectionModal({
                   className="liquid-glass overflow-hidden px-12 py-4 text-xl font-bold transition-all duration-300 hover:scale-105"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  <span className="relative z-10 bg-gradient-to-br from-white via-blue-50 to-cyan-50 bg-clip-text text-transparent">
-                    تایید
-                  </span>
+                  تایید
                 </button>
               </div>
             </div>
