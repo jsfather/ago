@@ -26,6 +26,9 @@
   --button-danger-bg: rgba(239, 68, 68, 0.2);
   --button-danger-border: rgba(239, 68, 68, 0.3);
   --button-danger-text: rgba(248, 113, 113, 0.9);
+  --glass-subtle-bg-primary: rgba(255, 255, 255, 0.06);
+  --glass-subtle-bg-secondary: rgba(255, 255, 255, 0.03);
+  --glass-subtle-border: rgba(255, 255, 255, 0.08);
 }
 
 /* Light Theme */
@@ -46,6 +49,9 @@
   --button-danger-bg: rgba(239, 68, 68, 0.1);
   --button-danger-border: rgba(239, 68, 68, 0.3);
   --button-danger-text: rgba(185, 28, 28, 0.9);
+  --glass-subtle-bg-primary: rgba(59, 130, 246, 0.12);
+  --glass-subtle-bg-secondary: rgba(59, 130, 246, 0.06);
+  --glass-subtle-border: rgba(59, 130, 246, 0.18);
 }
 
 /* Liquid Glass Base Components */
@@ -78,13 +84,13 @@
 .liquid-glass-subtle {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.03) 50%,
+    var(--glass-subtle-bg-primary) 0%,
+    var(--glass-subtle-bg-secondary) 50%,
     transparent 100%
   );
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-subtle-border);
   border-radius: 20px;
 }
 
@@ -385,6 +391,28 @@ body {
   width: 100% !important;
   display: flex !important;
   justify-content: center !important;
+}
+
+/* Clean navigation button styles - no focus issues */
+.nav-button {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.nav-button:focus,
+.nav-button:active,
+.nav-button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Hover effect for non-active buttons */
+.nav-button:not(.liquid-glass-subtle):hover {
+  background-color: var(--hover-bg) !important;
 }
 
 /* NUCLEAR OPTION: Force all inputs inside date picker to use theme colors */
