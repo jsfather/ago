@@ -515,7 +515,8 @@ export default function JokeComponent() {
         <button
           onClick={fetchJoke}
           disabled={loading || !isLoaded}
-          className="liquid-glass px-8 py-3 text-lg font-bold text-white/95 transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+          className="liquid-glass px-8 py-3 text-lg font-bold transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+          style={{ color: 'var(--text-primary)' }}
         >
           {loading ? (
             <div className="flex items-center space-x-2">
@@ -531,7 +532,14 @@ export default function JokeComponent() {
         {(jokes.length > 0 || showWarning) && (
           <button
             onClick={handleCloseJoke}
-            className="liquid-glass-subtle animate-bloop-in px-4 py-3 text-white/80 transition-all duration-300 hover:scale-105 hover:text-white/95"
+            className="liquid-glass-subtle animate-bloop-in px-4 py-3 transition-all duration-300 hover:scale-105"
+            style={{ color: 'var(--text-secondary)' }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = 'var(--text-primary)')
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = 'var(--text-secondary)')
+            }
             title="Close joke"
           >
             <svg
@@ -558,12 +566,18 @@ export default function JokeComponent() {
             <div className="text-center">
               <div className="liquid-glass-subtle mb-6">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-white/95">
+                  <h3
+                    className="text-xl font-bold"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     ⚠️ Warning
                   </h3>
                 </div>
               </div>
-              <p className="text-base leading-relaxed text-white/80">
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: 'var(--text-secondary)' }}
+              >
                 {pendingJokes.length === 1
                   ? 'This joke may contain inappropriate content. Are you sure you want to see it?'
                   : `${pendingJokes.length} jokes may contain inappropriate content. Are you sure you want to see them?`}
@@ -573,7 +587,10 @@ export default function JokeComponent() {
               {pendingJokes.length > 0 &&
                 getAllActiveFlagsFromJokes(pendingJokes).length > 0 && (
                   <div className="mt-4">
-                    <p className="mb-3 text-xs text-white/60">
+                    <p
+                      className="mb-3 text-xs"
+                      style={{ color: 'var(--text-tertiary)' }}
+                    >
                       Content warnings for{' '}
                       {pendingJokes.length === 1 ? 'this joke' : 'these jokes'}:
                     </p>
@@ -594,13 +611,15 @@ export default function JokeComponent() {
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleCancelUnsafeJoke}
-                className="liquid-glass-subtle px-8 py-3 font-medium text-white/80 transition-all duration-300 hover:scale-105"
+                className="liquid-glass-subtle px-8 py-3 font-medium transition-all duration-300 hover:scale-105"
+                style={{ color: 'var(--text-secondary)' }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleShowUnsafeJoke}
-                className="liquid-glass px-8 py-3 font-medium text-white/95 transition-all duration-300 hover:scale-105"
+                className="liquid-glass px-8 py-3 font-medium transition-all duration-300 hover:scale-105"
+                style={{ color: 'var(--text-primary)' }}
               >
                 Show
               </button>
@@ -621,7 +640,14 @@ export default function JokeComponent() {
                 {/* Share button - positioned absolutely in top right */}
                 <button
                   onClick={() => createJokeImage(joke)}
-                  className="liquid-glass-subtle absolute top-3 right-3 flex items-center justify-center p-2 text-white/70 transition-all duration-300 hover:scale-110 hover:text-white/90"
+                  className="liquid-glass-subtle absolute top-3 right-3 flex items-center justify-center p-2 transition-all duration-300 hover:scale-110"
+                  style={{ color: 'var(--text-secondary)' }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = 'var(--text-primary)')
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = 'var(--text-secondary)')
+                  }
                   title="Share joke as image"
                 >
                   <Share2 className="h-4 w-4" />
@@ -629,7 +655,10 @@ export default function JokeComponent() {
 
                 {/* Category badge */}
                 <div className="flex justify-center">
-                  <span className="liquid-glass-subtle px-4 py-2 text-sm font-medium text-white/80">
+                  <span
+                    className="liquid-glass-subtle px-4 py-2 text-sm font-medium"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     {joke.category}
                   </span>
                 </div>
@@ -637,16 +666,25 @@ export default function JokeComponent() {
                 {/* Joke content */}
                 <div className="space-y-4 text-center">
                   {joke.type === 'single' ? (
-                    <p className="text-lg leading-relaxed font-medium text-white/90">
+                    <p
+                      className="text-lg leading-relaxed font-medium"
+                      style={{ color: 'var(--text-primary)' }}
+                    >
                       {joke.joke}
                     </p>
                   ) : (
                     <div className="space-y-3">
-                      <p className="text-lg leading-relaxed font-medium text-white/90">
+                      <p
+                        className="text-lg leading-relaxed font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
                         {joke.setup}
                       </p>
                       <div className="liquid-glass-subtle rounded-2xl px-4 py-3">
-                        <p className="text-lg leading-relaxed font-semibold text-white/95">
+                        <p
+                          className="text-lg leading-relaxed font-semibold"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
                           {joke.delivery}
                         </p>
                       </div>

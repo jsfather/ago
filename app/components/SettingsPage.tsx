@@ -1,6 +1,7 @@
 'use client';
 
 import { useJokeSettings } from '../hooks/useJokeSettings';
+import { useTheme } from '../hooks/useTheme';
 
 const AVAILABLE_CATEGORIES = [
   'Any',
@@ -33,17 +34,26 @@ const AVAILABLE_LANGUAGES = [
 export default function SettingsPage() {
   const { settings, updateSettings, resetSettings, isLoaded } =
     useJokeSettings();
+  const { theme, setTheme, isLoaded: themeLoaded } = useTheme();
 
-  if (!isLoaded) {
+  if (!isLoaded || !themeLoaded) {
     return (
       <div
         className="flex min-h-screen items-center justify-center px-4 pt-6 pb-20"
-        style={{ backgroundColor: '#081827' }}
+        style={{ backgroundColor: 'var(--primary-bg)' }}
       >
         <div className="liquid-glass px-8 py-4">
           <div className="flex items-center space-x-2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white/90"></div>
-            <span className="text-white/80">Loading settings...</span>
+            <div
+              className="h-4 w-4 animate-spin rounded-full border-2 border-t-white/90"
+              style={{
+                borderColor: 'var(--text-tertiary)',
+                borderTopColor: 'var(--text-primary)',
+              }}
+            ></div>
+            <span style={{ color: 'var(--text-secondary)' }}>
+              Loading settings...
+            </span>
           </div>
         </div>
       </div>
@@ -77,26 +87,118 @@ export default function SettingsPage() {
   return (
     <div
       className="min-h-screen px-4 pt-6 pb-20"
-      style={{ backgroundColor: '#081827' }}
+      style={{ backgroundColor: 'var(--primary-bg)' }}
     >
       <div className="mx-auto max-w-md">
+        {/* General Settings Section */}
+        <div className="mb-6" dir="ltr">
+          <div className="liquid-glass overflow-hidden">
+            <div className="space-y-6 p-6">
+              {/* Section Header */}
+              <div className="border-b border-white/10 pb-4 text-center">
+                <h2
+                  className="mb-2 text-xl font-bold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  ⚙️ General Settings
+                </h2>
+                <p
+                  className="font-mono text-sm"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Application preferences
+                </p>
+              </div>
+
+              {/* Theme Selection */}
+              <div>
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Theme
+                </h3>
+                <div className="space-y-2">
+                  <label className="flex cursor-pointer items-center space-x-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all duration-200 hover:bg-white/10">
+                    <input
+                      type="radio"
+                      name="theme"
+                      value="dark"
+                      checked={theme === 'dark'}
+                      onChange={(e) =>
+                        setTheme(e.target.value as 'dark' | 'light')
+                      }
+                      className="h-4 w-4 border-white/30 bg-transparent text-blue-500 focus:ring-blue-500/50"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">🌙</span>
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Dark Mode
+                      </span>
+                    </div>
+                  </label>
+                  <label className="flex cursor-pointer items-center space-x-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all duration-200 hover:bg-white/10">
+                    <input
+                      type="radio"
+                      name="theme"
+                      value="light"
+                      checked={theme === 'light'}
+                      onChange={(e) =>
+                        setTheme(e.target.value as 'dark' | 'light')
+                      }
+                      className="h-4 w-4 border-white/30 bg-transparent text-blue-500 focus:ring-blue-500/50"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">☀️</span>
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Light Mode
+                      </span>
+                    </div>
+                  </label>
+                </div>
+                <p
+                  className="mt-2 font-mono text-xs"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
+                  Choose your preferred theme appearance
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Joke Settings Section */}
         <div className="mb-6" dir="ltr">
           <div className="liquid-glass overflow-hidden">
             <div className="space-y-6 p-6">
               {/* Section Header */}
               <div className="border-b border-white/10 pb-4 text-center">
-                <h2 className="mb-2 text-xl font-bold text-white/95">
+                <h2
+                  className="mb-2 text-xl font-bold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   🎭 Joke Settings
                 </h2>
-                <p className="font-mono text-sm text-white/70">
+                <p
+                  className="font-mono text-sm"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   Customize your joke preferences
                 </p>
               </div>
 
               {/* Categories */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-white/90">
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Categories
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -113,7 +215,12 @@ export default function SettingsPage() {
                         }
                         className="h-4 w-4 rounded border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-white/80">{category}</span>
+                      <span
+                        className="text-sm"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        {category}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -121,14 +228,18 @@ export default function SettingsPage() {
 
               {/* Language */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-white/90">
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Language
                 </h3>
                 <div className="relative">
                   <select
                     value={settings.lang}
                     onChange={(e) => updateSettings({ lang: e.target.value })}
-                    className="w-full cursor-pointer appearance-none rounded-lg border border-white/30 bg-white/10 px-3 py-2 pr-10 text-white/90 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+                    className="w-full cursor-pointer appearance-none rounded-lg border border-white/30 bg-white/10 px-3 py-2 pr-10 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+                    style={{ color: 'var(--text-primary)' }}
                   >
                     {AVAILABLE_LANGUAGES.map((lang) => (
                       <option
@@ -143,7 +254,8 @@ export default function SettingsPage() {
                   {/* Custom chevron icon */}
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                     <svg
-                      className="h-4 w-4 text-white/60"
+                      className="h-4 w-4"
+                      style={{ color: 'var(--text-tertiary)' }}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -161,7 +273,10 @@ export default function SettingsPage() {
 
               {/* Joke Type */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-white/90">
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Joke Type
                 </h3>
                 <div className="space-y-2">
@@ -189,7 +304,10 @@ export default function SettingsPage() {
                         }
                         className="h-4 w-4 border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-white/80">
+                      <span
+                        className="text-sm"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
                         {type.label}
                       </span>
                     </label>
@@ -199,7 +317,10 @@ export default function SettingsPage() {
 
               {/* Safe Mode */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-white/90">
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Safe Mode
                 </h3>
                 <label className="flex cursor-pointer items-center space-x-3">
@@ -212,10 +333,16 @@ export default function SettingsPage() {
                     className="h-4 w-4 rounded border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <div>
-                    <span className="block text-sm text-white/80">
+                    <span
+                      className="block text-sm"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
                       Enable Safe Mode
                     </span>
-                    <span className="font-mono text-xs text-white/50">
+                    <span
+                      className="font-mono text-xs"
+                      style={{ color: 'var(--text-tertiary)' }}
+                    >
                       Only show jokes safe for everyone
                     </span>
                   </div>
@@ -224,10 +351,16 @@ export default function SettingsPage() {
 
               {/* Blacklist Flags */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-white/90">
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Content Filters
                 </h3>
-                <p className="mb-3 font-mono text-xs text-white/60">
+                <p
+                  className="mb-3 font-mono text-xs"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
                   Block jokes with these content types:
                 </p>
                 <div className="grid grid-cols-2 gap-3">
@@ -244,7 +377,10 @@ export default function SettingsPage() {
                         }
                         className="h-4 w-4 rounded border-white/30 bg-white/10 text-red-600 focus:ring-2 focus:ring-red-500"
                       />
-                      <span className="text-sm text-white/80 capitalize">
+                      <span
+                        className="text-sm capitalize"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
                         {flag}
                       </span>
                     </label>
@@ -254,7 +390,10 @@ export default function SettingsPage() {
 
               {/* Amount */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-white/90">
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Jokes per Request
                 </h3>
                 <div className="flex items-center space-x-4">
@@ -268,11 +407,17 @@ export default function SettingsPage() {
                     }
                     className="h-2 flex-1 cursor-pointer appearance-none rounded-lg bg-white/20"
                   />
-                  <span className="w-8 text-center font-mono text-white/80">
+                  <span
+                    className="w-8 text-center font-mono"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     {settings.amount}
                   </span>
                 </div>
-                <p className="mt-1 font-mono text-xs text-white/50">
+                <p
+                  className="mt-1 font-mono text-xs"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
                   Number of jokes to fetch at once (1-10)
                 </p>
               </div>
@@ -286,19 +431,6 @@ export default function SettingsPage() {
                   Reset to Defaults
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Other Settings Placeholder */}
-        <div className="liquid-glass overflow-hidden">
-          <div className="p-8 text-center">
-            <div className="mb-4 text-6xl">⚙️</div>
-            <div className="text-lg font-medium text-white/70">
-              More Settings
-            </div>
-            <div className="mt-2 font-mono text-sm text-white/50">
-              Additional settings will be added in future updates
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div
       className="min-h-screen overflow-y-auto px-4 pb-20"
-      style={{ backgroundColor: '#081827' }}
+      style={{ backgroundColor: 'var(--primary-bg)' }}
     >
       <div className="flex flex-col py-6">
         {/* Progress bar section - at the top */}
@@ -71,7 +71,10 @@ export default function Home() {
                               <div className="liquid-glass-subtle">
                                 {/* Number text with liquid effect - responsive sizing */}
                                 <div className="relative px-4 py-2 font-mono text-4xl font-black tracking-tight md:px-6 md:py-3 md:text-6xl">
-                                  <div className="relative text-white/95">
+                                  <div
+                                    className="relative"
+                                    style={{ color: 'var(--text-primary)' }}
+                                  >
                                     {unit.value}
                                   </div>
                                 </div>
@@ -80,7 +83,10 @@ export default function Home() {
 
                             {/* Liquid glass label - responsive sizing */}
                             <div className="liquid-glass-subtle px-3 py-1.5 md:px-4 md:py-2">
-                              <div className="text-lg font-bold tracking-wide text-white/70 md:text-xl">
+                              <div
+                                className="text-lg font-bold tracking-wide md:text-xl"
+                                style={{ color: 'var(--text-secondary)' }}
+                              >
                                 {unit.label}
                               </div>
                             </div>
@@ -91,7 +97,10 @@ export default function Home() {
                   {currentDate && timeUnits.every((unit) => !unit.show) && (
                     <div className="relative">
                       <div className="liquid-glass-subtle px-6 py-4 md:px-8 md:py-6">
-                        <div className="text-center text-xl font-bold text-white/70 md:text-2xl">
+                        <div
+                          className="text-center text-xl font-bold md:text-2xl"
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
                           هنوز زمانی نگذشته
                         </div>
                       </div>
