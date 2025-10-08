@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Share2 } from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
 
 interface JokeResponse {
@@ -130,6 +131,355 @@ export default function JokeComponent() {
     return colors[flag] || 'bg-gray-500/20 text-gray-300 border-gray-500/30';
   };
 
+  const createJokeImage = async (joke: JokeResponse) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Helper function for rounded rectangles
+    const roundRect = (
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      radius: number
+    ) => {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
+      );
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    };
+
+    // Calculate dimensions based on actual CSS classes
+    const cardMaxWidth = 448; // max-w-md in pixels (28rem = 448px)
+    const cardPadding = 48; // p-6 = 24px * 2 sides = 48px total
+    const spaceY4 = 16; // space-y-4 = 1rem = 16px
+    const spaceY3 = 12; // space-y-3 = 0.75rem = 12px
+    const cardMargin = 32; // Margin around the card for better visibility
+
+    // Calculate content width (inside p-6 padding)
+    const contentWidth = cardMaxWidth - cardPadding;
+
+    // Set fonts for measurements
+    ctx.font = '500 14px monospace'; // text-sm font-medium
+    const categoryText = joke.category;
+    const categoryMetrics = ctx.measureText(categoryText);
+    const categoryBadgeWidth = categoryMetrics.width + 32; // px-4 = 16px * 2 = 32px
+    const categoryBadgeHeight = 28; // py-2 = 8px * 2 + font height
+
+    // Calculate joke content dimensions
+    ctx.font = '500 18px monospace'; // text-lg font-medium, leading-relaxed
+    const lineHeight = Math.floor(18 * 1.625); // leading-relaxed = 1.625
+
+    let contentHeight = 0;
+    let deliveryBoxHeight = 0;
+
+    if (joke.type === 'single') {
+      const lines = wrapText(ctx, joke.joke || '', contentWidth);
+      contentHeight = lines.length * lineHeight;
+    } else {
+      const setupLines = wrapText(ctx, joke.setup || '', contentWidth);
+      const setupHeight = setupLines.length * lineHeight;
+
+      // Delivery box: px-4 py-3 = 16px horizontal, 12px vertical * 2 = 24px
+      const deliveryPadding = 24; // py-3 = 12px * 2
+      const deliveryContentWidth = contentWidth - 32; // px-4 = 16px * 2
+      ctx.font = '600 18px monospace'; // text-lg font-semibold
+      const deliveryLines = wrapText(
+        ctx,
+        joke.delivery || '',
+        deliveryContentWidth
+      );
+      const deliveryContentHeight = deliveryLines.length * lineHeight;
+      deliveryBoxHeight = deliveryContentHeight + deliveryPadding;
+
+      contentHeight = setupHeight + spaceY3 + deliveryBoxHeight;
+    }
+
+    // Calculate flags height if any
+    const activeFlags = getActiveFlags(joke.flags);
+    let flagsHeight = 0;
+    if (joke.safe && activeFlags.length > 0) {
+      flagsHeight = spaceY4 + 1 + 16; // border-t + pt-4 + flag height (py-1 = 4px * 2 + 12px font)
+    }
+
+    // Total card content height: p-6 + category + space-y-4 + content + space-y-4 + flags
+    let cardContentHeight = cardPadding; // p-6 top and bottom
+    cardContentHeight += categoryBadgeHeight; // category badge
+    cardContentHeight += spaceY4; // space-y-4 after category
+    cardContentHeight += contentHeight; // joke content
+    if (flagsHeight > 0) {
+      cardContentHeight += flagsHeight; // flags section if present
+    }
+
+    // Set final canvas size
+    canvas.width = cardMaxWidth + cardMargin * 2;
+    canvas.height = cardContentHeight + cardMargin * 2;
+
+    // Create gradient background
+    const gradient = ctx.createLinearGradient(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+    gradient.addColorStop(0, '#081827');
+    gradient.addColorStop(1, '#0a1a2e');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Card positioning
+    const cardX = cardMargin;
+    const cardY = cardMargin;
+    const cardWidth = cardMaxWidth;
+    const cardHeight = cardContentHeight;
+
+    // Glass background
+    const glassGradient = ctx.createLinearGradient(
+      cardX,
+      cardY,
+      cardX + cardWidth,
+      cardY + cardHeight
+    );
+    glassGradient.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+    glassGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.05)');
+    glassGradient.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
+
+    ctx.fillStyle = glassGradient;
+    roundRect(cardX, cardY, cardWidth, cardHeight, 24);
+    ctx.fill();
+
+    // Add border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 1;
+    roundRect(cardX, cardY, cardWidth, cardHeight, 24);
+    ctx.stroke();
+
+    // Start content positioning (p-6 = 24px from top)
+    let currentY = cardY + 24;
+
+    // Category badge
+    ctx.font = '500 14px monospace'; // text-sm font-medium
+    const categoryBadgeX = (canvas.width - categoryBadgeWidth) / 2;
+
+    // Category badge background
+    const categoryBadgeGradient = ctx.createLinearGradient(
+      categoryBadgeX,
+      currentY,
+      categoryBadgeX + categoryBadgeWidth,
+      currentY + categoryBadgeHeight
+    );
+    categoryBadgeGradient.addColorStop(0, 'rgba(255, 255, 255, 0.06)');
+    categoryBadgeGradient.addColorStop(1, 'rgba(255, 255, 255, 0.03)');
+    ctx.fillStyle = categoryBadgeGradient;
+    roundRect(
+      categoryBadgeX,
+      currentY,
+      categoryBadgeWidth,
+      categoryBadgeHeight,
+      20
+    );
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    roundRect(
+      categoryBadgeX,
+      currentY,
+      categoryBadgeWidth,
+      categoryBadgeHeight,
+      20
+    );
+    ctx.stroke();
+
+    // Category text (centered in badge)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    const categoryTextY = currentY + categoryBadgeHeight / 2 + 5; // Center vertically
+    ctx.fillText(categoryText, categoryBadgeX + 16, categoryTextY);
+
+    currentY += categoryBadgeHeight + spaceY4; // space-y-4
+
+    // Joke content
+    ctx.font = '500 18px monospace'; // text-lg font-medium
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+
+    if (joke.type === 'single') {
+      const lines = wrapText(ctx, joke.joke || '', contentWidth);
+      lines.forEach((line) => {
+        const lineMetrics = ctx.measureText(line);
+        ctx.fillText(
+          line,
+          (canvas.width - lineMetrics.width) / 2,
+          currentY + 18
+        ); // baseline
+        currentY += lineHeight;
+      });
+    } else {
+      // Setup
+      const setupLines = wrapText(ctx, joke.setup || '', contentWidth);
+      setupLines.forEach((line) => {
+        const lineMetrics = ctx.measureText(line);
+        ctx.fillText(
+          line,
+          (canvas.width - lineMetrics.width) / 2,
+          currentY + 18
+        );
+        currentY += lineHeight;
+      });
+
+      currentY += spaceY3; // space-y-3 between setup and delivery
+
+      // Delivery background (liquid-glass-subtle rounded-2xl px-4 py-3)
+      const deliveryContentWidth = contentWidth - 32; // px-4 = 16px * 2
+      const deliveryLines = wrapText(
+        ctx,
+        joke.delivery || '',
+        deliveryContentWidth
+      );
+      const deliveryX = cardX + 24 + 16; // card padding + px-4
+      const deliveryWidth = deliveryContentWidth;
+
+      const deliveryGradient = ctx.createLinearGradient(
+        deliveryX,
+        currentY,
+        deliveryX + deliveryWidth,
+        currentY + deliveryBoxHeight
+      );
+      deliveryGradient.addColorStop(0, 'rgba(255, 255, 255, 0.06)');
+      deliveryGradient.addColorStop(1, 'rgba(255, 255, 255, 0.03)');
+      ctx.fillStyle = deliveryGradient;
+      roundRect(
+        deliveryX - 16,
+        currentY,
+        deliveryWidth + 32,
+        deliveryBoxHeight,
+        20
+      ); // Include px-4 padding
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      roundRect(
+        deliveryX - 16,
+        currentY,
+        deliveryWidth + 32,
+        deliveryBoxHeight,
+        20
+      );
+      ctx.stroke();
+
+      // Delivery text (py-3 = 12px top padding)
+      ctx.font = '600 18px monospace'; // text-lg font-semibold
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      let deliveryY = currentY + 12 + 18; // py-3 top + baseline
+      deliveryLines.forEach((line) => {
+        const lineMetrics = ctx.measureText(line);
+        ctx.fillText(line, (canvas.width - lineMetrics.width) / 2, deliveryY);
+        deliveryY += lineHeight;
+      });
+
+      currentY += deliveryBoxHeight;
+    }
+
+    // Render flags if present and joke is safe (border-t border-white/10 pt-4)
+    if (joke.safe && activeFlags.length > 0) {
+      currentY += spaceY4; // space-y-4 before border
+
+      // Draw border line
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cardX + 24, currentY);
+      ctx.lineTo(cardX + cardWidth - 24, currentY);
+      ctx.stroke();
+
+      currentY += 1 + 16; // border + pt-4
+
+      // Calculate flags layout (gap-2 = 8px)
+      ctx.font = '500 12px monospace'; // text-xs font-medium
+      const flagGap = 8; // gap-2
+      let totalFlagsWidth = 0;
+      const flagWidths: number[] = [];
+
+      activeFlags.forEach((flag) => {
+        const flagMetrics = ctx.measureText(flag);
+        const flagWidth = flagMetrics.width + 16; // px-2 = 8px * 2
+        flagWidths.push(flagWidth);
+        totalFlagsWidth += flagWidth;
+      });
+      totalFlagsWidth += (activeFlags.length - 1) * flagGap; // gaps between flags
+
+      let flagX = (canvas.width - totalFlagsWidth) / 2;
+
+      activeFlags.forEach((flag, index) => {
+        const flagWidth = flagWidths[index];
+        const flagHeight = 20; // py-1 = 4px * 2 + 12px font height
+
+        // Flag background
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+        roundRect(flagX, currentY - 4, flagWidth, flagHeight, 8); // rounded-lg
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        roundRect(flagX, currentY - 4, flagWidth, flagHeight, 8);
+        ctx.stroke();
+
+        // Flag text
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillText(flag, flagX + 8, currentY + 8); // px-2 + baseline
+
+        flagX += flagWidth + flagGap;
+      });
+    }
+
+    // Convert to blob and trigger download
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `joke-${joke.id || Date.now()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    });
+  };
+
+  const wrapText = (
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number
+  ): string[] => {
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = ctx.measureText(currentLine + ' ' + word).width;
+      if (width < maxWidth) {
+        currentLine += ' ' + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    lines.push(currentLine);
+    return lines;
+  };
+
   return (
     <div className="mx-auto w-full max-w-md font-mono" dir="ltr">
       {/* Joke trigger button and close button */}
@@ -240,6 +590,15 @@ export default function JokeComponent() {
               className="liquid-glass animate-bloop-in overflow-hidden"
             >
               <div className="relative space-y-4 p-6">
+                {/* Share button - positioned absolutely in top right */}
+                <button
+                  onClick={() => createJokeImage(joke)}
+                  className="liquid-glass-subtle absolute top-3 right-3 p-2 text-white/70 transition-all duration-300 hover:scale-110 hover:text-white/90"
+                  title="Share joke as image"
+                >
+                  <Share2 className="h-4 w-4" />
+                </button>
+
                 {/* Category badge */}
                 <div className="flex justify-center">
                   <span className="liquid-glass-subtle px-4 py-2 text-sm font-medium text-white/80">
