@@ -95,7 +95,10 @@ export default function SettingsPage() {
           <div className="liquid-glass overflow-hidden">
             <div className="space-y-6 p-6">
               {/* Section Header */}
-              <div className="border-b border-white/10 pb-4 text-center">
+              <div
+                className="border-b pb-4 text-center"
+                style={{ borderColor: 'var(--glass-border)' }}
+              >
                 <h2
                   className="mb-2 text-xl font-bold"
                   style={{ color: 'var(--text-primary)' }}
@@ -119,7 +122,7 @@ export default function SettingsPage() {
                   Theme
                 </h3>
                 <div className="space-y-2">
-                  <label className="flex cursor-pointer items-center space-x-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all duration-200 hover:bg-white/10">
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
                     <input
                       type="radio"
                       name="theme"
@@ -128,7 +131,7 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setTheme(e.target.value as 'dark' | 'light')
                       }
-                      className="h-4 w-4 border-white/30 bg-transparent text-blue-500 focus:ring-blue-500/50"
+                      className="theme-checkbox h-4 w-4 text-blue-500 focus:ring-blue-500/50"
                     />
                     <div className="flex items-center space-x-2">
                       <span className="text-lg">🌙</span>
@@ -140,7 +143,7 @@ export default function SettingsPage() {
                       </span>
                     </div>
                   </label>
-                  <label className="flex cursor-pointer items-center space-x-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all duration-200 hover:bg-white/10">
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
                     <input
                       type="radio"
                       name="theme"
@@ -149,7 +152,7 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setTheme(e.target.value as 'dark' | 'light')
                       }
-                      className="h-4 w-4 border-white/30 bg-transparent text-blue-500 focus:ring-blue-500/50"
+                      className="theme-checkbox h-4 w-4 text-blue-500 focus:ring-blue-500/50"
                     />
                     <div className="flex items-center space-x-2">
                       <span className="text-lg">☀️</span>
@@ -178,7 +181,10 @@ export default function SettingsPage() {
           <div className="liquid-glass overflow-hidden">
             <div className="space-y-6 p-6">
               {/* Section Header */}
-              <div className="border-b border-white/10 pb-4 text-center">
+              <div
+                className="border-b pb-4 text-center"
+                style={{ borderColor: 'var(--glass-border)' }}
+              >
                 <h2
                   className="mb-2 text-xl font-bold"
                   style={{ color: 'var(--text-primary)' }}
@@ -213,7 +219,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleCategoryChange(category, e.target.checked)
                         }
-                        className="h-4 w-4 rounded border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        className="theme-checkbox h-4 w-4 rounded text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
                       <span
                         className="text-sm"
@@ -238,8 +244,7 @@ export default function SettingsPage() {
                   <select
                     value={settings.lang}
                     onChange={(e) => updateSettings({ lang: e.target.value })}
-                    className="w-full cursor-pointer appearance-none rounded-lg border border-white/30 bg-white/10 px-3 py-2 pr-10 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-                    style={{ color: 'var(--text-primary)' }}
+                    className="theme-input w-full cursor-pointer appearance-none rounded-lg border px-3 py-2 pr-10 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   >
                     {AVAILABLE_LANGUAGES.map((lang) => (
                       <option
@@ -302,7 +307,7 @@ export default function SettingsPage() {
                               | 'any',
                           })
                         }
-                        className="h-4 w-4 border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        className="theme-checkbox h-4 w-4 border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
                       <span
                         className="text-sm"
@@ -330,7 +335,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       updateSettings({ safeMode: e.target.checked })
                     }
-                    className="h-4 w-4 rounded border-white/30 bg-white/10 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                    className="theme-checkbox h-4 w-4 rounded text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <div>
                     <span
@@ -375,7 +380,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           handleFlagChange(flag, e.target.checked)
                         }
-                        className="h-4 w-4 rounded border-white/30 bg-white/10 text-red-600 focus:ring-2 focus:ring-red-500"
+                        className="theme-checkbox h-4 w-4 rounded text-red-600 focus:ring-2 focus:ring-red-500"
                       />
                       <span
                         className="text-sm capitalize"
@@ -405,7 +410,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       updateSettings({ amount: parseInt(e.target.value) })
                     }
-                    className="h-2 flex-1 cursor-pointer appearance-none rounded-lg bg-white/20"
+                    className="theme-range h-2 flex-1 cursor-pointer appearance-none rounded-lg"
                   />
                   <span
                     className="w-8 text-center font-mono"
@@ -423,10 +428,13 @@ export default function SettingsPage() {
               </div>
 
               {/* Reset Button */}
-              <div className="border-t border-white/10 pt-4">
+              <div
+                className="border-t pt-4"
+                style={{ borderColor: 'var(--glass-border)' }}
+              >
                 <button
                   onClick={resetSettings}
-                  className="w-full rounded-lg border border-red-500/30 bg-red-500/20 px-4 py-3 font-medium text-red-300 transition-all duration-300 hover:scale-105 hover:bg-red-500/30"
+                  className="theme-button-danger w-full rounded-lg border px-4 py-3 font-medium transition-all duration-300 hover:scale-105"
                 >
                   Reset to Defaults
                 </button>
