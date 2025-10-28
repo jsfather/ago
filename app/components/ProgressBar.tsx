@@ -2,12 +2,15 @@
 
 import { DateObject } from 'react-multi-date-picker';
 import { useMemo } from 'react';
+import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
 
 interface ProgressBarProps {
   dateRange: DateObject[] | null;
 }
 
 export default function ProgressBar({ dateRange }: ProgressBarProps) {
+  const { format } = useTimeDisplayFormat();
+
   const progressData = useMemo(() => {
     if (!dateRange || dateRange.length < 2) {
       return null;
@@ -50,6 +53,38 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     };
   }, [dateRange]);
 
+  // Helper function to format time based on selected format
+  const formatRemainingTime = (
+    days: number
+  ): { value: number; unit: string } => {
+    switch (format) {
+      case 'months':
+        const months = Math.round(days / 30.44); // Average days per month
+        return { value: months, unit: 'ماه' };
+      case 'years':
+        const years = Math.round(days / 365.25); // Account for leap years
+        return { value: years, unit: 'سال' };
+      case 'days':
+      default:
+        return { value: days, unit: 'روز' };
+    }
+  };
+
+  // Helper function to format total time
+  const formatTotalTime = (days: number): { value: number; unit: string } => {
+    switch (format) {
+      case 'months':
+        const months = Math.round(days / 30.44);
+        return { value: months, unit: 'ماه' };
+      case 'years':
+        const years = Math.round(days / 365.25);
+        return { value: years, unit: 'سال' };
+      case 'days':
+      default:
+        return { value: days, unit: 'روز' };
+    }
+  };
+
   if (!progressData) {
     return null;
   }
@@ -75,9 +110,10 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     if (isComplete) {
       return 'کامل شده';
     } else if (hasStarted) {
+      const { value, unit } = formatRemainingTime(remainingDays);
       return (
         <>
-          <span>{remainingDays}</span> روز باقی مانده
+          <span>{value}</span> {unit} باقی مانده
         </>
       );
     } else {
@@ -141,7 +177,8 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                   className="text-xs font-medium"
                   style={{ color: 'var(--text-secondary)' }}
                 >
-                  <span>{totalDays}</span> روز کل
+                  <span>{formatTotalTime(totalDays).value}</span>{' '}
+                  {formatTotalTime(totalDays).unit} کل
                 </div>
               </div>
             </div>

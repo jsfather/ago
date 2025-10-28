@@ -2,6 +2,7 @@
 
 import { useJokeSettings } from '../hooks/useJokeSettings';
 import { useTheme } from '../hooks/useTheme';
+import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
 
 const AVAILABLE_CATEGORIES = [
   'Any',
@@ -35,8 +36,13 @@ export default function SettingsPage() {
   const { settings, updateSettings, resetSettings, isLoaded } =
     useJokeSettings();
   const { theme, setTheme, isLoaded: themeLoaded } = useTheme();
+  const {
+    format,
+    setFormat,
+    isLoaded: timeFormatLoaded,
+  } = useTimeDisplayFormat();
 
-  if (!isLoaded || !themeLoaded) {
+  if (!isLoaded || !themeLoaded || !timeFormatLoaded) {
     return (
       <div
         className="flex min-h-screen items-center justify-center px-4 pt-6 pb-20"
@@ -191,6 +197,87 @@ export default function SettingsPage() {
                   style={{ color: 'var(--text-tertiary)' }}
                 >
                   Choose your preferred theme or use system setting
+                </p>
+              </div>
+
+              {/* Time Display Format */}
+              <div>
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Time Display Format
+                </h3>
+                <div className="space-y-2">
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="timeFormat"
+                      value="days"
+                      checked={format === 'days'}
+                      onChange={(e) =>
+                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">📅</span>
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Days
+                      </span>
+                    </div>
+                  </label>
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="timeFormat"
+                      value="months"
+                      checked={format === 'months'}
+                      onChange={(e) =>
+                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">📆</span>
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Months
+                      </span>
+                    </div>
+                  </label>
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="timeFormat"
+                      value="years"
+                      checked={format === 'years'}
+                      onChange={(e) =>
+                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">📊</span>
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Years
+                      </span>
+                    </div>
+                  </label>
+                </div>
+                <p
+                  className="mt-2 font-mono text-xs"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
+                  Choose how to display remaining time
                 </p>
               </div>
             </div>
