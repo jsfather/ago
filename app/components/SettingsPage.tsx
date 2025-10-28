@@ -1,7 +1,19 @@
 'use client';
 
+import {
+  Calendar,
+  CalendarDays,
+  Calendar1,
+  Moon,
+  Sun,
+  Laptop,
+  Settings,
+  Drama,
+} from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
 import { useTheme } from '../hooks/useTheme';
+import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
+import { useSoldierMode } from '../hooks/useSoldierMode';
 
 const AVAILABLE_CATEGORIES = [
   'Any',
@@ -35,8 +47,20 @@ export default function SettingsPage() {
   const { settings, updateSettings, resetSettings, isLoaded } =
     useJokeSettings();
   const { theme, setTheme, isLoaded: themeLoaded } = useTheme();
+  const {
+    format,
+    setFormat,
+    isLoaded: timeFormatLoaded,
+  } = useTimeDisplayFormat();
+  const {
+    isSoldier,
+    explicitWords,
+    setIsSoldier,
+    setExplicitWords,
+    isLoaded: soldierLoaded,
+  } = useSoldierMode();
 
-  if (!isLoaded || !themeLoaded) {
+  if (!isLoaded || !themeLoaded || !timeFormatLoaded || !soldierLoaded) {
     return (
       <div
         className="flex min-h-screen items-center justify-center px-4 pt-6 pb-20"
@@ -84,6 +108,12 @@ export default function SettingsPage() {
     }
   };
 
+  const resetGeneralSettings = () => {
+    setTheme('system');
+    setFormat('months');
+    setIsSoldier(false);
+  };
+
   return (
     <div
       className="min-h-screen px-4 pt-6 pb-20"
@@ -100,10 +130,10 @@ export default function SettingsPage() {
                 style={{ borderColor: 'var(--glass-border)' }}
               >
                 <h2
-                  className="mb-2 text-xl font-bold"
+                  className="mb-2 flex items-center justify-center gap-2 text-xl font-bold"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  ⚙️ General Settings
+                  <Settings className="h-5 w-5" /> General Settings
                 </h2>
                 <p
                   className="font-mono text-sm"
@@ -134,7 +164,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">🌙</span>
+                      <Moon
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -155,7 +188,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">☀️</span>
+                      <Sun
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -176,7 +212,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">💻</span>
+                      <Laptop
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -193,6 +232,169 @@ export default function SettingsPage() {
                   Choose your preferred theme or use system setting
                 </p>
               </div>
+
+              {/* Time Display Format */}
+              <div>
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Time Display Format
+                </h3>
+                <div className="space-y-2">
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="timeFormat"
+                      value="days"
+                      checked={format === 'days'}
+                      onChange={(e) =>
+                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <CalendarDays
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Days
+                      </span>
+                    </div>
+                  </label>
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="timeFormat"
+                      value="months"
+                      checked={format === 'months'}
+                      onChange={(e) =>
+                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <Calendar
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Months
+                      </span>
+                    </div>
+                  </label>
+                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
+                    <input
+                      type="radio"
+                      name="timeFormat"
+                      value="years"
+                      checked={format === 'years'}
+                      onChange={(e) =>
+                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                      }
+                      className="theme-checkbox h-4 w-4"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <Calendar1
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
+                      <span
+                        className="font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
+                        Years
+                      </span>
+                    </div>
+                  </label>
+                </div>
+                <p
+                  className="mt-2 font-mono text-xs"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
+                  Choose how to display remaining time
+                </p>
+              </div>
+
+              {/* Soldier Mode */}
+              <div>
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Soldier Mode
+                </h3>
+                <div className="space-y-3">
+                  <label className="flex cursor-pointer items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      checked={isSoldier}
+                      onChange={(e) => setIsSoldier(e.target.checked)}
+                      className="theme-checkbox h-4 w-4 rounded"
+                    />
+                    <div>
+                      <span
+                        className="block text-sm"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        I&apos;m a soldier
+                      </span>
+                      <span
+                        className="font-mono text-xs"
+                        style={{ color: 'var(--text-tertiary)' }}
+                      >
+                        Show motivational messages for 21-month military service
+                      </span>
+                    </div>
+                  </label>
+
+                  {/* Explicit Words - Only show when soldier mode is active */}
+                  {isSoldier && (
+                    <label className="ml-6 flex cursor-pointer items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        checked={explicitWords}
+                        onChange={(e) => setExplicitWords(e.target.checked)}
+                        className="theme-checkbox h-4 w-4 rounded"
+                      />
+                      <div>
+                        <span
+                          className="block text-sm"
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
+                          Explicit words
+                        </span>
+                        <span
+                          className="font-mono text-xs"
+                          style={{ color: 'var(--text-tertiary)' }}
+                        >
+                          Show uncensored motivational phrases
+                        </span>
+                      </div>
+                    </label>
+                  )}
+                </div>
+              </div>
+
+              {/* Reset Button */}
+              <div
+                className="border-t pt-4"
+                style={{ borderColor: 'var(--glass-border)' }}
+              >
+                <button
+                  onClick={resetGeneralSettings}
+                  className="theme-button-danger w-full rounded-lg border px-4 py-3 font-medium transition-all duration-300 hover:scale-105"
+                >
+                  Reset to Defaults
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -207,10 +409,10 @@ export default function SettingsPage() {
                 style={{ borderColor: 'var(--glass-border)' }}
               >
                 <h2
-                  className="mb-2 text-xl font-bold"
+                  className="mb-2 flex items-center justify-center gap-2 text-xl font-bold"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  🎭 Joke Settings
+                  <Drama className="h-5 w-5" /> Joke Settings
                 </h2>
                 <p
                   className="font-mono text-sm"

@@ -2,12 +2,18 @@
 
 import { DateObject } from 'react-multi-date-picker';
 import { useMemo } from 'react';
+import { MedalMilitary } from '@phosphor-icons/react';
+import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
+import { useSoldierMode } from '../hooks/useSoldierMode';
 
 interface ProgressBarProps {
   dateRange: DateObject[] | null;
 }
 
 export default function ProgressBar({ dateRange }: ProgressBarProps) {
+  const { format } = useTimeDisplayFormat();
+  const { isSoldier, explicitWords } = useSoldierMode();
+
   const progressData = useMemo(() => {
     if (!dateRange || dateRange.length < 2) {
       return null;
@@ -50,6 +56,51 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     };
   }, [dateRange]);
 
+  // Helper function to format time based on selected format
+  const formatRemainingTime = (
+    days: number
+  ): { value: number; unit: string } => {
+    switch (format) {
+      case 'months':
+        const months = Math.round(days / 30.44); // Average days per month
+        return { value: months, unit: 'ماه' };
+      case 'years':
+        const years = Math.round(days / 365.25); // Account for leap years
+        return { value: years, unit: 'سال' };
+      case 'days':
+      default:
+        return { value: days, unit: 'روز' };
+    }
+  };
+
+  // Helper function to format total time
+  const formatTotalTime = (days: number): { value: number; unit: string } => {
+    switch (format) {
+      case 'months':
+        const months = Math.round(days / 30.44);
+        return { value: months, unit: 'ماه' };
+      case 'years':
+        const years = Math.round(days / 365.25);
+        return { value: years, unit: 'سال' };
+      case 'days':
+      default:
+        return { value: days, unit: 'روز' };
+    }
+  };
+
+  // Get soldier phrase based on progress (21 months service divided into 5 phases)
+  const getSoldierPhrase = (progressPercent: number): string => {
+    if (!isSoldier) return '';
+
+    if (progressPercent < 30) {
+      return explicitWords ? 'کس موتور' : 'موتور';
+    } else if (progressPercent < 60) {
+      return explicitWords ? 'خایه مال' : 'لنگه پا';
+    } else {
+      return 'نکشی';
+    }
+  };
+
   if (!progressData) {
     return null;
   }
@@ -75,9 +126,10 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     if (isComplete) {
       return 'کامل شده';
     } else if (hasStarted) {
+      const { value, unit } = formatRemainingTime(remainingDays);
       return (
         <>
-          <span>{remainingDays}</span> روز باقی مانده
+          <span>{value}</span> {unit} باقی مانده
         </>
       );
     } else {
@@ -124,25 +176,50 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
             </div>
 
             {/* Liquid glass status section */}
-            <div className="flex items-center justify-between">
-              {/* Status text container */}
-              <div className="rounded-md bg-white/[0.04] px-2 py-0.5">
-                <div
+            <div className="grid grid-cols-3 items-center gap-2">
+              {/* Status text container - Left */}
+              <div className="flex items-center justify-start gap-1">
+                <span
                   className="text-xs font-semibold tracking-wide"
                   style={{ color: 'var(--text-primary)' }}
                 >
                   {getStatusText()}
-                </div>
+                </span>
               </div>
 
-              {/* Total days container */}
-              <div className="rounded-md bg-white/[0.04] px-2 py-0.5">
-                <div
-                  className="text-xs font-medium"
+              {/* Soldier phrase - Center */}
+              <div className="flex items-center justify-center gap-1">
+                {isSoldier && hasStarted && !isComplete && (
+                  <>
+                    <MedalMilitary
+                      size={16}
+                      weight="fill"
+                      style={{ color: 'var(--text-primary)' }}
+                    />
+                    <span
+                      className="text-xs font-semibold tracking-wide"
+                      style={{ color: 'var(--text-primary)' }}
+                    >
+                      {getSoldierPhrase(progress)}
+                    </span>
+                    <MedalMilitary
+                      size={16}
+                      weight="fill"
+                      style={{ color: 'var(--text-primary)' }}
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* Total days container - Right */}
+              <div className="flex items-center justify-end gap-1">
+                <span
+                  className="text-xs font-semibold tracking-wide"
                   style={{ color: 'var(--text-secondary)' }}
                 >
-                  <span>{totalDays}</span> روز کل
-                </div>
+                  <span>{formatTotalTime(totalDays).value}</span>{' '}
+                  {formatTotalTime(totalDays).unit} کل
+                </span>
               </div>
             </div>
           </div>
