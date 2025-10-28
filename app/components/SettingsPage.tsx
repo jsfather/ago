@@ -102,7 +102,7 @@ export default function SettingsPage() {
 
   const resetGeneralSettings = () => {
     setTheme('system');
-    setFormat('days');
+    setFormat('months');
   };
 
   return (

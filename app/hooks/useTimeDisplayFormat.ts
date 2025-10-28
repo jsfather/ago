@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export type TimeDisplayFormat = 'days' | 'months' | 'years';
 
 const STORAGE_KEY = 'time-display-format';
-const DEFAULT_FORMAT: TimeDisplayFormat = 'days';
+const DEFAULT_FORMAT: TimeDisplayFormat = 'months';
 
 export function useTimeDisplayFormat() {
   const [format, setFormat] = useState<TimeDisplayFormat>(DEFAULT_FORMAT);
