@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Calendar,
   CalendarDays,
   Calendar1,
   Moon,
@@ -249,7 +248,7 @@ export default function SettingsPage() {
                       value="days"
                       checked={format === 'days'}
                       onChange={(e) =>
-                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                        setFormat(e.target.value as 'days' | 'months')
                       }
                       className="theme-checkbox h-4 w-4"
                     />
@@ -273,31 +272,7 @@ export default function SettingsPage() {
                       value="months"
                       checked={format === 'months'}
                       onChange={(e) =>
-                        setFormat(e.target.value as 'days' | 'months' | 'years')
-                      }
-                      className="theme-checkbox h-4 w-4"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Calendar
-                        className="h-5 w-5"
-                        style={{ color: 'var(--text-primary)' }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        Months
-                      </span>
-                    </div>
-                  </label>
-                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
-                    <input
-                      type="radio"
-                      name="timeFormat"
-                      value="years"
-                      checked={format === 'years'}
-                      onChange={(e) =>
-                        setFormat(e.target.value as 'days' | 'months' | 'years')
+                        setFormat(e.target.value as 'days' | 'months')
                       }
                       className="theme-checkbox h-4 w-4"
                     />
@@ -310,7 +285,7 @@ export default function SettingsPage() {
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
                       >
-                        Years
+                        Months
                       </span>
                     </div>
                   </label>

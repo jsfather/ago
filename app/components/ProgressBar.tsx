@@ -64,9 +64,6 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
       case 'months':
         const months = Math.round(days / 30.44); // Average days per month
         return { value: months, unit: 'ماه' };
-      case 'years':
-        const years = Math.round(days / 365.25); // Account for leap years
-        return { value: years, unit: 'سال' };
       case 'days':
       default:
         return { value: days, unit: 'روز' };
@@ -79,9 +76,6 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
       case 'months':
         const months = Math.round(days / 30.44);
         return { value: months, unit: 'ماه' };
-      case 'years':
-        const years = Math.round(days / 365.25);
-        return { value: years, unit: 'سال' };
       case 'days':
       default:
         return { value: days, unit: 'روز' };

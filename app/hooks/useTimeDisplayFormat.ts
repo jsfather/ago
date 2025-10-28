@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export type TimeDisplayFormat = 'days' | 'months' | 'years';
+export type TimeDisplayFormat = 'days' | 'months';
 
 const STORAGE_KEY = 'time-display-format';
 const DEFAULT_FORMAT: TimeDisplayFormat = 'months';
@@ -15,7 +15,7 @@ export function useTimeDisplayFormat() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && ['days', 'months', 'years'].includes(saved)) {
+      if (saved && ['days', 'months'].includes(saved)) {
         setFormat(saved as TimeDisplayFormat);
       }
     } catch (error) {
