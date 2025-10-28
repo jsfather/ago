@@ -13,6 +13,7 @@ import {
 import { useJokeSettings } from '../hooks/useJokeSettings';
 import { useTheme } from '../hooks/useTheme';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
+import { useSoldierMode } from '../hooks/useSoldierMode';
 
 const AVAILABLE_CATEGORIES = [
   'Any',
@@ -51,8 +52,15 @@ export default function SettingsPage() {
     setFormat,
     isLoaded: timeFormatLoaded,
   } = useTimeDisplayFormat();
+  const {
+    isSoldier,
+    explicitWords,
+    setIsSoldier,
+    setExplicitWords,
+    isLoaded: soldierLoaded,
+  } = useSoldierMode();
 
-  if (!isLoaded || !themeLoaded || !timeFormatLoaded) {
+  if (!isLoaded || !themeLoaded || !timeFormatLoaded || !soldierLoaded) {
     return (
       <div
         className="flex min-h-screen items-center justify-center px-4 pt-6 pb-20"
@@ -103,6 +111,7 @@ export default function SettingsPage() {
   const resetGeneralSettings = () => {
     setTheme('system');
     setFormat('months');
+    setIsSoldier(false);
   };
 
   return (
@@ -312,6 +321,66 @@ export default function SettingsPage() {
                 >
                   Choose how to display remaining time
                 </p>
+              </div>
+
+              {/* Soldier Mode */}
+              <div>
+                <h3
+                  className="mb-3 text-lg font-semibold"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Soldier Mode
+                </h3>
+                <div className="space-y-3">
+                  <label className="flex cursor-pointer items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      checked={isSoldier}
+                      onChange={(e) => setIsSoldier(e.target.checked)}
+                      className="theme-checkbox h-4 w-4 rounded"
+                    />
+                    <div>
+                      <span
+                        className="block text-sm"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        I'm a soldier
+                      </span>
+                      <span
+                        className="font-mono text-xs"
+                        style={{ color: 'var(--text-tertiary)' }}
+                      >
+                        Show motivational messages for 21-month military service
+                      </span>
+                    </div>
+                  </label>
+
+                  {/* Explicit Words - Only show when soldier mode is active */}
+                  {isSoldier && (
+                    <label className="ml-6 flex cursor-pointer items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        checked={explicitWords}
+                        onChange={(e) => setExplicitWords(e.target.checked)}
+                        className="theme-checkbox h-4 w-4 rounded"
+                      />
+                      <div>
+                        <span
+                          className="block text-sm"
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
+                          Explicit words
+                        </span>
+                        <span
+                          className="font-mono text-xs"
+                          style={{ color: 'var(--text-tertiary)' }}
+                        >
+                          Show uncensored motivational phrases
+                        </span>
+                      </div>
+                    </label>
+                  )}
+                </div>
               </div>
 
               {/* Reset Button */}

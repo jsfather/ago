@@ -2,7 +2,9 @@
 
 import { DateObject } from 'react-multi-date-picker';
 import { useMemo } from 'react';
+import { MedalMilitary } from '@phosphor-icons/react';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
+import { useSoldierMode } from '../hooks/useSoldierMode';
 
 interface ProgressBarProps {
   dateRange: DateObject[] | null;
@@ -10,6 +12,7 @@ interface ProgressBarProps {
 
 export default function ProgressBar({ dateRange }: ProgressBarProps) {
   const { format } = useTimeDisplayFormat();
+  const { isSoldier, explicitWords } = useSoldierMode();
 
   const progressData = useMemo(() => {
     if (!dateRange || dateRange.length < 2) {
@@ -82,6 +85,19 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
       case 'days':
       default:
         return { value: days, unit: 'روز' };
+    }
+  };
+
+  // Get soldier phrase based on progress (21 months service divided into 5 phases)
+  const getSoldierPhrase = (progressPercent: number): string => {
+    if (!isSoldier) return '';
+
+    if (progressPercent < 30) {
+      return explicitWords ? 'کس موتور' : 'موتور';
+    } else if (progressPercent < 60) {
+      return explicitWords ? 'خایه مال' : 'لنگه پا';
+    } else {
+      return 'نکشی';
     }
   };
 
@@ -160,26 +176,50 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
             </div>
 
             {/* Liquid glass status section */}
-            <div className="flex items-center justify-between">
-              {/* Status text container */}
-              <div className="rounded-md bg-white/[0.04] px-2 py-0.5">
-                <div
+            <div className="grid grid-cols-3 items-center gap-2">
+              {/* Status text container - Left */}
+              <div className="flex items-center justify-start gap-1">
+                <span
                   className="text-xs font-semibold tracking-wide"
                   style={{ color: 'var(--text-primary)' }}
                 >
                   {getStatusText()}
-                </div>
+                </span>
               </div>
 
-              {/* Total days container */}
-              <div className="rounded-md bg-white/[0.04] px-2 py-0.5">
-                <div
-                  className="text-xs font-medium"
+              {/* Soldier phrase - Center */}
+              <div className="flex items-center justify-center gap-1">
+                {isSoldier && hasStarted && !isComplete && (
+                  <>
+                    <MedalMilitary
+                      size={16}
+                      weight="fill"
+                      style={{ color: 'var(--text-primary)' }}
+                    />
+                    <span
+                      className="text-xs font-semibold tracking-wide"
+                      style={{ color: 'var(--text-primary)' }}
+                    >
+                      {getSoldierPhrase(progress)}
+                    </span>
+                    <MedalMilitary
+                      size={16}
+                      weight="fill"
+                      style={{ color: 'var(--text-primary)' }}
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* Total days container - Right */}
+              <div className="flex items-center justify-end gap-1">
+                <span
+                  className="text-xs font-semibold tracking-wide"
                   style={{ color: 'var(--text-secondary)' }}
                 >
                   <span>{formatTotalTime(totalDays).value}</span>{' '}
                   {formatTotalTime(totalDays).unit} کل
-                </div>
+                </span>
               </div>
             </div>
           </div>
