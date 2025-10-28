@@ -1,5 +1,6 @@
 'use client';
 
+import { Calendar, CalendarDays, Calendar1 } from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
 import { useTheme } from '../hooks/useTheme';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
@@ -221,7 +222,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">📅</span>
+                      <CalendarDays
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -242,7 +246,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">📆</span>
+                      <Calendar
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -263,7 +270,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">📊</span>
+                      <Calendar1
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
