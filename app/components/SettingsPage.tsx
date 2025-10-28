@@ -1,6 +1,15 @@
 'use client';
 
-import { Calendar, CalendarDays, Calendar1 } from 'lucide-react';
+import {
+  Calendar,
+  CalendarDays,
+  Calendar1,
+  Moon,
+  Sun,
+  Laptop,
+  Settings,
+  Drama,
+} from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
 import { useTheme } from '../hooks/useTheme';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
@@ -107,10 +116,10 @@ export default function SettingsPage() {
                 style={{ borderColor: 'var(--glass-border)' }}
               >
                 <h2
-                  className="mb-2 text-xl font-bold"
+                  className="mb-2 flex items-center justify-center gap-2 text-xl font-bold"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  ⚙️ General Settings
+                  <Settings className="h-5 w-5" /> General Settings
                 </h2>
                 <p
                   className="font-mono text-sm"
@@ -141,7 +150,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">🌙</span>
+                      <Moon
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -162,7 +174,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">☀️</span>
+                      <Sun
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -183,7 +198,10 @@ export default function SettingsPage() {
                       className="theme-checkbox h-4 w-4"
                     />
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">💻</span>
+                      <Laptop
+                        className="h-5 w-5"
+                        style={{ color: 'var(--text-primary)' }}
+                      />
                       <span
                         className="font-medium"
                         style={{ color: 'var(--text-primary)' }}
@@ -304,10 +322,10 @@ export default function SettingsPage() {
                 style={{ borderColor: 'var(--glass-border)' }}
               >
                 <h2
-                  className="mb-2 text-xl font-bold"
+                  className="mb-2 flex items-center justify-center gap-2 text-xl font-bold"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  🎭 Joke Settings
+                  <Drama className="h-5 w-5" /> Joke Settings
                 </h2>
                 <p
                   className="font-mono text-sm"
