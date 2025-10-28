@@ -100,6 +100,11 @@ export default function SettingsPage() {
     }
   };
 
+  const resetGeneralSettings = () => {
+    setTheme('system');
+    setFormat('days');
+  };
+
   return (
     <div
       className="min-h-screen px-4 pt-6 pb-20"
@@ -307,6 +312,19 @@ export default function SettingsPage() {
                 >
                   Choose how to display remaining time
                 </p>
+              </div>
+
+              {/* Reset Button */}
+              <div
+                className="border-t pt-4"
+                style={{ borderColor: 'var(--glass-border)' }}
+              >
+                <button
+                  onClick={resetGeneralSettings}
+                  className="theme-button-danger w-full rounded-lg border px-4 py-3 font-medium transition-all duration-300 hover:scale-105"
+                >
+                  Reset to Defaults
+                </button>
               </div>
             </div>
           </div>
