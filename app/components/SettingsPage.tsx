@@ -344,7 +344,7 @@ export default function SettingsPage() {
                         className="block text-sm"
                         style={{ color: 'var(--text-secondary)' }}
                       >
-                        I'm a soldier
+                        I&apos;m a soldier
                       </span>
                       <span
                         className="font-mono text-xs"
