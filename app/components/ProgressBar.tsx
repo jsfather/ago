@@ -12,7 +12,7 @@ interface ProgressBarProps {
 
 export default function ProgressBar({ dateRange }: ProgressBarProps) {
   const { format } = useTimeDisplayFormat();
-  const { isSoldier, explicitWords } = useSoldierMode();
+  const { isSoldier } = useSoldierMode();
 
   const progressData = useMemo(() => {
     if (!dateRange || dateRange.length < 2) {
@@ -82,16 +82,26 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     }
   };
 
-  // Get soldier phrase based on progress (21 months service divided into 5 phases)
+  // Get soldier phrase based on progress (8 phases, each representing ~3 months)
   const getSoldierPhrase = (progressPercent: number): string => {
     if (!isSoldier) return '';
 
-    if (progressPercent < 30) {
-      return explicitWords ? 'کس موتور' : 'موتور';
-    } else if (progressPercent < 60) {
-      return explicitWords ? 'خایه مال' : 'لنگه پا';
+    if (progressPercent < 12.5) {
+      return 'سوپر موتور';
+    } else if (progressPercent < 25) {
+      return 'موتور';
+    } else if (progressPercent < 37.5) {
+      return 'جدید';
+    } else if (progressPercent < 50) {
+      return 'صفر ترکیده';
+    } else if (progressPercent < 62.5) {
+      return 'قدیمی';
+    } else if (progressPercent < 75) {
+      return 'سالار';
+    } else if (progressPercent < 87.5) {
+      return 'مت یاکوزا';
     } else {
-      return 'نکشی';
+      return 'مت مهربانی';
     }
   };
 

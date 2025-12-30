@@ -4,13 +4,11 @@ import { useState, useEffect } from 'react';
 
 interface SoldierModeSettings {
   isSoldier: boolean;
-  explicitWords: boolean;
 }
 
 const STORAGE_KEY = 'soldier-mode';
 const DEFAULT_SETTINGS: SoldierModeSettings = {
   isSoldier: false,
-  explicitWords: false,
 };
 
 export function useSoldierMode() {
@@ -48,15 +46,9 @@ export function useSoldierMode() {
     setSettings((prev) => ({ ...prev, isSoldier: value }));
   };
 
-  const setExplicitWords = (value: boolean) => {
-    setSettings((prev) => ({ ...prev, explicitWords: value }));
-  };
-
   return {
     isSoldier: settings.isSoldier,
-    explicitWords: settings.explicitWords,
     setIsSoldier,
-    setExplicitWords,
     isLoaded,
   };
 }

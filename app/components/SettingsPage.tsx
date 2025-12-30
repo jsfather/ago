@@ -51,13 +51,7 @@ export default function SettingsPage() {
     setFormat,
     isLoaded: timeFormatLoaded,
   } = useTimeDisplayFormat();
-  const {
-    isSoldier,
-    explicitWords,
-    setIsSoldier,
-    setExplicitWords,
-    isLoaded: soldierLoaded,
-  } = useSoldierMode();
+  const { isSoldier, setIsSoldier, isLoaded: soldierLoaded } = useSoldierMode();
 
   if (!isLoaded || !themeLoaded || !timeFormatLoaded || !soldierLoaded) {
     return (
@@ -325,36 +319,10 @@ export default function SettingsPage() {
                         className="font-mono text-xs"
                         style={{ color: 'var(--text-tertiary)' }}
                       >
-                        Show motivational messages for 21-month military service
+                        Show motivational messages for 24-month military service
                       </span>
                     </div>
                   </label>
-
-                  {/* Explicit Words - Only show when soldier mode is active */}
-                  {isSoldier && (
-                    <label className="ml-6 flex cursor-pointer items-center space-x-3">
-                      <input
-                        type="checkbox"
-                        checked={explicitWords}
-                        onChange={(e) => setExplicitWords(e.target.checked)}
-                        className="theme-checkbox h-4 w-4 rounded"
-                      />
-                      <div>
-                        <span
-                          className="block text-sm"
-                          style={{ color: 'var(--text-secondary)' }}
-                        >
-                          Explicit words
-                        </span>
-                        <span
-                          className="font-mono text-xs"
-                          style={{ color: 'var(--text-tertiary)' }}
-                        >
-                          Show uncensored motivational phrases
-                        </span>
-                      </div>
-                    </label>
-                  )}
                 </div>
               </div>
 
