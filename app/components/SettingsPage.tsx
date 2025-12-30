@@ -319,7 +319,7 @@ export default function SettingsPage() {
                         className="font-mono text-xs"
                         style={{ color: 'var(--text-tertiary)' }}
                       >
-                        Show motivational messages for 21-month military service
+                        Show motivational messages for 24-month military service
                       </span>
                     </div>
                   </label>
