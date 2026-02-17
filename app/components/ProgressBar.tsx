@@ -46,8 +46,10 @@ function RankBadge({ level, size = 16 }: { level: number; size?: number }) {
   if (level <= 7) {
     const chevronCount = level - 4; // 1, 2, or 3
     const gap = 6;
-    const totalHeight = (chevronCount - 1) * gap + 6; // 6 is chevron height
-    const startY = 12 + totalHeight / 2;
+    const chevronH = 6;
+    const totalHeight = (chevronCount - 1) * gap + chevronH;
+    const centerY = 14; // center of 28-height viewBox
+    const startY = centerY + totalHeight / 2;
     return (
       <svg
         width={size}
