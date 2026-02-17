@@ -3,6 +3,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useStoredDateRange } from '../hooks/useStoredDateRange';
 import { CalendarBlank, X } from '@phosphor-icons/react';
+import { DateObject } from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
 import DateInputGroup, {
   type DateFields,
   emptyFields,
@@ -38,6 +41,22 @@ export default function CalendarPage() {
       const dateObj = fieldsToDateObject(fields);
       if (!dateObj) {
         setStartError('تاریخ نامعتبر');
+        return;
+      }
+
+      // Start date cannot be in the future
+      const today = new DateObject({
+        date: new Date(),
+        calendar: persian,
+        locale: persian_fa,
+      });
+      const jalaliInput = new DateObject({
+        date: dateObj.toDate(),
+        calendar: persian,
+        locale: persian_fa,
+      });
+      if (jalaliInput.toDate() > today.toDate()) {
+        setStartError('تاریخ شروع نمی‌تونه از امروز بزرگتر باشه');
         return;
       }
 
@@ -161,7 +180,11 @@ export default function CalendarPage() {
                   </button>
                 )}
               </div>
-              <DateInputGroup fields={endFields} onChange={handleEndChange} />
+              <DateInputGroup
+                fields={endFields}
+                onChange={handleEndChange}
+                autoFocus={false}
+              />
               {endError && (
                 <p
                   className="text-xs font-medium"

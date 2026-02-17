@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { DateObject } from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
 import DateInputGroup, {
   type DateFields,
   emptyFields,
@@ -44,6 +46,18 @@ export default function DateSelectionModal({
       setError('تاریخ نامعتبر');
       return;
     }
+
+    // Start date cannot be in the future
+    const today = new DateObject({
+      date: new Date(),
+      calendar: persian,
+      locale: persian_fa,
+    });
+    if (dateObj.toDate() > today.toDate()) {
+      setError('تاریخ شروع نمی‌تونه از امروز بزرگتر باشه');
+      return;
+    }
+
     onDateSelect(dateObj);
   };
 

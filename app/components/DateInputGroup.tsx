@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { DateObject } from 'react-multi-date-picker';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
@@ -50,6 +50,23 @@ export function dateObjectToFields(d: DateObject): DateFields {
   };
 }
 
+/** Check if a Jalali year is a leap year */
+export function isJalaliLeapYear(year: number): boolean {
+  const remainder = year % 33;
+  return [1, 5, 9, 13, 17, 22, 26, 30].includes(remainder);
+}
+
+/** Get the max day for a given Jalali month (1-12) and year */
+export function getMaxDayForMonth(month: number, year?: number): number {
+  if (month >= 1 && month <= 6) return 31;
+  if (month >= 7 && month <= 11) return 30;
+  if (month === 12) {
+    if (year && isJalaliLeapYear(year)) return 30;
+    return 29;
+  }
+  return 31;
+}
+
 /** Try to build a DateObject from Jalali year/month/day strings. Returns null if invalid. */
 export function fieldsToDateObject(f: DateFields): DateObject | null {
   const y = parseInt(f.year, 10);
@@ -57,8 +74,7 @@ export function fieldsToDateObject(f: DateFields): DateObject | null {
   const d = parseInt(f.day, 10);
   if (!y || !m || !d) return null;
   if (m < 1 || m > 12) return null;
-  // Jalali months 1-6 have 31 days, 7-11 have 30, 12 has 29 (or 30 in leap)
-  const maxDay = m <= 6 ? 31 : m <= 11 ? 30 : 30;
+  const maxDay = getMaxDayForMonth(m, y);
   if (d < 1 || d > maxDay) return null;
 
   try {
@@ -83,21 +99,49 @@ interface DateInputGroupProps {
   fields: DateFields;
   onChange: (fields: DateFields) => void;
   disabled?: boolean;
+  autoFocus?: boolean;
 }
 
 export default function DateInputGroup({
   fields,
   onChange,
   disabled,
+  autoFocus = true,
 }: DateInputGroupProps) {
   const yearRef = useRef<HTMLInputElement>(null);
   const monthRef = useRef<HTMLInputElement>(null);
   const dayRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (autoFocus) {
+      yearRef.current?.focus();
+    }
+  }, [autoFocus]);
+
   const handleChange = useCallback(
     (field: keyof DateFields, value: string) => {
       // Normalize Farsi digits to Latin, then strip non-digits
-      const digits = normalizeFarsiDigits(value);
+      let digits = normalizeFarsiDigits(value);
+
+      // Clamp month to 1-12
+      if (field === 'month' && digits.length >= 2) {
+        const num = parseInt(digits, 10);
+        if (num > 12) digits = '12';
+        if (num < 1 && digits.length === 2) digits = '1';
+      }
+
+      // Clamp day based on selected month
+      if (field === 'day' && digits.length >= 2) {
+        const monthNum = parseInt(fields.month, 10) || 0;
+        const yearNum = parseInt(fields.year, 10) || 0;
+        const maxDay =
+          monthNum >= 1 && monthNum <= 12
+            ? getMaxDayForMonth(monthNum, yearNum || undefined)
+            : 31;
+        const num = parseInt(digits, 10);
+        if (num > maxDay) digits = String(maxDay);
+        if (num < 1 && digits.length === 2) digits = '1';
+      }
 
       const updated = { ...fields, [field]: digits };
 
