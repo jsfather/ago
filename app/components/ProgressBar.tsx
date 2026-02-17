@@ -45,12 +45,20 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     const remainingDays = Math.ceil(remainingDuration / (1000 * 60 * 60 * 24));
     const totalDays = Math.ceil(totalDuration / (1000 * 60 * 60 * 24));
 
+    // Calculate elapsed months from start date
+    const elapsedDays = Math.max(
+      0,
+      Math.floor(elapsedDuration / (1000 * 60 * 60 * 24))
+    );
+    const elapsedMonths = elapsedDays / 30.44;
+
     return {
       progress,
       startDate,
       endDate,
       remainingDays,
       totalDays,
+      elapsedMonths,
       isComplete: currentDate >= endDate,
       hasStarted: currentDate >= startDate,
     };
@@ -62,7 +70,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   ): { value: number; unit: string } => {
     switch (format) {
       case 'months':
-        const months = Math.round(days / 30.44); // Average days per month
+        const months = Math.ceil(days / 30.44);
         return { value: months, unit: 'ماه' };
       case 'days':
       default:
@@ -82,23 +90,23 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     }
   };
 
-  // Get soldier phrase based on progress (8 phases, each representing ~3 months)
-  const getSoldierPhrase = (progressPercent: number): string => {
+  // Get soldier phrase based on elapsed months (each phase is 3 months)
+  const getSoldierPhrase = (months: number): string => {
     if (!isSoldier) return '';
 
-    if (progressPercent < 12.5) {
+    if (months < 3) {
       return 'سوپر موتور';
-    } else if (progressPercent < 25) {
+    } else if (months < 6) {
       return 'موتور';
-    } else if (progressPercent < 37.5) {
+    } else if (months < 9) {
       return 'جدید';
-    } else if (progressPercent < 50) {
+    } else if (months < 12) {
       return 'صفر ترکیده';
-    } else if (progressPercent < 62.5) {
+    } else if (months < 15) {
       return 'قدیمی';
-    } else if (progressPercent < 75) {
+    } else if (months < 18) {
       return 'سالار';
-    } else if (progressPercent < 87.5) {
+    } else if (months < 21) {
       return 'مت یاکوزا';
     } else {
       return 'مت مهربانی';
@@ -109,8 +117,14 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     return null;
   }
 
-  const { progress, remainingDays, totalDays, isComplete, hasStarted } =
-    progressData;
+  const {
+    progress,
+    remainingDays,
+    totalDays,
+    elapsedMonths,
+    isComplete,
+    hasStarted,
+  } = progressData;
 
   const getProgressGradient = () => {
     if (isComplete) {
@@ -156,7 +170,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                   className="text-sm font-black tracking-wider"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  %{Math.round(progress)}
+                  %{parseFloat(progress.toFixed(2))}
                 </span>
               </div>
             </div>
@@ -204,7 +218,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                       className="text-xs font-semibold tracking-wide"
                       style={{ color: 'var(--text-primary)' }}
                     >
-                      {getSoldierPhrase(progress)}
+                      {getSoldierPhrase(elapsedMonths)}
                     </span>
                     <MedalMilitary
                       size={16}
