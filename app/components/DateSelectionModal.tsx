@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import DatePicker, { DateObject } from 'react-multi-date-picker';
-import persian from 'react-date-object/calendars/persian';
-import persian_fa from 'react-date-object/locales/persian_fa';
-import 'react-multi-date-picker/styles/backgrounds/bg-dark.css';
+import { useState, useEffect, useCallback } from 'react';
+import { DateObject } from 'react-multi-date-picker';
+import DateInputGroup, {
+  type DateFields,
+  emptyFields,
+  dateObjectToFields,
+  fieldsToDateObject,
+} from './DateInputGroup';
 
 interface DateSelectionModalProps {
   isOpen: boolean;
@@ -17,20 +20,31 @@ export default function DateSelectionModal({
   onDateSelect,
   initialDate,
 }: DateSelectionModalProps) {
-  const [selectedDate, setSelectedDate] = useState<DateObject | null>(
-    initialDate || new DateObject('2025-02-19')
-  );
+  const [fields, setFields] = useState<DateFields>(emptyFields);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (initialDate) {
-      setSelectedDate(initialDate);
+      setFields(dateObjectToFields(initialDate));
     }
   }, [initialDate]);
 
+  const handleChange = useCallback((newFields: DateFields) => {
+    setFields(newFields);
+    setError('');
+  }, []);
+
   const handleConfirm = () => {
-    if (selectedDate) {
-      onDateSelect(selectedDate);
+    if (!fields.year || !fields.month || !fields.day) {
+      setError('لطفاً تاریخ رو کامل وارد کن');
+      return;
     }
+    const dateObj = fieldsToDateObject(fields);
+    if (!dateObj) {
+      setError('تاریخ نامعتبر');
+      return;
+    }
+    onDateSelect(dateObj);
   };
 
   if (!isOpen) return null;
@@ -75,38 +89,18 @@ export default function DateSelectionModal({
                 </div>
               </div>
 
-              {/* Date picker container */}
+              {/* Date input container */}
               <div className="flex justify-center">
-                <div className="w-full max-w-sm">
-                  {/* Liquid glass picker container */}
-                  <div className="liquid-glass overflow-hidden">
-                    <DatePicker
-                      value={selectedDate}
-                      onChange={(newVal: DateObject | null) => {
-                        setSelectedDate(newVal);
-                      }}
-                      calendar={persian}
-                      locale={persian_fa}
-                      maxDate={new Date()}
-                      portal
-                      className="liquid-calendar"
-                      arrowClassName="custom-arrow"
-                      arrow={false}
-                      style={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        background: 'var(--primary-bg)',
-                      }}
-                      inputClass="w-full text-white/95 text-center py-5 px-8 text-xl font-semibold tracking-wide focus:outline-none transition-all duration-300 placeholder-white/50"
-                      containerStyle={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        background: 'var(--primary-bg)',
-                      }}
-                    />
-                  </div>
+                <div className="w-full max-w-sm space-y-3">
+                  <DateInputGroup fields={fields} onChange={handleChange} />
+                  {error && (
+                    <p
+                      className="text-center text-xs font-medium"
+                      style={{ color: 'var(--button-danger-text)' }}
+                    >
+                      {error}
+                    </p>
+                  )}
                 </div>
               </div>
 

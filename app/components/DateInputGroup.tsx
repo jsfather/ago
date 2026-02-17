@@ -1,0 +1,226 @@
+'use client';
+
+import { useRef, useCallback } from 'react';
+import { DateObject } from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+
+export interface DateFields {
+  year: string;
+  month: string;
+  day: string;
+}
+
+export const emptyFields: DateFields = { year: '', month: '', day: '' };
+
+/** Map of Farsi digits (۰-۹) to Latin digits (0-9) */
+const farsiToLatinMap: Record<string, string> = {
+  '۰': '0',
+  '۱': '1',
+  '۲': '2',
+  '۳': '3',
+  '۴': '4',
+  '۵': '5',
+  '۶': '6',
+  '۷': '7',
+  '۸': '8',
+  '۹': '9',
+};
+
+/** Convert Farsi digits to Latin digits, then strip any non-digit characters */
+function normalizeFarsiDigits(value: string): string {
+  return value
+    .split('')
+    .map((ch) => farsiToLatinMap[ch] ?? ch)
+    .join('')
+    .replace(/\D/g, '');
+}
+
+/** Convert a DateObject to Jalali year/month/day strings */
+export function dateObjectToFields(d: DateObject): DateFields {
+  const jalali = new DateObject({
+    date: d.toDate(),
+    calendar: persian,
+    locale: persian_fa,
+  });
+  return {
+    year: String(jalali.year),
+    month: String(jalali.month.number),
+    day: String(jalali.day),
+  };
+}
+
+/** Try to build a DateObject from Jalali year/month/day strings. Returns null if invalid. */
+export function fieldsToDateObject(f: DateFields): DateObject | null {
+  const y = parseInt(f.year, 10);
+  const m = parseInt(f.month, 10);
+  const d = parseInt(f.day, 10);
+  if (!y || !m || !d) return null;
+  if (m < 1 || m > 12) return null;
+  // Jalali months 1-6 have 31 days, 7-11 have 30, 12 has 29 (or 30 in leap)
+  const maxDay = m <= 6 ? 31 : m <= 11 ? 30 : 30;
+  if (d < 1 || d > maxDay) return null;
+
+  try {
+    const dateObj = new DateObject({
+      year: y,
+      month: m,
+      day: d,
+      calendar: persian,
+      locale: persian_fa,
+    });
+    // Convert to gregorian for storage
+    dateObj.convert(undefined, undefined);
+    const jsDate = dateObj.toDate();
+    if (isNaN(jsDate.getTime())) return null;
+    return new DateObject(jsDate);
+  } catch {
+    return null;
+  }
+}
+
+interface DateInputGroupProps {
+  fields: DateFields;
+  onChange: (fields: DateFields) => void;
+  disabled?: boolean;
+}
+
+export default function DateInputGroup({
+  fields,
+  onChange,
+  disabled,
+}: DateInputGroupProps) {
+  const yearRef = useRef<HTMLInputElement>(null);
+  const monthRef = useRef<HTMLInputElement>(null);
+  const dayRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = useCallback(
+    (field: keyof DateFields, value: string) => {
+      // Normalize Farsi digits to Latin, then strip non-digits
+      const digits = normalizeFarsiDigits(value);
+
+      const updated = { ...fields, [field]: digits };
+
+      // Auto-advance to next field (visual order: year → month → day)
+      if (field === 'year' && digits.length === 4) {
+        monthRef.current?.focus();
+        monthRef.current?.select();
+      } else if (field === 'month' && digits.length === 2) {
+        dayRef.current?.focus();
+        dayRef.current?.select();
+      }
+
+      onChange(updated);
+    },
+    [fields, onChange]
+  );
+
+  const handleKeyDown = useCallback(
+    (field: keyof DateFields, e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Navigate between fields with arrow keys (visual order: year / month / day, LTR)
+      if (e.key === 'ArrowRight') {
+        if (field === 'year') {
+          monthRef.current?.focus();
+          monthRef.current?.select();
+        } else if (field === 'month') {
+          dayRef.current?.focus();
+          dayRef.current?.select();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (field === 'day') {
+          monthRef.current?.focus();
+          monthRef.current?.select();
+        } else if (field === 'month') {
+          yearRef.current?.focus();
+          yearRef.current?.select();
+        }
+      } else if (e.key === 'Backspace' && !fields[field]) {
+        // Move back on empty backspace
+        if (field === 'day') {
+          monthRef.current?.focus();
+        } else if (field === 'month') {
+          yearRef.current?.focus();
+        }
+      }
+    },
+    [fields]
+  );
+
+  const inputClassName =
+    'w-full bg-transparent text-center font-semibold text-base tracking-wider focus:outline-none py-3 transition-all duration-200';
+
+  return (
+    <div className="flex items-center gap-2" dir="ltr">
+      {/* Year */}
+      <div className="liquid-glass-subtle flex-[1.4] overflow-hidden transition-all duration-200 focus-within:border-[var(--glass-border-strong)]">
+        <input
+          ref={yearRef}
+          type="text"
+          inputMode="numeric"
+          maxLength={4}
+          placeholder="سال"
+          value={fields.year}
+          onChange={(e) => handleChange('year', e.target.value)}
+          onKeyDown={(e) => handleKeyDown('year', e)}
+          onFocus={(e) => e.target.select()}
+          disabled={disabled}
+          className={inputClassName}
+          style={{ color: 'var(--text-primary)' }}
+          aria-label="سال"
+        />
+      </div>
+
+      <span
+        className="text-lg font-bold select-none"
+        style={{ color: 'var(--text-tertiary)' }}
+      >
+        /
+      </span>
+
+      {/* Month */}
+      <div className="liquid-glass-subtle flex-1 overflow-hidden transition-all duration-200 focus-within:border-[var(--glass-border-strong)]">
+        <input
+          ref={monthRef}
+          type="text"
+          inputMode="numeric"
+          maxLength={2}
+          placeholder="ماه"
+          value={fields.month}
+          onChange={(e) => handleChange('month', e.target.value)}
+          onKeyDown={(e) => handleKeyDown('month', e)}
+          onFocus={(e) => e.target.select()}
+          disabled={disabled}
+          className={inputClassName}
+          style={{ color: 'var(--text-primary)' }}
+          aria-label="ماه"
+        />
+      </div>
+
+      <span
+        className="text-lg font-bold select-none"
+        style={{ color: 'var(--text-tertiary)' }}
+      >
+        /
+      </span>
+
+      {/* Day */}
+      <div className="liquid-glass-subtle flex-1 overflow-hidden transition-all duration-200 focus-within:border-[var(--glass-border-strong)]">
+        <input
+          ref={dayRef}
+          type="text"
+          inputMode="numeric"
+          maxLength={2}
+          placeholder="روز"
+          value={fields.day}
+          onChange={(e) => handleChange('day', e.target.value)}
+          onKeyDown={(e) => handleKeyDown('day', e)}
+          onFocus={(e) => e.target.select()}
+          disabled={disabled}
+          className={inputClassName}
+          style={{ color: 'var(--text-primary)' }}
+          aria-label="روز"
+        />
+      </div>
+    </div>
+  );
+}
