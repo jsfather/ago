@@ -219,7 +219,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
               {/* Soldier phrase badge - prominent center */}
               {isSoldier && hasStarted && !isComplete && (
                 <div className="flex justify-center">
-                  <div className="liquid-glass-subtle flex items-center gap-1.5 px-4 py-1.5">
+                  <div className="liquid-glass-subtle flex items-center gap-1.5 px-4 pt-1 pb-1.5">
                     <ChevronBadge size={16} />
                     <span
                       className="text-xs font-bold tracking-wide"
