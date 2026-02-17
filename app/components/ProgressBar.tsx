@@ -2,9 +2,45 @@
 
 import { DateObject } from 'react-multi-date-picker';
 import { useMemo } from 'react';
-import { MedalMilitary } from '@phosphor-icons/react';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
 import { useSoldierMode } from '../hooks/useSoldierMode';
+
+/** Military chevron rank badge SVG */
+function ChevronBadge({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="shrink-0"
+    >
+      {/* Chevron stripes pointing up */}
+      <path
+        d="M6 19L12 13L18 19"
+        stroke="var(--text-primary)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 13L12 7L18 13"
+        stroke="var(--text-primary)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 25L12 19L18 25"
+        stroke="var(--text-primary)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 interface ProgressBarProps {
   dateRange: DateObject[] | null;
@@ -140,21 +176,6 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     }
   };
 
-  const getStatusText = () => {
-    if (isComplete) {
-      return 'کامل شده';
-    } else if (hasStarted) {
-      const { value, unit } = formatRemainingTime(remainingDays);
-      return (
-        <>
-          <span>{value}</span> {unit} باقی مانده
-        </>
-      );
-    } else {
-      return 'هنوز شروع نشده';
-    }
-  };
-
   return (
     <div className="flex w-full items-center justify-center py-2">
       {/* Liquid glass progress container */}
@@ -193,51 +214,65 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
               </div>
             </div>
 
-            {/* Liquid glass status section */}
-            <div className="grid grid-cols-3 items-center gap-2">
-              {/* Status text container - Left */}
-              <div className="flex items-center justify-start gap-1">
-                <span
-                  className="text-xs font-semibold tracking-wide"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  {getStatusText()}
-                </span>
-              </div>
-
-              {/* Soldier phrase - Center */}
-              <div className="flex items-center justify-center gap-1">
-                {isSoldier && hasStarted && !isComplete && (
-                  <>
-                    <MedalMilitary
-                      size={16}
-                      weight="fill"
-                      style={{ color: 'var(--text-primary)' }}
-                    />
+            {/* Status info cards */}
+            <div className="space-y-2">
+              {/* Soldier phrase badge - prominent center */}
+              {isSoldier && hasStarted && !isComplete && (
+                <div className="flex justify-center">
+                  <div className="liquid-glass-subtle flex items-center gap-1.5 px-4 py-1.5">
+                    <ChevronBadge size={16} />
                     <span
-                      className="text-xs font-semibold tracking-wide"
+                      className="text-xs font-bold tracking-wide"
                       style={{ color: 'var(--text-primary)' }}
                     >
                       {getSoldierPhrase(elapsedMonths)}
                     </span>
-                    <MedalMilitary
-                      size={16}
-                      weight="fill"
-                      style={{ color: 'var(--text-primary)' }}
-                    />
-                  </>
-                )}
-              </div>
+                    <ChevronBadge size={16} />
+                  </div>
+                </div>
+              )}
 
-              {/* Total days container - Right */}
-              <div className="flex items-center justify-end gap-1">
-                <span
-                  className="text-xs font-semibold tracking-wide"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  <span>{formatTotalTime(totalDays).value}</span>{' '}
-                  {formatTotalTime(totalDays).unit} کل
-                </span>
+              {/* Remaining + Total row */}
+              <div className="flex items-stretch gap-2" dir="rtl">
+                {/* Remaining time card */}
+                <div className="liquid-glass-subtle flex flex-1 flex-col items-center justify-center px-3 py-2.5">
+                  <span
+                    className="text-lg leading-none font-black tracking-tight"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    {isComplete
+                      ? '✓'
+                      : !hasStarted
+                        ? '—'
+                        : formatRemainingTime(remainingDays).value}
+                  </span>
+                  <span
+                    className="mt-1 text-[10px] font-semibold tracking-wide"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
+                    {isComplete
+                      ? 'کامل شده'
+                      : !hasStarted
+                        ? 'شروع نشده'
+                        : `${formatRemainingTime(remainingDays).unit} باقی مانده`}
+                  </span>
+                </div>
+
+                {/* Total time card */}
+                <div className="liquid-glass-subtle flex flex-1 flex-col items-center justify-center px-3 py-2.5">
+                  <span
+                    className="text-lg leading-none font-black tracking-tight"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    {formatTotalTime(totalDays).value}
+                  </span>
+                  <span
+                    className="mt-1 text-[10px] font-semibold tracking-wide"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
+                    {formatTotalTime(totalDays).unit} کل
+                  </span>
+                </div>
               </div>
             </div>
           </div>
