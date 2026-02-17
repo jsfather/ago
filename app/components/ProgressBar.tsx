@@ -5,41 +5,107 @@ import { useMemo } from 'react';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
 import { useSoldierMode } from '../hooks/useSoldierMode';
 
-/** Military chevron rank badge SVG */
-function ChevronBadge({ size = 16 }: { size?: number }) {
+/** Dynamic military rank badge SVG based on soldier level (1-8) */
+function RankBadge({ level, size = 16 }: { level: number; size?: number }) {
+  const stroke = 'var(--text-primary)';
+  const sw = 2.5;
+  const cap = 'round' as const;
+  const join = 'round' as const;
+
+  // Levels 1-4: horizontal bars (like hamburger icon)
+  if (level <= 4) {
+    const barCount = level;
+    const gap = 5;
+    const totalHeight = (barCount - 1) * gap;
+    const startY = 12 - totalHeight / 2;
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        className="shrink-0"
+      >
+        {Array.from({ length: barCount }, (_, i) => (
+          <line
+            key={i}
+            x1="6"
+            y1={startY + i * gap}
+            x2="18"
+            y2={startY + i * gap}
+            stroke={stroke}
+            strokeWidth={sw}
+            strokeLinecap={cap}
+          />
+        ))}
+      </svg>
+    );
+  }
+
+  // Levels 5-7: chevrons pointing up
+  if (level <= 7) {
+    const chevronCount = level - 4; // 1, 2, or 3
+    const gap = 6;
+    const chevronH = 6;
+    const totalHeight = (chevronCount - 1) * gap + chevronH;
+    const centerY = 14; // center of 28-height viewBox
+    const startY = centerY + totalHeight / 2;
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 28"
+        fill="none"
+        className="shrink-0"
+      >
+        {Array.from({ length: chevronCount }, (_, i) => {
+          const baseY = startY - i * gap;
+          return (
+            <path
+              key={i}
+              d={`M6 ${baseY}L12 ${baseY - 6}L18 ${baseY}`}
+              stroke={stroke}
+              strokeWidth={sw}
+              strokeLinecap={cap}
+              strokeLinejoin={join}
+            />
+          );
+        })}
+      </svg>
+    );
+  }
+
+  // Level 8: star
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 28"
+      viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       className="shrink-0"
     >
-      {/* Chevron stripes pointing up */}
       <path
-        d="M6 19L12 13L18 19"
-        stroke="var(--text-primary)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6 13L12 7L18 13"
-        stroke="var(--text-primary)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6 25L12 19L18 25"
-        stroke="var(--text-primary)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M12 2L14.9 8.6L22 9.3L16.8 14L18.2 21L12 17.5L5.8 21L7.2 14L2 9.3L9.1 8.6L12 2Z"
+        fill={stroke}
+        opacity="0.85"
+        stroke={stroke}
+        strokeWidth="1"
+        strokeLinejoin={join}
       />
     </svg>
   );
+}
+
+/** Get soldier rank level (1-8) from elapsed months */
+function getSoldierLevel(months: number): number {
+  if (months < 3) return 1;
+  if (months < 6) return 2;
+  if (months < 9) return 3;
+  if (months < 12) return 4;
+  if (months < 15) return 5;
+  if (months < 18) return 6;
+  if (months < 21) return 7;
+  return 8;
 }
 
 interface ProgressBarProps {
@@ -220,14 +286,20 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
               {isSoldier && hasStarted && !isComplete && (
                 <div className="flex justify-center">
                   <div className="liquid-glass-subtle flex items-center gap-1.5 px-4 pt-1 pb-1.5">
-                    <ChevronBadge size={16} />
+                    <RankBadge
+                      level={getSoldierLevel(elapsedMonths)}
+                      size={16}
+                    />
                     <span
                       className="text-xs font-bold tracking-wide"
                       style={{ color: 'var(--text-primary)' }}
                     >
                       {getSoldierPhrase(elapsedMonths)}
                     </span>
-                    <ChevronBadge size={16} />
+                    <RankBadge
+                      level={getSoldierLevel(elapsedMonths)}
+                      size={16}
+                    />
                   </div>
                 </div>
               )}
