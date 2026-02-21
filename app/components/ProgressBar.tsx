@@ -154,25 +154,31 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     );
     const elapsedMonths = elapsedDays / 30.44;
 
+    // Calculate remaining and total months using floor to show complete months only
+    const remainingMonths = Math.floor(remainingDays / 30.44);
+    const totalMonths = Math.round(totalDays / 30.44);
+
     return {
       progress,
       startDate,
       endDate,
       remainingDays,
       totalDays,
+      remainingMonths,
+      totalMonths,
       elapsedMonths,
       isComplete: currentDate >= endDate,
       hasStarted: currentDate >= startDate,
     };
   }, [dateRange]);
 
-  // Helper function to format time based on selected format
+  // Helper function to format remaining time based on selected format
   const formatRemainingTime = (
-    days: number
+    days: number,
+    months: number
   ): { value: number; unit: string } => {
     switch (format) {
       case 'months':
-        const months = Math.ceil(days / 30.44);
         return { value: months, unit: 'ماه' };
       case 'days':
       default:
@@ -181,10 +187,12 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
   };
 
   // Helper function to format total time
-  const formatTotalTime = (days: number): { value: number; unit: string } => {
+  const formatTotalTime = (
+    days: number,
+    months: number
+  ): { value: number; unit: string } => {
     switch (format) {
       case 'months':
-        const months = Math.round(days / 30.44);
         return { value: months, unit: 'ماه' };
       case 'days':
       default:
@@ -223,6 +231,8 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
     progress,
     remainingDays,
     totalDays,
+    remainingMonths,
+    totalMonths,
     elapsedMonths,
     isComplete,
     hasStarted,
@@ -316,7 +326,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                       ? '✓'
                       : !hasStarted
                         ? '—'
-                        : formatRemainingTime(remainingDays).value}
+                        : formatRemainingTime(remainingDays, remainingMonths).value}
                   </span>
                   <span
                     className="mt-1 text-[10px] font-semibold tracking-wide"
@@ -326,7 +336,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                       ? 'کامل شده'
                       : !hasStarted
                         ? 'شروع نشده'
-                        : `${formatRemainingTime(remainingDays).unit} باقی مانده`}
+                        : `${formatRemainingTime(remainingDays, remainingMonths).unit} باقی مانده`}
                   </span>
                 </div>
 
@@ -336,13 +346,13 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
                     className="text-lg leading-none font-black tracking-tight"
                     style={{ color: 'var(--text-primary)' }}
                   >
-                    {formatTotalTime(totalDays).value}
+                    {formatTotalTime(totalDays, totalMonths).value}
                   </span>
                   <span
                     className="mt-1 text-[10px] font-semibold tracking-wide"
                     style={{ color: 'var(--text-secondary)' }}
                   >
-                    {formatTotalTime(totalDays).unit} کل
+                    {formatTotalTime(totalDays, totalMonths).unit} کل
                   </span>
                 </div>
               </div>
