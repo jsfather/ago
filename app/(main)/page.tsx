@@ -37,10 +37,7 @@ export default function Home() {
   ];
 
   return (
-    <div
-      className="min-h-screen overflow-y-auto px-4 pb-20"
-      style={{ backgroundColor: 'var(--primary-bg)' }}
-    >
+    <div className="app-surface min-h-screen overflow-y-auto px-4 pb-20">
       <div className="flex flex-col py-4">
         {/* Progress bar section - at the top */}
         {dateRange && dateRange.length >= 2 && (

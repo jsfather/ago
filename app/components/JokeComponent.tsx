@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Share2 } from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
+import { SERVICE_FINISHED } from '../lib/features';
 
 interface JokeResponse {
   error: boolean;
@@ -31,6 +32,7 @@ interface MultipleJokesResponse {
 }
 
 export default function JokeComponent() {
+  const [showServiceJoke, setShowServiceJoke] = useState(false);
   const [jokes, setJokes] = useState<JokeResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
@@ -45,6 +47,11 @@ export default function JokeComponent() {
   }, []);
 
   const fetchJoke = async () => {
+    if (SERVICE_FINISHED) {
+      setShowServiceJoke(true);
+      return;
+    }
+
     if (!isLoaded) return;
 
     setLoading(true);
@@ -100,6 +107,7 @@ export default function JokeComponent() {
   };
 
   const handleCloseJoke = () => {
+    setShowServiceJoke(false);
     setJokes([]);
     setPendingJokes([]);
     setShowWarning(false);
@@ -514,7 +522,7 @@ export default function JokeComponent() {
       <div className="mb-6 flex justify-center gap-4">
         <button
           onClick={fetchJoke}
-          disabled={loading || !isLoaded}
+          disabled={loading || (!SERVICE_FINISHED && !isLoaded)}
           className="liquid-glass px-8 py-3 text-lg font-bold transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
           style={{ color: 'var(--text-primary)' }}
         >
@@ -529,7 +537,7 @@ export default function JokeComponent() {
         </button>
 
         {/* Close button - only show when joke is displayed */}
-        {(jokes.length > 0 || showWarning) && (
+        {(showServiceJoke || jokes.length > 0 || showWarning) && (
           <button
             onClick={handleCloseJoke}
             className="liquid-glass-subtle animate-bloop-in px-4 py-3 transition-all duration-300 hover:scale-105"
@@ -558,6 +566,21 @@ export default function JokeComponent() {
           </button>
         )}
       </div>
+
+      {showServiceJoke && (
+        <div
+          className="service-finished liquid-glass animate-bloop-in px-6 py-8 text-center"
+          role="status"
+        >
+          <p
+            className="service-finished-text font-iran-sans-x-fanum"
+            lang="fa"
+            dir="rtl"
+          >
+            سربازیت تموم شد
+          </p>
+        </div>
+      )}
 
       {/* Warning section - inline */}
       {showWarning && pendingJokes.length > 0 && (

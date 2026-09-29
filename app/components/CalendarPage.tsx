@@ -102,10 +102,7 @@ export default function CalendarPage() {
     endFields.year !== '' || endFields.month !== '' || endFields.day !== '';
 
   return (
-    <div
-      className="flex min-h-screen w-full items-center justify-center pb-20"
-      style={{ backgroundColor: 'var(--primary-bg)' }}
-    >
+    <div className="app-surface flex min-h-screen w-full items-center justify-center pb-20">
       <div className="mx-auto w-full max-w-md px-4">
         <div className="liquid-glass overflow-hidden">
           <div className="relative space-y-6 p-6">

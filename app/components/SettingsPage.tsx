@@ -55,10 +55,7 @@ export default function SettingsPage() {
 
   if (!isLoaded || !themeLoaded || !timeFormatLoaded || !soldierLoaded) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center px-4 pt-6 pb-20"
-        style={{ backgroundColor: 'var(--primary-bg)' }}
-      >
+      <div className="app-surface flex min-h-screen items-center justify-center px-4 pt-6 pb-20">
         <div className="liquid-glass px-8 py-4">
           <div className="flex items-center space-x-2">
             <div
@@ -108,10 +105,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div
-      className="min-h-screen px-4 pt-6 pb-20"
-      style={{ backgroundColor: 'var(--primary-bg)' }}
-    >
+    <div className="app-surface min-h-screen px-4 pt-6 pb-20">
       <div className="mx-auto max-w-md">
         {/* General Settings Section */}
         <div className="mb-6" dir="ltr">
@@ -454,7 +448,10 @@ export default function SettingsPage() {
                   {[
                     { value: 'any', label: 'Any Type' },
                     { value: 'single', label: 'Single (One-liner)' },
-                    { value: 'twopart', label: 'Two Part (Setup & Delivery)' },
+                    {
+                      value: 'twopart',
+                      label: 'Two Part (Setup & Delivery)',
+                    },
                   ].map((type) => (
                     <label
                       key={type.value}
