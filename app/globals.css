@@ -107,7 +107,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--text-primary);
+  color: var(--green);
 }
 .brand-symbol {
   display: grid;
@@ -124,6 +124,7 @@
     700 34px/1 Georgia,
     serif;
   letter-spacing: -2px;
+  color: var(--green);
 }
 .status-dot {
   width: 6px;
@@ -654,9 +655,36 @@
     margin-top: 0;
     white-space: nowrap;
   }
-  .dashboard-grid,
-  .settings-grid,
+  .dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+  .dashboard-grid > .time-card,
+  .dashboard-aside,
+  .dashboard-aside > .surface-card,
+  .dashboard-aside > .button-secondary {
+    width: 100%;
+    min-width: 0;
+  }
+  .dashboard-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .settings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+  .settings-section {
+    width: 100%;
+    min-width: 0;
+  }
   .calendar-page {
+    width: 100%;
     max-width: 600px;
     margin-inline: auto;
   }
@@ -677,6 +705,18 @@
   .card-padding,
   .settings-section {
     padding: 22px;
+  }
+  .progress-number {
+    font-size: 36px;
+  }
+  .progress-stats {
+    gap: 12px;
+  }
+  .progress-stats > div + div {
+    padding-inline-start: 12px;
+  }
+  .joke-card {
+    padding-top: 20px;
   }
   .onboarding {
     padding: 26px;
