@@ -1,13 +1,14 @@
 # Ago
 
-A Next.js web app that calculates and displays elapsed time from a Persian (Shamsi) date with a modern dark interface.
+A Next.js web app that calculates and displays elapsed time from a Persian (Shamsi) date with a warm, Persian-first interface.
 
 ## What it does
 
 - Takes a Persian date
 - Calculates elapsed time from today
 - Shows result in Persian: "2 سال، 3 ماه، 15 روز"
-- Beautiful minimal dark UI
+- Responsive dashboard with an elapsed-time dial, progress tracking, and jokes
+- Coordinated light and dark themes
 
 ## Setup
 
@@ -35,8 +36,20 @@ Restart the development server (or rebuild for production) after changing it.
 
 ## Appearance
 
-Shared glass materials support light and dark themes, with a floating navigation
-bar, subtle highlights, and opaque fallbacks when backdrop blur is unavailable.
-Reduced motion, reduced transparency, and increased contrast preferences are
-respected. The styling takes inspiration from
-[Apple’s materials guidance](https://developer.apple.com/design/human-interface-guidelines/materials).
+The shared design tokens in `app/globals.css` define warm paper surfaces,
+botanical green, a persimmon accent, typography, borders, and spacing for both
+light and dark themes. The dashboard, date editor, settings, onboarding dialog,
+and exported joke images use the same visual language. Persian text and numbers
+use the bundled IRANSansX font; controls support keyboard navigation and reduced
+motion preferences.
+
+The service-finished joke is a regular single joke in the shared renderer,
+including its category, normal text size, close action, and image-sharing action.
+
+## Checks
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```

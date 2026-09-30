@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useStoredDateRange } from '../hooks/useStoredDateRange';
-import { CalendarBlank, X } from '@phosphor-icons/react';
+import { CalendarDays, Flag, Check, Sprout, X } from 'lucide-react';
+import PageHeading from './PageHeading';
 import { DateObject } from 'react-multi-date-picker';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
@@ -62,7 +63,8 @@ export default function CalendarPage() {
 
       const endDateObj = fieldsToDateObject(endFields);
       const newRange = endDateObj ? [dateObj, endDateObj] : [dateObj];
-      saveDateRange(newRange);
+      if (!saveDateRange(newRange))
+        setStartError('تاریخ شروع باید قبل از تاریخ پایان باشه.');
     },
     [endFields, saveDateRange]
   );
@@ -83,7 +85,8 @@ export default function CalendarPage() {
 
       const startDateObj = fieldsToDateObject(startFields);
       if (startDateObj) {
-        saveDateRange([startDateObj, dateObj]);
+        if (!saveDateRange([startDateObj, dateObj]))
+          setEndError('تاریخ پایان باید بعد از تاریخ شروع باشه.');
       }
     },
     [startFields, saveDateRange]
@@ -102,97 +105,76 @@ export default function CalendarPage() {
     endFields.year !== '' || endFields.month !== '' || endFields.day !== '';
 
   return (
-    <div className="app-surface flex min-h-screen w-full items-center justify-center pb-20">
-      <div className="mx-auto w-full max-w-md px-4">
-        <div className="liquid-glass overflow-hidden">
-          <div className="relative space-y-6 p-6">
-            {/* Header */}
-            <div
-              className="border-b pb-4 text-center"
-              style={{ borderColor: 'var(--glass-border)' }}
-            >
-              <h2
-                className="mb-1 flex items-center justify-center gap-2 text-xl font-bold"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                <CalendarBlank size={22} weight="fill" />
-                انتخاب بازه زمانی
-              </h2>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                تاریخ شروع و پایان رو مشخص کن
-              </p>
-            </div>
-
-            {/* Start Date */}
-            <div className="space-y-2" dir="rtl">
-              <label
-                className="block text-sm font-semibold"
-                style={{ color: 'var(--text-primary)' }}
-              >
+    <div className="animate-enter">
+      <PageHeading
+        eyebrow="نقطه شروع، خط پایان"
+        title="روزهای مهمت رو مشخص کن."
+        description="تاریخ‌ها به شمسی هستن و تغییرات معتبر خودکار ذخیره می‌شن."
+      />
+      <div className="calendar-layout">
+        <section className="surface-card card-padding">
+          <div className="date-step">
+            <div className="card-heading">
+              <h2 className="flex items-center gap-2">
+                <CalendarDays size={18} />
                 تاریخ شروع
-              </label>
-              <DateInputGroup
-                fields={startFields}
-                onChange={handleStartChange}
-              />
-              {startError && (
-                <p
-                  className="text-xs font-medium"
-                  style={{ color: 'var(--button-danger-text)' }}
-                >
-                  {startError}
-                </p>
-              )}
+              </h2>
+              <span className="badge">از این روز</span>
             </div>
-
-            {/* End Date */}
-            <div className="space-y-2" dir="rtl">
-              <div className="flex items-center justify-between">
-                <label
-                  className="block text-sm font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  تاریخ پایان
-                  <span
-                    className="mr-1 text-xs font-normal"
-                    style={{ color: 'var(--text-tertiary)' }}
-                  >
-                    (اختیاری)
-                  </span>
-                </label>
-                {hasEndDate && (
-                  <button
-                    onClick={clearEndDate}
-                    className="flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium transition-all duration-200 hover:scale-105"
-                    style={{
-                      color: 'var(--button-danger-text)',
-                      backgroundColor: 'var(--button-danger-bg)',
-                      borderColor: 'var(--button-danger-border)',
-                      borderWidth: '1px',
-                    }}
-                    aria-label="پاک کردن تاریخ پایان"
-                  >
-                    <X size={12} weight="bold" />
-                    پاک کردن
-                  </button>
-                )}
-              </div>
-              <DateInputGroup
-                fields={endFields}
-                onChange={handleEndChange}
-                autoFocus={false}
-              />
-              {endError && (
-                <p
-                  className="text-xs font-medium"
-                  style={{ color: 'var(--button-danger-text)' }}
-                >
-                  {endError}
-                </p>
-              )}
-            </div>
+            <DateInputGroup fields={startFields} onChange={handleStartChange} />
+            {startError && (
+              <p className="field-error" role="alert">
+                {startError}
+              </p>
+            )}
           </div>
-        </div>
+          <div className="date-step">
+            <div className="card-heading">
+              <h2 className="flex items-center gap-2">
+                <Flag size={18} />
+                تاریخ پایان{' '}
+                <span className="text-tertiary text-xs font-normal">
+                  (اختیاری)
+                </span>
+              </h2>
+              {hasEndDate && (
+                <button
+                  onClick={clearEndDate}
+                  className="icon-button"
+                  aria-label="پاک کردن تاریخ پایان"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+            <DateInputGroup
+              fields={endFields}
+              onChange={handleEndChange}
+              autoFocus={false}
+            />
+            {endError && (
+              <p className="field-error" role="alert">
+                {endError}
+              </p>
+            )}
+          </div>
+          <p className="setting-hint flex items-center gap-2">
+            <Check size={15} />
+            تاریخ‌های معتبر روی همین دستگاه ذخیره می‌شن.
+          </p>
+        </section>
+        <aside className="calendar-note">
+          <Sprout size={48} strokeWidth={1.2} />
+          <h2>
+            گاهی خودِ مسیر،
+            <br />
+            قشنگ‌ترین بخش داستانه.
+          </h2>
+          <p>
+            با تاریخ شروع، روزهایی که گذشته رو ببین. با اضافه کردن تاریخ پایان،
+            می‌فهمی چقدر از مسیر رو رفتی و چقدر تا مقصد مونده.
+          </p>
+        </aside>
       </div>
     </div>
   );

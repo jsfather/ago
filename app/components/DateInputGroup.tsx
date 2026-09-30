@@ -190,13 +190,12 @@ export default function DateInputGroup({
     [fields]
   );
 
-  const inputClassName =
-    'w-full bg-transparent text-center font-semibold text-base tracking-wider focus:outline-none py-3 transition-all duration-200';
+  const inputClassName = 'w-full bg-transparent text-center';
 
   return (
     <div className="flex items-center gap-2" dir="ltr">
       {/* Year */}
-      <div className="liquid-glass-subtle flex-[1.4] overflow-hidden transition-all duration-200 focus-within:border-[var(--glass-border-strong)]">
+      <div className="date-input flex-[1.4]">
         <input
           ref={yearRef}
           type="text"
@@ -222,7 +221,7 @@ export default function DateInputGroup({
       </span>
 
       {/* Month */}
-      <div className="liquid-glass-subtle flex-1 overflow-hidden transition-all duration-200 focus-within:border-[var(--glass-border-strong)]">
+      <div className="date-input flex-1">
         <input
           ref={monthRef}
           type="text"
@@ -248,7 +247,7 @@ export default function DateInputGroup({
       </span>
 
       {/* Day */}
-      <div className="liquid-glass-subtle flex-1 overflow-hidden transition-all duration-200 focus-within:border-[var(--glass-border-strong)]">
+      <div className="date-input flex-1">
         <input
           ref={dayRef}
           type="text"

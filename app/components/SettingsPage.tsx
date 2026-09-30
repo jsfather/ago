@@ -1,20 +1,22 @@
 'use client';
 
 import {
-  CalendarDays,
-  Calendar1,
   Moon,
   Sun,
   Laptop,
-  Settings,
-  Drama,
+  SlidersHorizontal,
+  Smile,
+  CalendarDays,
+  CalendarRange,
+  RotateCcw,
 } from 'lucide-react';
-import { useJokeSettings } from '../hooks/useJokeSettings';
-import { useTheme } from '../hooks/useTheme';
+import { useJokeSettings, type JokeSettings } from '../hooks/useJokeSettings';
+import { useTheme, type Theme } from '../hooks/useTheme';
 import { useTimeDisplayFormat } from '../hooks/useTimeDisplayFormat';
 import { useSoldierMode } from '../hooks/useSoldierMode';
+import PageHeading from './PageHeading';
 
-const AVAILABLE_CATEGORIES = [
+const categories = [
   'Any',
   'Misc',
   'Programming',
@@ -23,8 +25,7 @@ const AVAILABLE_CATEGORIES = [
   'Spooky',
   'Christmas',
 ];
-
-const AVAILABLE_FLAGS = [
+const flags = [
   'nsfw',
   'religious',
   'political',
@@ -32,8 +33,7 @@ const AVAILABLE_FLAGS = [
   'sexist',
   'explicit',
 ];
-
-const AVAILABLE_LANGUAGES = [
+const languages = [
   { code: 'en', name: 'English' },
   { code: 'de', name: 'German' },
   { code: 'es', name: 'Spanish' },
@@ -41,570 +41,244 @@ const AVAILABLE_LANGUAGES = [
   { code: 'pt', name: 'Portuguese' },
   { code: 'cs', name: 'Czech' },
 ];
+const themes = [
+  { value: 'light', label: 'روشن', icon: Sun },
+  { value: 'dark', label: 'تاریک', icon: Moon },
+  { value: 'system', label: 'سیستم', icon: Laptop },
+] as const;
 
 export default function SettingsPage() {
   const { settings, updateSettings, resetSettings, isLoaded } =
     useJokeSettings();
   const { theme, setTheme, isLoaded: themeLoaded } = useTheme();
-  const {
-    format,
-    setFormat,
-    isLoaded: timeFormatLoaded,
-  } = useTimeDisplayFormat();
+  const { format, setFormat, isLoaded: formatLoaded } = useTimeDisplayFormat();
   const { isSoldier, setIsSoldier, isLoaded: soldierLoaded } = useSoldierMode();
 
-  if (!isLoaded || !themeLoaded || !timeFormatLoaded || !soldierLoaded) {
-    return (
-      <div className="app-surface flex min-h-screen items-center justify-center px-4 pt-6 pb-20">
-        <div className="liquid-glass px-8 py-4">
-          <div className="flex items-center space-x-2">
-            <div
-              className="h-4 w-4 animate-spin rounded-full border-2 border-t-white/90"
-              style={{
-                borderColor: 'var(--text-tertiary)',
-                borderTopColor: 'var(--text-primary)',
-              }}
-            ></div>
-            <span style={{ color: 'var(--text-secondary)' }}>
-              Loading settings...
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const handleCategoryChange = (category: string, checked: boolean) => {
-    if (checked) {
-      updateSettings({
-        categories: [...settings.categories, category],
-      });
-    } else {
-      updateSettings({
-        categories: settings.categories.filter((c) => c !== category),
-      });
-    }
+  const changeCategory = (category: string, checked: boolean) => {
+    updateSettings({
+      categories: checked
+        ? category === 'Any'
+          ? ['Any']
+          : [...settings.categories.filter((c) => c !== 'Any'), category]
+        : settings.categories.filter((c) => c !== category),
+    });
   };
-
-  const handleFlagChange = (flag: string, checked: boolean) => {
-    if (checked) {
-      updateSettings({
-        blacklistFlags: [...settings.blacklistFlags, flag],
-      });
-    } else {
-      updateSettings({
-        blacklistFlags: settings.blacklistFlags.filter((f) => f !== flag),
-      });
-    }
-  };
-
-  const resetGeneralSettings = () => {
+  const resetGeneral = () => {
     setTheme('system');
     setFormat('months');
     setIsSoldier(false);
   };
 
+  if (!isLoaded || !themeLoaded || !formatLoaded || !soldierLoaded)
+    return (
+      <p className="text-secondary py-12" role="status">
+        در حال بارگذاری تنظیمات…
+      </p>
+    );
+
   return (
-    <div className="app-surface min-h-screen px-4 pt-6 pb-20">
-      <div className="mx-auto max-w-md">
-        {/* General Settings Section */}
-        <div className="mb-6" dir="ltr">
-          <div className="liquid-glass overflow-hidden">
-            <div className="space-y-6 p-6">
-              {/* Section Header */}
-              <div
-                className="border-b pb-4 text-center"
-                style={{ borderColor: 'var(--glass-border)' }}
-              >
-                <h2
-                  className="mb-2 flex items-center justify-center gap-2 text-xl font-bold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  <Settings className="h-5 w-5" /> General Settings
-                </h2>
-                <p
-                  className="font-mono text-sm"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  Application preferences
-                </p>
-              </div>
-
-              {/* Theme Selection */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Theme
-                </h3>
-                <div className="space-y-2">
-                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
-                    <input
-                      type="radio"
-                      name="theme"
-                      value="dark"
-                      checked={theme === 'dark'}
-                      onChange={(e) =>
-                        setTheme(e.target.value as 'dark' | 'light' | 'system')
-                      }
-                      className="theme-checkbox h-4 w-4"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Moon
-                        className="h-5 w-5"
-                        style={{ color: 'var(--text-primary)' }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        Dark Mode
-                      </span>
-                    </div>
-                  </label>
-                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
-                    <input
-                      type="radio"
-                      name="theme"
-                      value="light"
-                      checked={theme === 'light'}
-                      onChange={(e) =>
-                        setTheme(e.target.value as 'dark' | 'light' | 'system')
-                      }
-                      className="theme-checkbox h-4 w-4"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Sun
-                        className="h-5 w-5"
-                        style={{ color: 'var(--text-primary)' }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        Light Mode
-                      </span>
-                    </div>
-                  </label>
-                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
-                    <input
-                      type="radio"
-                      name="theme"
-                      value="system"
-                      checked={theme === 'system'}
-                      onChange={(e) =>
-                        setTheme(e.target.value as 'dark' | 'light' | 'system')
-                      }
-                      className="theme-checkbox h-4 w-4"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Laptop
-                        className="h-5 w-5"
-                        style={{ color: 'var(--text-primary)' }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        System
-                      </span>
-                    </div>
-                  </label>
-                </div>
-                <p
-                  className="mt-2 font-mono text-xs"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
-                  Choose your preferred theme or use system setting
-                </p>
-              </div>
-
-              {/* Time Display Format */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Time Display Format
-                </h3>
-                <div className="space-y-2">
-                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
-                    <input
-                      type="radio"
-                      name="timeFormat"
-                      value="days"
-                      checked={format === 'days'}
-                      onChange={(e) =>
-                        setFormat(e.target.value as 'days' | 'months')
-                      }
-                      className="theme-checkbox h-4 w-4"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <CalendarDays
-                        className="h-5 w-5"
-                        style={{ color: 'var(--text-primary)' }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        Days
-                      </span>
-                    </div>
-                  </label>
-                  <label className="liquid-glass-subtle flex cursor-pointer items-center space-x-3 rounded-lg border p-3 transition-all duration-200">
-                    <input
-                      type="radio"
-                      name="timeFormat"
-                      value="months"
-                      checked={format === 'months'}
-                      onChange={(e) =>
-                        setFormat(e.target.value as 'days' | 'months')
-                      }
-                      className="theme-checkbox h-4 w-4"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Calendar1
-                        className="h-5 w-5"
-                        style={{ color: 'var(--text-primary)' }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        Months
-                      </span>
-                    </div>
-                  </label>
-                </div>
-                <p
-                  className="mt-2 font-mono text-xs"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
-                  Choose how to display remaining time
-                </p>
-              </div>
-
-              {/* Soldier Mode */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Soldier Mode
-                </h3>
-                <div className="space-y-3">
-                  <label className="flex cursor-pointer items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      checked={isSoldier}
-                      onChange={(e) => setIsSoldier(e.target.checked)}
-                      className="theme-checkbox h-4 w-4 rounded"
-                    />
-                    <div>
-                      <span
-                        className="block text-sm"
-                        style={{ color: 'var(--text-secondary)' }}
-                      >
-                        I&apos;m a soldier
-                      </span>
-                      <span
-                        className="font-mono text-xs"
-                        style={{ color: 'var(--text-tertiary)' }}
-                      >
-                        Show motivational messages for 24-month military service
-                      </span>
-                    </div>
-                  </label>
-                </div>
-              </div>
-
-              {/* Reset Button */}
-              <div
-                className="border-t pt-4"
-                style={{ borderColor: 'var(--glass-border)' }}
-              >
-                <button
-                  onClick={resetGeneralSettings}
-                  className="theme-button-danger w-full rounded-lg border px-4 py-3 font-medium transition-all duration-300 hover:scale-105"
-                >
-                  Reset to Defaults
-                </button>
-              </div>
+    <div className="animate-enter">
+      <PageHeading
+        eyebrow="به سلیقه تو"
+        title="یه فضای شخصی‌تر."
+        description="ظاهر، نمایش زمان و حال‌وهوای جوک‌ها رو خودت انتخاب کن."
+      />
+      <div className="settings-grid">
+        <section className="surface-card settings-section">
+          <header>
+            <h2>
+              <SlidersHorizontal size={19} />
+              تنظیمات عمومی
+            </h2>
+            <p>جزئیات کوچیک، تجربه بهتر.</p>
+          </header>
+          <fieldset className="setting-group">
+            <legend>ظاهر برنامه</legend>
+            <div className="choice-grid">
+              {themes.map(({ value, label, icon: Icon }) => (
+                <label key={value} className="choice">
+                  <input
+                    type="radio"
+                    name="theme"
+                    value={value}
+                    checked={theme === value}
+                    onChange={() => setTheme(value as Theme)}
+                  />
+                  <Icon size={23} strokeWidth={1.5} />
+                  <span>{label}</span>
+                </label>
+              ))}
             </div>
-          </div>
-        </div>
-
-        {/* Joke Settings Section */}
-        <div className="mb-6" dir="ltr">
-          <div className="liquid-glass overflow-hidden">
-            <div className="space-y-6 p-6">
-              {/* Section Header */}
-              <div
-                className="border-b pb-4 text-center"
-                style={{ borderColor: 'var(--glass-border)' }}
-              >
-                <h2
-                  className="mb-2 flex items-center justify-center gap-2 text-xl font-bold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  <Drama className="h-5 w-5" /> Joke Settings
-                </h2>
-                <p
-                  className="font-mono text-sm"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  Customize your joke preferences
-                </p>
-              </div>
-
-              {/* Categories */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Categories
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {AVAILABLE_CATEGORIES.map((category) => (
-                    <label
-                      key={category}
-                      className="flex cursor-pointer items-center space-x-2"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={settings.categories.includes(category)}
-                        onChange={(e) =>
-                          handleCategoryChange(category, e.target.checked)
-                        }
-                        className="theme-checkbox h-4 w-4 rounded"
-                      />
-                      <span
-                        className="text-sm"
-                        style={{ color: 'var(--text-secondary)' }}
-                      >
-                        {category}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Language */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Language
-                </h3>
-                <div className="relative">
-                  <select
-                    value={settings.lang}
-                    onChange={(e) => updateSettings({ lang: e.target.value })}
-                    className="theme-input w-full cursor-pointer appearance-none rounded-lg border px-3 py-2 pr-10 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-                  >
-                    {AVAILABLE_LANGUAGES.map((lang) => (
-                      <option
-                        key={lang.code}
-                        value={lang.code}
-                        className="bg-gray-800"
-                      >
-                        {lang.name}
-                      </option>
-                    ))}
-                  </select>
-                  {/* Custom chevron icon */}
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg
-                      className="h-4 w-4"
-                      style={{ color: 'var(--text-tertiary)' }}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Joke Type */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Joke Type
-                </h3>
-                <div className="space-y-2">
-                  {[
-                    { value: 'any', label: 'Any Type' },
-                    { value: 'single', label: 'Single (One-liner)' },
-                    {
-                      value: 'twopart',
-                      label: 'Two Part (Setup & Delivery)',
-                    },
-                  ].map((type) => (
-                    <label
-                      key={type.value}
-                      className="flex cursor-pointer items-center space-x-2"
-                    >
-                      <input
-                        type="radio"
-                        name="jokeType"
-                        value={type.value}
-                        checked={settings.type === type.value}
-                        onChange={(e) =>
-                          updateSettings({
-                            type: e.target.value as
-                              | 'single'
-                              | 'twopart'
-                              | 'any',
-                          })
-                        }
-                        className="theme-checkbox h-4 w-4"
-                      />
-                      <span
-                        className="text-sm"
-                        style={{ color: 'var(--text-secondary)' }}
-                      >
-                        {type.label}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Safe Mode */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Safe Mode
-                </h3>
-                <label className="flex cursor-pointer items-center space-x-3">
+            <p className="setting-hint">
+              حالت سیستم با تنظیمات دستگاهت هماهنگ می‌شه.
+            </p>
+          </fieldset>
+          <fieldset className="setting-group">
+            <legend>نمایش زمان باقی‌مونده</legend>
+            <div
+              className="choice-grid"
+              style={{ gridTemplateColumns: '1fr 1fr' }}
+            >
+              {[
+                { value: 'days', label: 'به روز', icon: CalendarDays },
+                { value: 'months', label: 'به ماه', icon: CalendarRange },
+              ].map(({ value, label, icon: Icon }) => (
+                <label key={value} className="choice">
+                  <input
+                    type="radio"
+                    name="timeFormat"
+                    checked={format === value}
+                    onChange={() => setFormat(value as 'days' | 'months')}
+                  />
+                  <Icon size={21} strokeWidth={1.5} />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset className="setting-group">
+            <legend>حالت سربازی</legend>
+            <label className="check-label">
+              <input
+                type="checkbox"
+                checked={isSoldier}
+                onChange={(e) => setIsSoldier(e.target.checked)}
+                className="theme-checkbox"
+              />
+              سربازم
+            </label>
+            <p className="setting-hint">
+              درجه و پیام‌های مخصوص مسیر سربازی رو نمایش بده.
+            </p>
+          </fieldset>
+          <button onClick={resetGeneral} className="button-secondary w-full">
+            <RotateCcw size={15} />
+            بازنشانی تنظیمات عمومی
+          </button>
+        </section>
+        <section className="surface-card settings-section">
+          <header>
+            <h2>
+              <Smile size={19} />
+              تنظیمات جوک
+            </h2>
+            <p>برای وقت‌هایی که یه لبخند لازم داری.</p>
+          </header>
+          <fieldset className="setting-group">
+            <legend>موضوع‌ها</legend>
+            <div className="grid grid-cols-2 gap-x-3" dir="ltr">
+              {categories.map((category) => (
+                <label key={category} className="check-label">
                   <input
                     type="checkbox"
-                    checked={settings.safeMode}
-                    onChange={(e) =>
-                      updateSettings({ safeMode: e.target.checked })
-                    }
-                    className="theme-checkbox h-4 w-4 rounded"
+                    checked={settings.categories.includes(category)}
+                    onChange={(e) => changeCategory(category, e.target.checked)}
+                    className="theme-checkbox"
                   />
-                  <div>
-                    <span
-                      className="block text-sm"
-                      style={{ color: 'var(--text-secondary)' }}
-                    >
-                      Enable Safe Mode
-                    </span>
-                    <span
-                      className="font-mono text-xs"
-                      style={{ color: 'var(--text-tertiary)' }}
-                    >
-                      Only show jokes safe for everyone
-                    </span>
-                  </div>
+                  {category}
                 </label>
-              </div>
-
-              {/* Blacklist Flags */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Content Filters
-                </h3>
-                <p
-                  className="mb-3 font-mono text-xs"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
-                  Block jokes with these content types:
-                </p>
-                <div className="grid grid-cols-2 gap-3">
-                  {AVAILABLE_FLAGS.map((flag) => (
-                    <label
-                      key={flag}
-                      className="flex cursor-pointer items-center space-x-2"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={settings.blacklistFlags.includes(flag)}
-                        onChange={(e) =>
-                          handleFlagChange(flag, e.target.checked)
-                        }
-                        className="theme-checkbox h-4 w-4 rounded"
-                      />
-                      <span
-                        className="text-sm capitalize"
-                        style={{ color: 'var(--text-secondary)' }}
-                      >
-                        {flag}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Amount */}
-              <div>
-                <h3
-                  className="mb-3 text-lg font-semibold"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Jokes per Request
-                </h3>
-                <div className="flex items-center space-x-4">
+              ))}
+            </div>
+          </fieldset>
+          <div className="setting-group">
+            <label className="setting-label" htmlFor="joke-language">
+              زبان جوک
+            </label>
+            <select
+              id="joke-language"
+              value={settings.lang}
+              onChange={(e) => updateSettings({ lang: e.target.value })}
+              className="theme-input"
+              dir="ltr"
+            >
+              {languages.map((language) => (
+                <option key={language.code} value={language.code}>
+                  {language.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <fieldset className="setting-group">
+            <legend>نوع جوک</legend>
+            {[
+              { value: 'any', label: 'فرقی نداره' },
+              { value: 'single', label: 'تک‌قسمتی' },
+              { value: 'twopart', label: 'دوقسمتی' },
+            ].map((type) => (
+              <label key={type.value} className="check-label">
+                <input
+                  type="radio"
+                  name="jokeType"
+                  checked={settings.type === type.value}
+                  onChange={() =>
+                    updateSettings({ type: type.value as JokeSettings['type'] })
+                  }
+                  className="theme-checkbox"
+                />
+                {type.label}
+              </label>
+            ))}
+          </fieldset>
+          <fieldset className="setting-group">
+            <legend>محتوای مناسب</legend>
+            <label className="check-label">
+              <input
+                type="checkbox"
+                checked={settings.safeMode}
+                onChange={(e) => updateSettings({ safeMode: e.target.checked })}
+                className="theme-checkbox"
+              />
+              فقط جوک‌های مناسب همه
+            </label>
+            <p className="setting-hint">
+              موضوع‌هایی که دوست نداری ببینی رو انتخاب کن:
+            </p>
+            <div className="mt-2 grid grid-cols-2 gap-x-3" dir="ltr">
+              {flags.map((flag) => (
+                <label key={flag} className="check-label">
                   <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={settings.amount}
+                    type="checkbox"
+                    checked={settings.blacklistFlags.includes(flag)}
                     onChange={(e) =>
-                      updateSettings({ amount: parseInt(e.target.value) })
+                      updateSettings({
+                        blacklistFlags: e.target.checked
+                          ? [...settings.blacklistFlags, flag]
+                          : settings.blacklistFlags.filter((f) => f !== flag),
+                      })
                     }
-                    className="theme-range h-2 flex-1 cursor-pointer appearance-none rounded-lg"
+                    className="theme-checkbox"
                   />
-                  <span
-                    className="w-8 text-center font-mono"
-                    style={{ color: 'var(--text-secondary)' }}
-                  >
-                    {settings.amount}
-                  </span>
-                </div>
-                <p
-                  className="mt-1 font-mono text-xs"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
-                  Number of jokes to fetch at once (1-10)
-                </p>
-              </div>
-
-              {/* Reset Button */}
-              <div
-                className="border-t pt-4"
-                style={{ borderColor: 'var(--glass-border)' }}
-              >
-                <button
-                  onClick={resetSettings}
-                  className="theme-button-danger w-full rounded-lg border px-4 py-3 font-medium transition-all duration-300 hover:scale-105"
-                >
-                  Reset to Defaults
-                </button>
-              </div>
+                  {flag}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <div className="setting-group">
+            <label className="setting-label" htmlFor="joke-amount">
+              تعداد جوک در هر درخواست
+            </label>
+            <div className="flex items-center gap-4">
+              <input
+                id="joke-amount"
+                type="range"
+                min="1"
+                max="10"
+                value={settings.amount}
+                onChange={(e) =>
+                  updateSettings({ amount: Number(e.target.value) })
+                }
+                className="theme-range"
+              />
+              <output htmlFor="joke-amount" className="badge">
+                {settings.amount.toLocaleString('fa-IR')}
+              </output>
             </div>
           </div>
-        </div>
+          <button onClick={resetSettings} className="button-secondary w-full">
+            <RotateCcw size={15} />
+            بازنشانی تنظیمات جوک
+          </button>
+        </section>
       </div>
     </div>
   );

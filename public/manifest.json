@@ -4,8 +4,8 @@
   "description": "Calculate elapsed time from a Jalali (Persian) date",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#030712",
-  "theme_color": "#030712",
+  "background_color": "#f4f3ec",
+  "theme_color": "#264d39",
   "icons": [
     {
       "src": "/icon-192x192.png",

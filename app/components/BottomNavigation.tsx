@@ -1,38 +1,38 @@
 'use client';
-
-import { Calendar, Settings, Home } from 'lucide-react';
-
-interface BottomNavigationProps {
-  activeTab: 'home' | 'calendar' | 'settings';
-  onTabChange: (tab: 'home' | 'calendar' | 'settings') => void;
-}
+import { CalendarDays, SlidersHorizontal, House } from 'lucide-react';
 
 const tabs = [
-  { id: 'home', label: 'Home', icon: Home },
-  { id: 'calendar', label: 'Calendar', icon: Calendar },
-  { id: 'settings', label: 'Settings', icon: Settings },
+  { id: 'home', label: 'خانه', name: 'Home', icon: House },
+  { id: 'calendar', label: 'تاریخ‌ها', name: 'Calendar', icon: CalendarDays },
+  {
+    id: 'settings',
+    label: 'تنظیمات',
+    name: 'Settings',
+    icon: SlidersHorizontal,
+  },
 ] as const;
 
 export default function BottomNavigation({
   activeTab,
   onTabChange,
-}: BottomNavigationProps) {
+}: {
+  activeTab: 'home' | 'calendar' | 'settings';
+  onTabChange: (tab: 'home' | 'calendar' | 'settings') => void;
+}) {
   return (
-    <nav
-      className="bottom-navigation liquid-glass-strong"
-      aria-label="Main navigation"
-    >
+    <nav className="bottom-navigation" aria-label="ناوبری اصلی">
       <div className="flex items-center gap-1">
-        {tabs.map(({ id, label, icon: Icon }) => (
+        {tabs.map(({ id, label, name, icon: Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => onTabChange(id)}
-            aria-label={label}
+            aria-label={`${name} — ${label}`}
             aria-current={activeTab === id ? 'page' : undefined}
             className="nav-button"
           >
-            <Icon className="h-6 w-6" aria-hidden="true" />
+            <Icon size={19} strokeWidth={1.7} aria-hidden="true" />
+            <span>{label}</span>
           </button>
         ))}
       </div>

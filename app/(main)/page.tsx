@@ -2,127 +2,168 @@
 
 import { getAgoFromDate } from '@/app/lib/utils';
 import { useState, useEffect } from 'react';
-import { DateObject } from 'react-multi-date-picker';
+import { CalendarDays, ArrowUpLeft, MoveUpRight, Sprout } from 'lucide-react';
 import DateSelectionModal from '@/app/components/DateSelectionModal';
 import ProgressBar from '@/app/components/ProgressBar';
 import JokeComponent from '@/app/components/JokeComponent';
+import PageHeading from '@/app/components/PageHeading';
 import { useStoredDateRange } from '@/app/hooks/useStoredDateRange';
+import { useAppNavigation } from '@/app/components/NavigationWrapper';
 
 export default function Home() {
   const { dateRange, startDate, isFirstVisit, updateStartDate } =
     useStoredDateRange();
-  const [currentDate, setCurrentDate] = useState<DateObject | null>(null);
-
-  // Update currentDate when startDate changes
+  const navigate = useAppNavigation();
+  const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
-    if (startDate) {
-      setCurrentDate(startDate);
-    }
-  }, [startDate]);
-
-  const handleModalDateSelect = (date: DateObject) => {
-    updateStartDate(date);
-    setCurrentDate(date);
-  };
-
-  // Only calculate ago if we have a valid currentDate
-  const ago = currentDate
-    ? getAgoFromDate(currentDate.toDate(), { live: true })
-    : { years: 0, months: 0, days: 0 };
-
-  const timeUnits = [
-    { value: ago.years, label: 'سال', show: ago.years > 0 },
-    { value: ago.months, label: 'ماه', show: ago.months > 0 },
-    { value: ago.days, label: 'روز', show: ago.days > 0 },
-  ];
+    setNow(new Date());
+    const timer = window.setInterval(() => setNow(new Date()), 60000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const ago =
+    startDate && now
+      ? getAgoFromDate(startDate.toDate())
+      : { years: 0, months: 0, days: 0 };
+  const totalDays =
+    startDate && now
+      ? Math.max(
+          0,
+          Math.floor((now.getTime() - startDate.toDate().getTime()) / 86400000)
+        )
+      : 0;
+  const dateLabel = startDate
+    ? new Intl.DateTimeFormat('fa-IR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }).format(startDate.toDate())
+    : '…';
 
   return (
-    <div className="app-surface min-h-screen overflow-y-auto px-4 pb-20">
-      <div className="flex flex-col py-4">
-        {/* Progress bar section - at the top */}
-        {dateRange && dateRange.length >= 2 && (
-          <div className="animate-bloop-in mb-4">
-            <div className="mx-auto w-full max-w-md">
-              <ProgressBar dateRange={dateRange} />
+    <div className="animate-enter">
+      <PageHeading
+        eyebrow="روایتِ روزهای تو"
+        title="هر روز، یک قدم جلوتر."
+        description="از اون روز تا امروز؛ ببین چقدر راه اومدی."
+        action={
+          <button
+            className="button-secondary"
+            onClick={() => navigate('calendar')}
+          >
+            <CalendarDays size={16} />
+            ویرایش تاریخ
+          </button>
+        }
+      />
+      <div className="dashboard-grid">
+        <section className="time-card" aria-label="زمان سپری‌شده">
+          <div className="time-card-top">
+            <span>
+              <span className="status-dot" />
+              زمان سپری‌شده
+            </span>
+            <MoveUpRight size={19} />
+          </div>
+          <div className="time-dial">
+            <svg viewBox="0 0 320 320" fill="none" aria-hidden="true">
+              <circle
+                cx="160"
+                cy="160"
+                r="150"
+                stroke="var(--hero-line)"
+                strokeWidth="0.5"
+              />
+              {Array.from({ length: 60 }, (_, i) => (
+                <line
+                  key={i}
+                  x1="160"
+                  y1="23"
+                  x2="160"
+                  y2={i % 5 === 0 ? '37' : '29'}
+                  stroke={i % 5 === 0 ? 'var(--hero-ink)' : 'var(--hero-line)'}
+                  strokeWidth={i % 5 === 0 ? '2' : '1'}
+                  transform={`rotate(${i * 6} 160 160)`}
+                />
+              ))}
+              <circle
+                cx="160"
+                cy="160"
+                r="111"
+                stroke="var(--hero-line)"
+                strokeDasharray="2 7"
+                opacity=".65"
+              />
+              <circle
+                cx="267"
+                cy="65"
+                r="7"
+                fill="#e99a6d"
+                stroke="var(--hero-bg)"
+                strokeWidth="4"
+              />
+              <path
+                d="M151 87h18m-9-9v18"
+                stroke="var(--hero-muted)"
+                strokeWidth="1.5"
+              />
+              <path d="M156 238h8" stroke="var(--hero-muted)" strokeWidth="2" />
+            </svg>
+            <div className="dial-center">
+              <strong>
+                {now && startDate ? totalDays.toLocaleString('fa-IR') : '—'}
+              </strong>
+              <span>روز از شروع داستانت</span>
             </div>
           </div>
-        )}
-
-        {/* Date display section */}
-        {currentDate && (
-          <div className="animate-bloop-bounce mb-4">
-            <div className="mx-auto w-full max-w-md">
-              <div className="liquid-glass overflow-hidden">
-                <div className="relative space-y-6 p-6 md:space-y-8 md:p-12">
-                  {currentDate &&
-                    timeUnits.map(
-                      (unit, index) =>
-                        unit.show && (
-                          <div
-                            key={index}
-                            className="flex flex-col items-center"
-                          >
-                            {/* Liquid glass number container - optimized for mobile */}
-                            <div className="relative mb-3">
-                              {/* Liquid glass number background */}
-                              <div className="liquid-glass-subtle">
-                                {/* Number text with liquid effect - responsive sizing */}
-                                <div className="relative px-4 py-2 font-mono text-4xl font-black tracking-tight md:px-6 md:py-3 md:text-6xl">
-                                  <div
-                                    className="relative"
-                                    style={{ color: 'var(--text-primary)' }}
-                                  >
-                                    {unit.value}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Liquid glass label - responsive sizing */}
-                            <div className="liquid-glass-subtle px-3 py-1.5 md:px-4 md:py-2">
-                              <div
-                                className="text-lg font-bold tracking-wide md:text-xl"
-                                style={{ color: 'var(--text-secondary)' }}
-                              >
-                                {unit.label}
-                              </div>
-                            </div>
-                          </div>
-                        )
-                    )}
-
-                  {currentDate && timeUnits.every((unit) => !unit.show) && (
-                    <div className="relative">
-                      <div className="liquid-glass-subtle px-6 py-4 md:px-8 md:py-6">
-                        <div
-                          className="text-center text-xl font-bold md:text-2xl"
-                          style={{ color: 'var(--text-secondary)' }}
-                        >
-                          هنوز زمانی نگذشته
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+          <div className="time-breakdown">
+            {[
+              { value: ago.years, label: 'سال' },
+              { value: ago.months, label: 'ماه' },
+              { value: ago.days, label: 'روز' },
+            ].map((unit) => (
+              <div key={unit.label}>
+                <strong>{unit.value.toLocaleString('fa-IR')}</strong>
+                <span>{unit.label}</span>
               </div>
-            </div>
+            ))}
           </div>
-        )}
-
-        {/* Joke Component section */}
-        {currentDate && (
-          <div className="animate-bloop-in mb-4">
-            <div className="mx-auto w-full max-w-md">
-              <JokeComponent />
-            </div>
-          </div>
-        )}
+          <p className="time-origin">
+            <CalendarDays size={14} />
+            شروع از {dateLabel}
+          </p>
+        </section>
+        <div className="dashboard-aside">
+          {dateRange && dateRange.length >= 2 ? (
+            <ProgressBar dateRange={dateRange} />
+          ) : (
+            <section className="surface-card card-padding">
+              <div className="card-heading">
+                <h2>قدم بعدی کجاست؟</h2>
+                <Sprout className="card-icon" />
+              </div>
+              <p className="text-secondary mb-5 text-sm leading-8">
+                یه تاریخ پایان مشخص کن تا روزهای باقی‌مونده و پیشرفت مسیرت رو هم
+                ببینی.
+              </p>
+              <button
+                className="button-secondary w-full"
+                onClick={() => navigate('calendar')}
+              >
+                انتخاب تاریخ پایان
+                <ArrowUpLeft size={17} />
+              </button>
+            </section>
+          )}
+          <JokeComponent />
+        </div>
       </div>
-
-      {/* Date Selection Modal */}
+      <p className="app-footnote">
+        <Sprout size={14} />
+        آروم و پیوسته؛ روزهای خوب از راه می‌رسن.
+      </p>
       <DateSelectionModal
         isOpen={isFirstVisit}
-        onDateSelect={handleModalDateSelect}
+        onDateSelect={updateStartDate}
         initialDate={startDate}
       />
     </div>
