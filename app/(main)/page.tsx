@@ -2,7 +2,7 @@
 
 import { getAgoFromDate } from '@/app/lib/utils';
 import { useState, useEffect } from 'react';
-import { CalendarDays, ArrowUpLeft, MoveUpRight, Sprout } from 'lucide-react';
+import { CalendarDays, ArrowUpLeft, MoveUpRight } from 'lucide-react';
 import DateSelectionModal from '@/app/components/DateSelectionModal';
 import ProgressBar from '@/app/components/ProgressBar';
 import JokeComponent from '@/app/components/JokeComponent';
@@ -42,9 +42,7 @@ export default function Home() {
   return (
     <div className="animate-enter">
       <PageHeading
-        eyebrow="روایتِ روزهای تو"
-        title="هر روز، یک قدم جلوتر."
-        description="از اون روز تا امروز؛ ببین چقدر راه اومدی."
+        title="روزشمار"
         action={
           <button
             className="button-secondary"
@@ -112,7 +110,7 @@ export default function Home() {
               <strong>
                 {now && startDate ? totalDays.toLocaleString('fa-IR') : '—'}
               </strong>
-              <span>روز از شروع داستانت</span>
+              <span>روز</span>
             </div>
           </div>
           <div className="time-breakdown">
@@ -136,31 +134,17 @@ export default function Home() {
           {dateRange && dateRange.length >= 2 ? (
             <ProgressBar dateRange={dateRange} />
           ) : (
-            <section className="surface-card card-padding">
-              <div className="card-heading">
-                <h2>قدم بعدی کجاست؟</h2>
-                <Sprout className="card-icon" />
-              </div>
-              <p className="text-secondary mb-5 text-sm leading-8">
-                یه تاریخ پایان مشخص کن تا روزهای باقی‌مونده و پیشرفت مسیرت رو هم
-                ببینی.
-              </p>
-              <button
-                className="button-secondary w-full"
-                onClick={() => navigate('calendar')}
-              >
-                انتخاب تاریخ پایان
-                <ArrowUpLeft size={17} />
-              </button>
-            </section>
+            <button
+              className="button-secondary w-full"
+              onClick={() => navigate('calendar')}
+            >
+              انتخاب تاریخ پایان
+              <ArrowUpLeft size={17} />
+            </button>
           )}
           <JokeComponent />
         </div>
       </div>
-      <p className="app-footnote">
-        <Sprout size={14} />
-        آروم و پیوسته؛ روزهای خوب از راه می‌رسن.
-      </p>
       <DateSelectionModal
         isOpen={isFirstVisit}
         onDateSelect={updateStartDate}

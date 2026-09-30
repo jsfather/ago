@@ -91,7 +91,7 @@ export async function shareJokeImage(joke: JokeResponse) {
   });
   const shareData = {
     files: [file],
-    title: 'ago — یه لبخند',
+    title: 'ago',
     text:
       joke.type === 'single' ? joke.joke : `${joke.setup}\n${joke.delivery}`,
   };

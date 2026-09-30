@@ -125,13 +125,6 @@
     serif;
   letter-spacing: -2px;
 }
-.header-note {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--text-secondary);
-  font-size: 12px;
-}
 .status-dot {
   width: 6px;
   height: 6px;
@@ -144,26 +137,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  margin: 36px 0 28px;
-}
-.eyebrow {
-  display: block;
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  margin: 28px 0 24px;
 }
 .page-heading h1 {
-  font-size: clamp(26px, 4vw, 36px);
+  font-size: clamp(24px, 3vw, 28px);
   font-weight: 700;
   letter-spacing: -1px;
   line-height: 1.65;
-}
-.page-heading p {
-  color: var(--text-secondary);
-  font-size: 13px;
-  line-height: 2;
-  margin-top: 5px;
 }
 .surface-card {
   background: var(--surface);
@@ -397,32 +377,6 @@
   border-radius: 8px;
   font-size: 11px;
 }
-.joke-intro {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-.joke-icon {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  flex-shrink: 0;
-}
-.joke-intro h2 {
-  font-size: 15px;
-  font-weight: 700;
-}
-.joke-intro p {
-  font-size: 11px;
-  line-height: 1.9;
-  color: var(--text-secondary);
-  margin-top: 4px;
-}
 .joke-card {
   margin-top: 18px;
   padding-top: 18px;
@@ -454,15 +408,6 @@
   margin-top: 18px;
   font-size: 13px;
   line-height: 1.8;
-}
-.app-footnote {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  align-items: center;
-  color: var(--text-tertiary);
-  font-size: 11px;
-  margin: 28px 0 0;
 }
 .bottom-navigation {
   position: fixed;
@@ -519,11 +464,6 @@
   font-weight: 700;
   font-size: 16px;
 }
-.settings-section header p {
-  margin-top: 8px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
 .setting-group {
   margin-bottom: 26px;
   border: 0;
@@ -536,12 +476,6 @@
   font-weight: 700;
   font-size: 13px;
   margin-bottom: 12px;
-}
-.setting-hint {
-  color: var(--text-tertiary);
-  font-size: 11px;
-  line-height: 1.9;
-  margin-top: 10px;
 }
 .choice-grid {
   display: grid;
@@ -635,31 +569,9 @@
   color: var(--text-primary);
   outline: none;
 }
-.calendar-layout {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: 24px;
-  align-items: start;
-}
-.calendar-note {
-  padding: 36px;
-  background: var(--surface-muted);
-  border-radius: var(--radius);
-}
-.calendar-note > svg {
-  color: var(--accent);
-  margin-bottom: 32px;
-}
-.calendar-note h2 {
-  font-size: 23px;
-  line-height: 1.7;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.calendar-note p {
-  font-size: 13px;
-  line-height: 2.2;
-  color: var(--text-secondary);
+.calendar-page {
+  max-width: 600px;
+  margin-inline: auto;
 }
 .date-step {
   border-bottom: 1px solid var(--border);
@@ -667,6 +579,7 @@
   margin-bottom: 26px;
 }
 .date-step:last-of-type {
+  margin-bottom: 0;
   border-bottom: 0;
   padding-bottom: 0;
 }
@@ -696,11 +609,6 @@
   font-weight: 700;
   line-height: 1.8;
   margin: 16px 0 8px;
-}
-.onboarding p {
-  font-size: 13px;
-  line-height: 2;
-  color: var(--text-secondary);
 }
 .onboarding form {
   margin-top: 28px;
@@ -736,27 +644,21 @@
   .app-header {
     min-height: 78px;
   }
-  .header-note {
-    font-size: 10px;
-  }
   .page-heading {
     margin: 26px 0 22px;
     align-items: start;
   }
-  .page-heading p {
-    font-size: 12px;
-  }
   .page-heading > .button-secondary {
     padding: 10px;
     font-size: 11px;
-    margin-top: 30px;
+    margin-top: 0;
     white-space: nowrap;
   }
   .dashboard-grid,
   .settings-grid,
-  .calendar-layout {
-    grid-template-columns: 1fr;
-    gap: 18px;
+  .calendar-page {
+    max-width: 600px;
+    margin-inline: auto;
   }
   .dashboard-aside {
     gap: 18px;
@@ -775,12 +677,6 @@
   .card-padding,
   .settings-section {
     padding: 22px;
-  }
-  .calendar-note {
-    padding: 26px;
-  }
-  .calendar-note > svg {
-    margin-bottom: 20px;
   }
   .onboarding {
     padding: 26px;

@@ -244,9 +244,9 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
       aria-label="پیشرفت بازه زمانی"
     >
       <div className="card-heading">
-        <h2>مسیر تو</h2>
+        <h2>پیشرفت</h2>
         <span className="badge">
-          {isComplete ? 'به مقصد رسیدی' : hasStarted ? 'در جریان' : 'به‌زودی'}
+          {isComplete ? 'کامل شده' : hasStarted ? 'در جریان' : 'به‌زودی'}
         </span>
       </div>
       <div className="flex items-end justify-between gap-2">
@@ -254,7 +254,6 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
           {Number(progress.toFixed(1)).toLocaleString('fa-IR')}
           <span>٪</span>
         </div>
-        <span className="text-tertiary mb-2 text-xs">از مسیر گذشته</span>
       </div>
       <div
         className="progress-track"
@@ -292,7 +291,7 @@ export default function ProgressBar({ dateRange }: ProgressBarProps) {
               'fa-IR'
             )}
           </strong>
-          <span>{formatTotalTime(totalDays, totalMonths).unit} در کل مسیر</span>
+          <span>{formatTotalTime(totalDays, totalMonths).unit} کل</span>
         </div>
       </div>
       {isSoldier && hasStarted && !isComplete && (

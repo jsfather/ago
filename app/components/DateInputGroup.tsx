@@ -69,6 +69,12 @@ export function getMaxDayForMonth(month: number, year?: number): number {
 
 /** Try to build a DateObject from Jalali year/month/day strings. Returns null if invalid. */
 export function fieldsToDateObject(f: DateFields): DateObject | null {
+  if (
+    !/^\d{4}$/.test(f.year) ||
+    !/^\d{1,2}$/.test(f.month) ||
+    !/^\d{1,2}$/.test(f.day)
+  )
+    return null;
   const y = parseInt(f.year, 10);
   const m = parseInt(f.month, 10);
   const d = parseInt(f.day, 10);
@@ -98,6 +104,7 @@ export function fieldsToDateObject(f: DateFields): DateObject | null {
 interface DateInputGroupProps {
   fields: DateFields;
   onChange: (fields: DateFields) => void;
+  onCommit?: () => void;
   disabled?: boolean;
   autoFocus?: boolean;
 }
@@ -105,6 +112,7 @@ interface DateInputGroupProps {
 export default function DateInputGroup({
   fields,
   onChange,
+  onCommit,
   disabled,
   autoFocus = true,
 }: DateInputGroupProps) {
@@ -193,7 +201,14 @@ export default function DateInputGroup({
   const inputClassName = 'w-full bg-transparent text-center';
 
   return (
-    <div className="flex items-center gap-2" dir="ltr">
+    <div
+      className="flex items-center gap-2"
+      dir="ltr"
+      onBlur={(event) => {
+        // Moving between year/month/day is still editing the same draft.
+        if (!event.currentTarget.contains(event.relatedTarget)) onCommit?.();
+      }}
+    >
       {/* Year */}
       <div className="date-input flex-[1.4]">
         <input

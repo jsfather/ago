@@ -78,11 +78,7 @@ export default function SettingsPage() {
 
   return (
     <div className="animate-enter">
-      <PageHeading
-        eyebrow="به سلیقه تو"
-        title="یه فضای شخصی‌تر."
-        description="ظاهر، نمایش زمان و حال‌وهوای جوک‌ها رو خودت انتخاب کن."
-      />
+      <PageHeading title="تنظیمات" />
       <div className="settings-grid">
         <section className="surface-card settings-section">
           <header>
@@ -90,7 +86,6 @@ export default function SettingsPage() {
               <SlidersHorizontal size={19} />
               تنظیمات عمومی
             </h2>
-            <p>جزئیات کوچیک، تجربه بهتر.</p>
           </header>
           <fieldset className="setting-group">
             <legend>ظاهر برنامه</legend>
@@ -109,9 +104,6 @@ export default function SettingsPage() {
                 </label>
               ))}
             </div>
-            <p className="setting-hint">
-              حالت سیستم با تنظیمات دستگاهت هماهنگ می‌شه.
-            </p>
           </fieldset>
           <fieldset className="setting-group">
             <legend>نمایش زمان باقی‌مونده</legend>
@@ -147,9 +139,6 @@ export default function SettingsPage() {
               />
               سربازم
             </label>
-            <p className="setting-hint">
-              درجه و پیام‌های مخصوص مسیر سربازی رو نمایش بده.
-            </p>
           </fieldset>
           <button onClick={resetGeneral} className="button-secondary w-full">
             <RotateCcw size={15} />
@@ -162,7 +151,6 @@ export default function SettingsPage() {
               <Smile size={19} />
               تنظیمات جوک
             </h2>
-            <p>برای وقت‌هایی که یه لبخند لازم داری.</p>
           </header>
           <fieldset className="setting-group">
             <legend>موضوع‌ها</legend>
@@ -230,9 +218,9 @@ export default function SettingsPage() {
               />
               فقط جوک‌های مناسب همه
             </label>
-            <p className="setting-hint">
-              موضوع‌هایی که دوست نداری ببینی رو انتخاب کن:
-            </p>
+          </fieldset>
+          <fieldset className="setting-group">
+            <legend>موضوع‌های مسدود</legend>
             <div className="mt-2 grid grid-cols-2 gap-x-3" dir="ltr">
               {flags.map((flag) => (
                 <label key={flag} className="check-label">

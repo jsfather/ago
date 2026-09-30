@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Share2, Smile, X, RefreshCw, LoaderCircle } from 'lucide-react';
+import { Share2, X, RefreshCw, LoaderCircle } from 'lucide-react';
 import { useJokeSettings } from '../hooks/useJokeSettings';
 import { SERVICE_FINISHED } from '../lib/features';
 import { shareJokeImage } from '../lib/shareJokeImage';
@@ -90,15 +90,6 @@ export default function JokeComponent() {
 
   return (
     <section className="surface-card card-padding" aria-label="جوک">
-      <div className="joke-intro">
-        <span className="joke-icon">
-          <Smile size={25} strokeWidth={1.6} />
-        </span>
-        <div>
-          <h2>یه مکث، یه لبخند.</h2>
-          <p>بین شمردن روزها، یه کم هم بخند.</p>
-        </div>
-      </div>
       <div className="flex gap-2" dir="ltr">
         <button
           onClick={fetchJoke}

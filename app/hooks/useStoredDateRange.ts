@@ -108,14 +108,12 @@ export function useStoredDateRange() {
     try {
       // Validate the range
       if (!range || range.length === 0) {
-        console.error('Invalid empty date range provided');
         return false;
       }
 
       // Validate all dates in the range
       for (const date of range) {
         if (!isValidDateObject(date)) {
-          console.error('Invalid date in range');
           return false;
         }
       }
@@ -125,9 +123,6 @@ export function useStoredDateRange() {
         const startDate = range[0];
         const endDate = range[1];
         if (!validateDateRange(startDate, endDate)) {
-          console.error(
-            'Invalid date range: end date must be greater than or equal to start date'
-          );
           return false;
         }
       }
@@ -147,7 +142,6 @@ export function useStoredDateRange() {
   const updateStartDate = (startDate: DateObject) => {
     try {
       if (!isValidDateObject(startDate)) {
-        console.error('Invalid start date provided');
         return false;
       }
 

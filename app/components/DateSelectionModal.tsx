@@ -73,29 +73,18 @@ export default function DateSelectionModal({
       ref={dialogRef}
       className="onboarding"
       aria-labelledby="welcome-title"
-      aria-describedby="welcome-description"
       onCancel={(event) => event.preventDefault()}
     >
       <span className="brand-symbol">
         <Hourglass size={23} />
       </span>
-      <span className="eyebrow mt-7">به ago خوش اومدی</span>
-      <h2 id="welcome-title">
-        هر داستانی،
-        <br />
-        یه روز شروع شده.
-      </h2>
-      <p id="welcome-description">
-        تاریخ شروع داستانت رو وارد کن؛ ما روزها رو برات می‌شماریم. تاریخ پایان
-        رو هم بعداً می‌تونی اضافه کنی.
-      </p>
+      <h2 id="welcome-title">تاریخ شروع (شمسی)</h2>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           handleConfirm();
         }}
       >
-        <span className="setting-label">تاریخ شروع به شمسی</span>
         <DateInputGroup fields={fields} onChange={handleChange} />
         {error && (
           <div className="field-error" role="alert">
@@ -103,7 +92,7 @@ export default function DateSelectionModal({
           </div>
         )}
         <button type="submit" className="button-primary mt-6 w-full">
-          بزن بریم
+          تایید
           <ArrowLeft size={17} />
         </button>
       </form>

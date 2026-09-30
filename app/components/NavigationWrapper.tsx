@@ -38,10 +38,6 @@ export default function NavigationWrapper({
                 ago<span style={{ color: 'var(--accent)' }}>.</span>
               </span>
             </button>
-            <span className="header-note">
-              <span className="status-dot" />
-              برای روزهایی که می‌شماری
-            </span>
           </header>
           <main id="main-content">
             {activeTab === 'calendar' ? (
